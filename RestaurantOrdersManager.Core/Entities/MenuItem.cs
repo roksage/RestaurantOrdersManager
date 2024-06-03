@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RestaurantOrdersManager.Core.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -11,7 +12,12 @@ namespace RestaurantOrdersManager.Core.Entities
     {
         [Key]
         public int MenuItemId { get; set; }
-        [Required(ErrorMessage ="Please provide menu item name")]
         public string? ItemName {  get; set; }
+        public StatusEnums ItemStatus { get; set; }
+
+        public MenuItem()
+        {
+            ItemStatus = StatusEnums.Received;
+        }
     }
 }

@@ -11,9 +11,7 @@ namespace RestaurantOrdersManager.Core.Entities
     {
         [Key]
         public int EmployeeId { get; set; }
-        [Required(ErrorMessage ="Please provide employee name")]
-        public string Name { get; set; }
-        [Required(ErrorMessage = "Please provide employee lastname")]
-        public string LastName {  get; set; }
+        public string? Name { get; set; }
+        public string? LastName {  get; set; }
     }
 }

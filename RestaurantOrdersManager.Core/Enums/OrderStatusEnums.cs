@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RestaurantOrdersManager.Core.DTO.EmployeeDTO
+namespace RestaurantOrdersManager.Core.Enums
 {
-    internal class EmployeeResponse
+    public enum StatusEnums
     {
+        Received, InProgress, Finished
     }
 }
