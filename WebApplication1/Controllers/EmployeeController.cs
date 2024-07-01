@@ -23,7 +23,7 @@ namespace Web.Controllers
             try
             {
                 EmployeeResponse addEmployee = await _employeeService.AddEmployee(addEmployeeRequest);
-                return Ok(addEmployee);
+                return Ok(new EmployeeResponse { EmployeeId = addEmployee.EmployeeId});
             }
             catch (ValidationException ex)
             {
