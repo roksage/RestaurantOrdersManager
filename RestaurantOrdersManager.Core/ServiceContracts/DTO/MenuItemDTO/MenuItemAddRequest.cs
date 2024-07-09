@@ -1,4 +1,5 @@
 ﻿using RestaurantOrdersManager.Core.Entities;
+using RestaurantOrdersManager.Core.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -12,11 +13,11 @@ namespace RestaurantOrdersManager.Core.ServiceContracts.DTO.MenuItemDTO
     {
         [Required(ErrorMessage = "Please provide name of menu item")]
         public string? ItemName { get; set; }
-        public Enum? ItemStatus { get; set; }
+        public StatusEnums? ItemStatus { get; set; }
 
         public MenuItem ToMenuItem()
         {
-            return new MenuItem() { ItemName = ItemName };
+            return new MenuItem() { ItemName = ItemName, ItemStatus = (StatusEnums)ItemStatus };
         }
     }
 }

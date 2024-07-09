@@ -8,6 +8,6 @@ namespace RestaurantOrdersManager.Core.Enums
 {
     public enum StatusEnums
     {
-        Received, InProgress, Finished
+       Received, InProgress, Finished
     }
 }

@@ -1,4 +1,5 @@
 ﻿using RestaurantOrdersManager.Core.Entities;
+using RestaurantOrdersManager.Core.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace RestaurantOrdersManager.Core.ServiceContracts.DTO.MenuItemDTO
     {
         public int MenuItemId { get; set; }
         public string? ItemName { get; set; }
-        public Enum? ItemStatus { get; set; }
+        public StatusEnums ItemStatus { get; set; }
     }
     public static class MenuItemResponseExtension
     {
