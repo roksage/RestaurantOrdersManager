@@ -12,15 +12,20 @@ namespace RestaurantOrdersManager.Core.ServiceContracts.DTO.OrderDTO
         public int OrderId { get; set; }
         public int CreatedBy { get; set; }
         public DateTime TimeCreated { get; set; }
-        public DateTime TimeFinished { get; set; }
-        public ICollection<MenuItem> MenuItems { get; set; }
-        public Enum? OrderStatus { get; set; }
+        public DateTime? TimeFinished { get; set; }
+        public ICollection<OrderedMenuItem>? OrderMenuItems { get; set; }
     }
-    public static class OrderResponseExtensio
+    public static class OrderResponseExtension
     {
-        public static OrderResponse OrderResponse(this OrderResponse response)
+        public static OrderResponse ToOrderResponse(this Order response)
         {
-            return new OrderResponse { OrderId = response.OrderId, CreatedBy = response.CreatedBy, TimeCreated = response.TimeCreated, TimeFinished = response.TimeFinished, MenuItems = response.MenuItems, OrderStatus = response.OrderStatus };
+            return new OrderResponse { 
+                OrderId = response.OrderId,
+                CreatedBy = response.CreatedBy,
+                TimeCreated = response.TimeCreated,
+                TimeFinished = response.TimeFinished,
+                OrderMenuItems = response.OrderMenuItems.ToList()
+            };
 
         }
     }

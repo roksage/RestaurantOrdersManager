@@ -2,6 +2,8 @@
 using RestaurantOrdersManager.Core.ServiceContracts;
 using RestaurantOrdersManager.Core.ServiceContracts.DTO.EmployeeDTO;
 using RestaurantOrdersManager.Core.ServiceContracts.DTO.MenuItemDTO;
+using RestaurantOrdersManager.Core.ServiceContracts.DTO.OrderDTO;
+using RestaurantOrdersManager.Core.Services;
 using System.ComponentModel.DataAnnotations;
 
 
@@ -9,22 +11,22 @@ namespace Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MenuItemController : ControllerBase
+    public class OrderController : ControllerBase
     {
-        private readonly IMenuItemService _menuItemService;
+        private readonly IOrderService _orderService;
 
-        public MenuItemController(IMenuItemService menuItemService)
+        public OrderController(IOrderService OrderService)
         {
-            _menuItemService = menuItemService;
+            _orderService = OrderService;
         }
 
-        [HttpPost("addMenuItem")]
-        public async Task<IActionResult> AddMenuItem(MenuItemAddRequest addMenuItemRequest)
+        [HttpPost("createOrder")]
+        public async Task<IActionResult> createOrder(OrderAddRequest createOrderRequest)
         {
             try
             {
-                MenuItemResponse addMenuItem = await _menuItemService.AddMenuItem(addMenuItemRequest);
-                return Ok(new MenuItemResponse { MenuItemId = addMenuItem.MenuItemId, ItemName = addMenuItem.ItemName});
+                OrderResponse createOrder = await _orderService.createOrder(createOrderRequest);
+                return Ok(new OrderResponse { OrderId = createOrder.OrderId, CreatedBy = createOrder.CreatedBy, TimeCreated = createOrder.TimeCreated});
             }
             catch (ValidationException ex)
             {
@@ -36,14 +38,14 @@ namespace Web.Controllers
             }
         }
 
-        [HttpGet("getAllMenuItems")]
-        public async Task<IActionResult> GetAllMenuItems()
+        [HttpGet("getAllOrders")]
+        public async Task<IActionResult> GetAllOrder()
         {
 
             try
             {
-                List<MenuItemResponse> allMenuItems = await _menuItemService.GetAllMenuItems();
-                return Ok(allMenuItems);
+                List<OrderResponse> allOrders = await _orderService.GetAllOrders();
+                return Ok(allOrders);
             }
             catch (ValidationException ex)
             {

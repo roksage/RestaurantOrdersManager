@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace RestaurantOrdersManager.Core.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -26,6 +26,19 @@ namespace RestaurantOrdersManager.Core.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "MenuItems",
+                columns: table => new
+                {
+                    MenuItemId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ItemName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MenuItems", x => x.MenuItemId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Orders",
                 columns: table => new
                 {
@@ -33,8 +46,7 @@ namespace RestaurantOrdersManager.Core.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreatedBy = table.Column<int>(type: "int", nullable: false),
                     TimeCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TimeFinished = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    OrderStatus = table.Column<int>(type: "int", nullable: false)
+                    TimeFinished = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -42,28 +54,41 @@ namespace RestaurantOrdersManager.Core.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "MenuItems",
+                name: "OrderMenuItems",
                 columns: table => new
                 {
-                    MenuItemId = table.Column<int>(type: "int", nullable: false)
+                    OrderedMenuItemId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ItemName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ItemStatus = table.Column<int>(type: "int", nullable: false),
-                    OrderId = table.Column<int>(type: "int", nullable: true)
+                    OrderId = table.Column<int>(type: "int", nullable: false),
+                    MenuItemId = table.Column<int>(type: "int", nullable: false),
+                    ProcessStarted = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ProcessCompleted = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MenuItems", x => x.MenuItemId);
+                    table.PrimaryKey("PK_OrderMenuItems", x => x.OrderedMenuItemId);
                     table.ForeignKey(
-                        name: "FK_MenuItems_Orders_OrderId",
+                        name: "FK_OrderMenuItems_MenuItems_MenuItemId",
+                        column: x => x.MenuItemId,
+                        principalTable: "MenuItems",
+                        principalColumn: "MenuItemId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OrderMenuItems_Orders_OrderId",
                         column: x => x.OrderId,
                         principalTable: "Orders",
-                        principalColumn: "OrderId");
+                        principalColumn: "OrderId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_MenuItems_OrderId",
-                table: "MenuItems",
+                name: "IX_OrderMenuItems_MenuItemId",
+                table: "OrderMenuItems",
+                column: "MenuItemId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderMenuItems_OrderId",
+                table: "OrderMenuItems",
                 column: "OrderId");
         }
 
@@ -72,6 +97,9 @@ namespace RestaurantOrdersManager.Core.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Employees");
+
+            migrationBuilder.DropTable(
+                name: "OrderMenuItems");
 
             migrationBuilder.DropTable(
                 name: "MenuItems");

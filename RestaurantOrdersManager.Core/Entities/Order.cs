@@ -10,13 +10,11 @@ namespace RestaurantOrdersManager.Core.Entities
         public int OrderId {  get; set; }
         public int CreatedBy { get; set; }
         public DateTime TimeCreated { get; set; }
-        public DateTime TimeFinished { get; set; }
-        public ICollection<MenuItem> MenuItems { get; set; } = new List<MenuItem>();    
-        public StatusEnums OrderStatus { get; set; }
+        public DateTime? TimeFinished { get; set; }
+        public ICollection<OrderedMenuItem> OrderMenuItems { get; set; } = new List<OrderedMenuItem>();
         public Order()
         {
             TimeCreated = DateTime.Now;
-            OrderStatus = StatusEnums.Received;
         }
     }
 }

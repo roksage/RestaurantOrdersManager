@@ -13,11 +13,6 @@ namespace RestaurantOrdersManager.Core.Entities
         [Key]
         public int MenuItemId { get; set; }
         public string? ItemName {  get; set; }
-        public StatusEnums ItemStatus { get; set; }
-
-        public MenuItem()
-        {
-            ItemStatus = StatusEnums.Received;
-        }
+        public ICollection<OrderedMenuItem> OrderMenuItems { get; set; } = new List<OrderedMenuItem>();
     }
 }

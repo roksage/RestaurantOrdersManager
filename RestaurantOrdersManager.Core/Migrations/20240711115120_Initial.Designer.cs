@@ -12,8 +12,8 @@ using RestaurantOrdersManager.Infrastructure;
 namespace RestaurantOrdersManager.Core.Migrations
 {
     [DbContext(typeof(ManagerDbContext))]
-    [Migration("20240603122427_initial")]
-    partial class initial
+    [Migration("20240711115120_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -55,15 +55,7 @@ namespace RestaurantOrdersManager.Core.Migrations
                     b.Property<string>("ItemName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ItemStatus")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("OrderId")
-                        .HasColumnType("int");
-
                     b.HasKey("MenuItemId");
-
-                    b.HasIndex("OrderId");
 
                     b.ToTable("MenuItems", (string)null);
                 });
@@ -79,13 +71,10 @@ namespace RestaurantOrdersManager.Core.Migrations
                     b.Property<int>("CreatedBy")
                         .HasColumnType("int");
 
-                    b.Property<int>("OrderStatus")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("TimeCreated")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("TimeFinished")
+                    b.Property<DateTime?>("TimeFinished")
                         .HasColumnType("datetime2");
 
                     b.HasKey("OrderId");
@@ -93,16 +82,62 @@ namespace RestaurantOrdersManager.Core.Migrations
                     b.ToTable("Orders", (string)null);
                 });
 
+            modelBuilder.Entity("RestaurantOrdersManager.Core.Entities.OrderedMenuItem", b =>
+                {
+                    b.Property<int>("OrderedMenuItemId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderedMenuItemId"));
+
+                    b.Property<int>("MenuItemId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ProcessCompleted")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ProcessStarted")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("OrderedMenuItemId");
+
+                    b.HasIndex("MenuItemId");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderMenuItems", (string)null);
+                });
+
+            modelBuilder.Entity("RestaurantOrdersManager.Core.Entities.OrderedMenuItem", b =>
+                {
+                    b.HasOne("RestaurantOrdersManager.Core.Entities.MenuItem", "MenuItem")
+                        .WithMany("OrderMenuItems")
+                        .HasForeignKey("MenuItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RestaurantOrdersManager.Core.Entities.Order", "Order")
+                        .WithMany("OrderMenuItems")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MenuItem");
+
+                    b.Navigation("Order");
+                });
+
             modelBuilder.Entity("RestaurantOrdersManager.Core.Entities.MenuItem", b =>
                 {
-                    b.HasOne("RestaurantOrdersManager.Core.Entities.Order", null)
-                        .WithMany("MenuItems")
-                        .HasForeignKey("OrderId");
+                    b.Navigation("OrderMenuItems");
                 });
 
             modelBuilder.Entity("RestaurantOrdersManager.Core.Entities.Order", b =>
                 {
-                    b.Navigation("MenuItems");
+                    b.Navigation("OrderMenuItems");
                 });
 #pragma warning restore 612, 618
         }

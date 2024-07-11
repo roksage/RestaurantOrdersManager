@@ -11,5 +11,7 @@ namespace RestaurantOrdersManager.Core.ServiceContracts
     public interface IMenuItemService
     {
         Task<MenuItemResponse> AddMenuItem(MenuItemAddRequest AddRequest);  
+
+        Task<List<MenuItemResponse>> GetAllMenuItems(); 
     }
 }

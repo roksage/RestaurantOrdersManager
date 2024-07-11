@@ -12,13 +12,12 @@ namespace RestaurantOrdersManager.Core.ServiceContracts.DTO.MenuItemDTO
     {
         public int MenuItemId { get; set; }
         public string? ItemName { get; set; }
-        public StatusEnums ItemStatus { get; set; }
     }
     public static class MenuItemResponseExtension
     {
         public static MenuItemResponse MenuItemResponse(this MenuItem menuItem)
         {
-            return new MenuItemResponse() { MenuItemId = menuItem.MenuItemId, ItemName = menuItem.ItemName, ItemStatus = menuItem.ItemStatus };
+            return new MenuItemResponse() { MenuItemId = menuItem.MenuItemId, ItemName = menuItem.ItemName };
         }
     }
 }
