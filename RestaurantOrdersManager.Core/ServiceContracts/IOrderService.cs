@@ -5,7 +5,7 @@ namespace RestaurantOrdersManager.Core.ServiceContracts
 {
     public interface IOrderService
     {
-        Task<OrderResponse> createOrder(OrderAddRequest AddRequest);
+        Task<OrderResponse> createOrder(OrderCreateRequest AddRequest);
 
         Task<List<OrderResponse>> GetAllOrders();   
     }

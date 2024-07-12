@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace RestaurantOrdersManager.Core.ServiceContracts.DTO.OrderDTO
 {
-    public class OrderAddRequest
+    public class OrderCreateRequest
     {
         [Required(ErrorMessage = "please provide employee id")]
         public int CreatedBy { get; set; }

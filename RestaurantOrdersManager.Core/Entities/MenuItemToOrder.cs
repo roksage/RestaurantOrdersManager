@@ -2,7 +2,7 @@
 
 namespace RestaurantOrdersManager.Core.Entities
 {
-    public class OrderedMenuItem
+    public class MenuItemToOrder
     {
         [Key]
         public int OrderedMenuItemId { get; set; }
@@ -13,7 +13,7 @@ namespace RestaurantOrdersManager.Core.Entities
         public DateTime ProcessStarted { get; set; }
         public DateTime? ProcessCompleted { get; set; }
 
-        public OrderedMenuItem()
+        public MenuItemToOrder()
         {
             ProcessStarted = DateTime.Now;
         }

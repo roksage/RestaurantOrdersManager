@@ -12,7 +12,7 @@ using RestaurantOrdersManager.Infrastructure;
 namespace RestaurantOrdersManager.Core.Migrations
 {
     [DbContext(typeof(ManagerDbContext))]
-    [Migration("20240711115120_Initial")]
+    [Migration("20240712102341_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -58,31 +58,31 @@ namespace RestaurantOrdersManager.Core.Migrations
                     b.HasKey("MenuItemId");
 
                     b.ToTable("MenuItems", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            MenuItemId = 1,
+                            ItemName = "Burger"
+                        },
+                        new
+                        {
+                            MenuItemId = 2,
+                            ItemName = "Pizza"
+                        },
+                        new
+                        {
+                            MenuItemId = 3,
+                            ItemName = "Salad"
+                        },
+                        new
+                        {
+                            MenuItemId = 4,
+                            ItemName = "Pasta"
+                        });
                 });
 
-            modelBuilder.Entity("RestaurantOrdersManager.Core.Entities.Order", b =>
-                {
-                    b.Property<int>("OrderId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderId"));
-
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("TimeCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("TimeFinished")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("OrderId");
-
-                    b.ToTable("Orders", (string)null);
-                });
-
-            modelBuilder.Entity("RestaurantOrdersManager.Core.Entities.OrderedMenuItem", b =>
+            modelBuilder.Entity("RestaurantOrdersManager.Core.Entities.MenuItemToOrder", b =>
                 {
                     b.Property<int>("OrderedMenuItemId")
                         .ValueGeneratedOnAdd()
@@ -109,14 +109,86 @@ namespace RestaurantOrdersManager.Core.Migrations
                     b.HasIndex("OrderId");
 
                     b.ToTable("OrderMenuItems", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            OrderedMenuItemId = 1,
+                            MenuItemId = 1,
+                            OrderId = 1,
+                            ProcessStarted = new DateTime(2024, 7, 12, 13, 23, 41, 28, DateTimeKind.Local).AddTicks(1031)
+                        },
+                        new
+                        {
+                            OrderedMenuItemId = 2,
+                            MenuItemId = 2,
+                            OrderId = 1,
+                            ProcessStarted = new DateTime(2024, 7, 12, 13, 23, 41, 28, DateTimeKind.Local).AddTicks(1033)
+                        },
+                        new
+                        {
+                            OrderedMenuItemId = 3,
+                            MenuItemId = 3,
+                            OrderId = 2,
+                            ProcessStarted = new DateTime(2024, 7, 11, 13, 23, 41, 28, DateTimeKind.Local).AddTicks(1035)
+                        },
+                        new
+                        {
+                            OrderedMenuItemId = 4,
+                            MenuItemId = 4,
+                            OrderId = 3,
+                            ProcessStarted = new DateTime(2024, 7, 10, 13, 23, 41, 28, DateTimeKind.Local).AddTicks(1037)
+                        });
                 });
 
-            modelBuilder.Entity("RestaurantOrdersManager.Core.Entities.OrderedMenuItem", b =>
+            modelBuilder.Entity("RestaurantOrdersManager.Core.Entities.Order", b =>
+                {
+                    b.Property<int>("OrderId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderId"));
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("TimeCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("TimeFinished")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("OrderId");
+
+                    b.ToTable("Orders", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            OrderId = 1,
+                            CreatedBy = 1,
+                            TimeCreated = new DateTime(2024, 7, 12, 13, 23, 41, 28, DateTimeKind.Local).AddTicks(1009)
+                        },
+                        new
+                        {
+                            OrderId = 2,
+                            CreatedBy = 2,
+                            TimeCreated = new DateTime(2024, 7, 11, 13, 23, 41, 28, DateTimeKind.Local).AddTicks(1012)
+                        },
+                        new
+                        {
+                            OrderId = 3,
+                            CreatedBy = 3,
+                            TimeCreated = new DateTime(2024, 7, 10, 13, 23, 41, 28, DateTimeKind.Local).AddTicks(1016)
+                        });
+                });
+
+            modelBuilder.Entity("RestaurantOrdersManager.Core.Entities.MenuItemToOrder", b =>
                 {
                     b.HasOne("RestaurantOrdersManager.Core.Entities.MenuItem", "MenuItem")
                         .WithMany("OrderMenuItems")
                         .HasForeignKey("MenuItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("RestaurantOrdersManager.Core.Entities.Order", "Order")

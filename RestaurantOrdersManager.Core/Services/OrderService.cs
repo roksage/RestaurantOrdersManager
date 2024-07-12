@@ -19,7 +19,7 @@ namespace RestaurantOrdersManager.Core.Services
             _dbContext = dbContext;
         }
 
-        public async Task<OrderResponse> createOrder(OrderAddRequest AddRequest)
+        public async Task<OrderResponse> createOrder(OrderCreateRequest AddRequest)
         {
             if (AddRequest == null)
             {

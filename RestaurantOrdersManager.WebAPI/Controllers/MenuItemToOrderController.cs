@@ -3,6 +3,8 @@ using RestaurantOrdersManager.Core.ServiceContracts;
 using RestaurantOrdersManager.Core.ServiceContracts.DTO.EmployeeDTO;
 using RestaurantOrdersManager.Core.ServiceContracts.DTO.MenuItemDTO;
 using RestaurantOrdersManager.Core.ServiceContracts.DTO.OrderDTO;
+using RestaurantOrdersManager.Core.ServiceContracts.DTO.OrderedMenuItem;
+using RestaurantOrdersManager.Core.ServiceContracts.DTO.OrderedMenuItemDTO;
 using RestaurantOrdersManager.Core.Services;
 using System.ComponentModel.DataAnnotations;
 
@@ -11,22 +13,22 @@ namespace Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OrderController : ControllerBase
+    public class MenuItemToOrderController : ControllerBase
     {
-        private readonly IOrderService _orderService;
+        private readonly IMenuItemToOrderService _menuItemToOrderServiceService;
 
-        public OrderController(IOrderService OrderService)
+        public MenuItemToOrderController(IMenuItemToOrderService MenuItemToOrderService)
         {
-            _orderService = OrderService;
+            _menuItemToOrderServiceService = MenuItemToOrderService;
         }
 
-        [HttpPost("createOrder")]
-        public async Task<IActionResult> createOrder(OrderCreateRequest createOrderRequest)
+        [HttpPost("addMenuItemToOrder")]
+        public async Task<IActionResult> addMenuItemToOrder(MenuItemToOrderAddRequest MenuItemAddRequestRequest)
         {
             try
             {
-                OrderResponse createOrder = await _orderService.createOrder(createOrderRequest);
-                return Ok(new OrderResponse { OrderId = createOrder.OrderId, CreatedBy = createOrder.CreatedBy, TimeCreated = createOrder.TimeCreated});
+                MenuItemToOrderResponse createOrder = await _menuItemToOrderServiceService.MenuItemToOrderServiceAddRequest(MenuItemAddRequestRequest);
+                return Ok(new MenuItemToOrderResponse { });
             }
             catch (ValidationException ex)
             {
@@ -44,8 +46,8 @@ namespace Web.Controllers
 
             try
             {
-                List<OrderResponse> allOrders = await _orderService.GetAllOrders();
-                return Ok(allOrders);
+                List<MenuItemToOrderResponse> allMenuItemsInOrder = await _menuItemToOrderServiceService.GetAllMenuItemToOrderService();
+                return Ok(allMenuItemsInOrder);
             }
             catch (ValidationException ex)
             {

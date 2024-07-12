@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace RestaurantOrdersManager.Core.Migrations
 {
     /// <inheritdoc />
@@ -72,13 +74,45 @@ namespace RestaurantOrdersManager.Core.Migrations
                         column: x => x.MenuItemId,
                         principalTable: "MenuItems",
                         principalColumn: "MenuItemId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_OrderMenuItems_Orders_OrderId",
                         column: x => x.OrderId,
                         principalTable: "Orders",
                         principalColumn: "OrderId",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "MenuItems",
+                columns: new[] { "MenuItemId", "ItemName" },
+                values: new object[,]
+                {
+                    { 1, "Burger" },
+                    { 2, "Pizza" },
+                    { 3, "Salad" },
+                    { 4, "Pasta" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Orders",
+                columns: new[] { "OrderId", "CreatedBy", "TimeCreated", "TimeFinished" },
+                values: new object[,]
+                {
+                    { 1, 1, new DateTime(2024, 7, 12, 13, 23, 41, 28, DateTimeKind.Local).AddTicks(1009), null },
+                    { 2, 2, new DateTime(2024, 7, 11, 13, 23, 41, 28, DateTimeKind.Local).AddTicks(1012), null },
+                    { 3, 3, new DateTime(2024, 7, 10, 13, 23, 41, 28, DateTimeKind.Local).AddTicks(1016), null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "OrderMenuItems",
+                columns: new[] { "OrderedMenuItemId", "MenuItemId", "OrderId", "ProcessCompleted", "ProcessStarted" },
+                values: new object[,]
+                {
+                    { 1, 1, 1, null, new DateTime(2024, 7, 12, 13, 23, 41, 28, DateTimeKind.Local).AddTicks(1031) },
+                    { 2, 2, 1, null, new DateTime(2024, 7, 12, 13, 23, 41, 28, DateTimeKind.Local).AddTicks(1033) },
+                    { 3, 3, 2, null, new DateTime(2024, 7, 11, 13, 23, 41, 28, DateTimeKind.Local).AddTicks(1035) },
+                    { 4, 4, 3, null, new DateTime(2024, 7, 10, 13, 23, 41, 28, DateTimeKind.Local).AddTicks(1037) }
                 });
 
             migrationBuilder.CreateIndex(

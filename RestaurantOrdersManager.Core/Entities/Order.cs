@@ -11,7 +11,7 @@ namespace RestaurantOrdersManager.Core.Entities
         public int CreatedBy { get; set; }
         public DateTime TimeCreated { get; set; }
         public DateTime? TimeFinished { get; set; }
-        public ICollection<OrderedMenuItem> OrderMenuItems { get; set; } = new List<OrderedMenuItem>();
+        public ICollection<MenuItemToOrder> OrderMenuItems { get; set; } = new List<MenuItemToOrder>();
         public Order()
         {
             TimeCreated = DateTime.Now;
