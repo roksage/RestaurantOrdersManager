@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using NuGet.Common;
 using RestaurantOrdersManager.Core.ServiceContracts;
 using RestaurantOrdersManager.Core.ServiceContracts.DTO.EmployeeDTO;
 using RestaurantOrdersManager.Core.ServiceContracts.DTO.MenuItemDTO;
+using RestaurantOrdersManager.Core.ServiceContracts.DTO.MenuItemToOrderDTO;
 using RestaurantOrdersManager.Core.ServiceContracts.DTO.OrderDTO;
 using RestaurantOrdersManager.Core.ServiceContracts.DTO.OrderedMenuItem;
 using RestaurantOrdersManager.Core.ServiceContracts.DTO.OrderedMenuItemDTO;
@@ -40,14 +42,44 @@ namespace Web.Controllers
             }
         }
 
-        [HttpGet("getAllOrders")]
-        public async Task<IActionResult> GetAllOrder()
+        [HttpGet("allOrderedMenuItems")]
+        public async Task<IActionResult> allOrderedMenuItems()
         {
 
             try
             {
-                List<MenuItemToOrderResponse> allMenuItemsInOrder = await _menuItemToOrderServiceService.GetAllMenuItemToOrderService();
-                return Ok(allMenuItemsInOrder);
+                IEnumerable<MenuItemToOrderResponse> allOrderedMenuItems = await _menuItemToOrderServiceService.GetAllMenuItemToOrderService();
+                return Ok(allOrderedMenuItems);
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = ex.Message });
+            }
+        }
+
+        [HttpPost("completeMenuItemInOrder")]
+        public async Task<IActionResult> completeMenuItemInOrder(MenuItemToOrderCompleteMenuItemById OrderedMenuItemId)
+        {
+            try
+            {
+                MenuItemToOrderResponse completeMenuItemInOrder = await _menuItemToOrderServiceService.CompleteMenuItemInOrder(OrderedMenuItemId);
+                return Ok(completeMenuItemInOrder);
+            }
+            catch (ArgumentNullException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { Message = ex.Message });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(new { Message = ex.Message });
             }
             catch (ValidationException ex)
             {

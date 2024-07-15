@@ -2,23 +2,56 @@
 using RestaurantOrdersManager.Core.ServiceContracts.DTO.OrderedMenuItem;
 using RestaurantOrdersManager.Core.ServiceContracts.DTO.OrderedMenuItemDTO;
 using RestaurantOrdersManager.Infrastructure;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using RestaurantOrdersManager.Core.Entities;
 using Microsoft.EntityFrameworkCore;
+using RestaurantOrdersManager.Core.ServiceContracts.DTO.MenuItemToOrderDTO;
 
 namespace RestaurantOrdersManager.Core.ServiceContracts
 {
     public class MenuItemToOrderService : IMenuItemToOrderService
     {
         private readonly ManagerDbContext _dbContext;
+        private readonly IOrderService _orderService;
 
-        public MenuItemToOrderService(ManagerDbContext dbContext)
+        public MenuItemToOrderService(ManagerDbContext dbContext, IOrderService orderService)
         {
             _dbContext = dbContext;
+            _orderService = orderService;
+        }
+
+        public async Task<MenuItemToOrderResponse> CompleteMenuItemInOrder(MenuItemToOrderCompleteMenuItemById OrderedMenuItemId)
+        {
+            if (OrderedMenuItemId == null)
+            {
+                throw new ArgumentNullException(nameof(OrderedMenuItemId));
+            }
+            // find item by id
+
+            MenuItemToOrder? orderedMenuItem = await _dbContext.OrderMenuItems.FirstOrDefaultAsync(x => x.OrderedMenuItemId == OrderedMenuItemId.OrderedMenuItemId);
+
+
+            if (orderedMenuItem == null)
+            {
+                throw new KeyNotFoundException("Ordered menu item not found.");
+            }
+
+            if (orderedMenuItem.ProcessCompleted != null)
+            {
+                throw new InvalidOperationException("Ordered menu item is already completed.");
+            }
+
+            orderedMenuItem.ProcessCompleted = DateTime.UtcNow;
+
+            await _dbContext.SaveChangesAsync();
+
+            //check if order is completed
+
+            bool isOrderCompleted = await _orderService.CheckIfOrderIsCompleted(orderedMenuItem.OrderId);
+
+
+
+            return orderedMenuItem.ToOrderedMenuItemResponse();
+
         }
 
         public async Task<List<MenuItemToOrderResponse>> GetAllMenuItemToOrderService()
@@ -33,8 +66,8 @@ namespace RestaurantOrdersManager.Core.ServiceContracts
                 throw new ArgumentNullException(nameof(addRequest));
             }
 
-            // Check if MenuItemId exists in the MenuItems table
             var menuItemExists = await _dbContext.MenuItems.AnyAsync(mi => mi.MenuItemId == addRequest.MenuItemId);
+
             if (!menuItemExists)
             {
                 throw new ArgumentException("Invalid MenuItemId: MenuItem does not exist.");
@@ -47,7 +80,7 @@ namespace RestaurantOrdersManager.Core.ServiceContracts
                 throw new ArgumentException("Invalid OrderId: Order does not exist.");
             }
 
-            // Map the addRequest to the entity
+            // Map the addRequest to the entity 
             Entities.MenuItemToOrder orderedMenuItem = addRequest.ToMenuItemToOrderAddRequest();
 
             // Add and save the entity

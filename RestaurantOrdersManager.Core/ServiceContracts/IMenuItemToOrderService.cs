@@ -1,4 +1,5 @@
 ﻿using RestaurantOrdersManager.Core.Entities;
+using RestaurantOrdersManager.Core.ServiceContracts.DTO.MenuItemToOrderDTO;
 using RestaurantOrdersManager.Core.ServiceContracts.DTO.OrderedMenuItem;
 using RestaurantOrdersManager.Core.ServiceContracts.DTO.OrderedMenuItemDTO;
 using System;
@@ -13,5 +14,6 @@ namespace RestaurantOrdersManager.Core.ServiceContracts
     {
         Task<MenuItemToOrderResponse> MenuItemToOrderServiceAddRequest(MenuItemToOrderAddRequest addRequest);
         Task<List<MenuItemToOrderResponse>> GetAllMenuItemToOrderService();
+        Task<MenuItemToOrderResponse> CompleteMenuItemInOrder(MenuItemToOrderCompleteMenuItemById OrderedMenuItemId);
     }
 }

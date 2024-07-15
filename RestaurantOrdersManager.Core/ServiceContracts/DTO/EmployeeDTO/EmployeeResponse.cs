@@ -15,7 +15,7 @@ namespace RestaurantOrdersManager.Core.ServiceContracts.DTO.EmployeeDTO
     }
     public static class EmployeeResponseExtension
     {
-        public static EmployeeResponse EmployeeResponse(this Employee employee)
+        public static EmployeeResponse ToEmployeeResponse(this Employee employee)
         {
             return new EmployeeResponse { EmployeeId = employee.EmployeeId, Name = employee.Name, LastName = employee.LastName };
         }

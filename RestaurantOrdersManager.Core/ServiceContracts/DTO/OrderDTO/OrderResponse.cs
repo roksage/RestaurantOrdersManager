@@ -1,4 +1,5 @@
 ﻿using RestaurantOrdersManager.Core.Entities;
+using RestaurantOrdersManager.Core.ServiceContracts.DTO.OrderedMenuItemDTO;
 
 
 namespace RestaurantOrdersManager.Core.ServiceContracts.DTO.OrderDTO
@@ -9,7 +10,7 @@ namespace RestaurantOrdersManager.Core.ServiceContracts.DTO.OrderDTO
         public int CreatedBy { get; set; }
         public DateTime TimeCreated { get; set; }
         public DateTime? TimeFinished { get; set; }
-        public ICollection<Entities.MenuItemToOrder>? OrderMenuItems { get; set; }
+        public ICollection<MenuItemToOrderResponse>? OrderMenuItems { get; set; }
 
     }
 
@@ -24,7 +25,7 @@ namespace RestaurantOrdersManager.Core.ServiceContracts.DTO.OrderDTO
                 CreatedBy = response.CreatedBy,
                 TimeCreated = response.TimeCreated,
                 TimeFinished = response.TimeFinished,
-                OrderMenuItems = response.OrderMenuItems.ToList()
+                OrderMenuItems = response.OrderMenuItems.Select(omi => omi.ToOrderedMenuItemResponse()).ToList()
             };
         }
     }

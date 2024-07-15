@@ -33,5 +33,9 @@ namespace RestaurantOrdersManager.Core.ServiceContracts.DTO.OrderedMenuItemDTO
                 ProcessCompleted = response.ProcessCompleted
             };
         }
+        public static IEnumerable<MenuItemToOrderResponse> ToOrderedMenuItemResponse(this ICollection<MenuItemToOrder> responses)
+        {
+            return responses.Select(response => response.ToOrderedMenuItemResponse()).ToList();
+        }
     }
 }
