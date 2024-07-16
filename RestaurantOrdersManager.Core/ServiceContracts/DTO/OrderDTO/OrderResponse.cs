@@ -11,7 +11,7 @@ namespace RestaurantOrdersManager.Core.ServiceContracts.DTO.OrderDTO
         public DateTime TimeCreated { get; set; }
         public DateTime? TimeFinished { get; set; }
         public ICollection<MenuItemToOrderResponse>? OrderMenuItems { get; set; }
-
+        public int? TableId { get; set; }
     }
 
 
@@ -25,7 +25,8 @@ namespace RestaurantOrdersManager.Core.ServiceContracts.DTO.OrderDTO
                 CreatedBy = response.CreatedBy,
                 TimeCreated = response.TimeCreated,
                 TimeFinished = response.TimeFinished,
-                OrderMenuItems = response.OrderMenuItems.Select(omi => omi.ToOrderedMenuItemResponse()).ToList()
+                OrderMenuItems = response.OrderMenuItems.Select(omi => omi.ToOrderedMenuItemResponse()).ToList(),
+                TableId = response.TableId
             };
         }
     }

@@ -14,9 +14,11 @@ namespace RestaurantOrdersManager.Core.ServiceContracts.DTO.OrderDTO
         [Required(ErrorMessage = "please provide employee id")]
         public int CreatedBy { get; set; }
 
+        public int TableId { get; set; }
+
         public Order ToOrder()
         {
-            return new Order { CreatedBy = CreatedBy };
+            return new Order { CreatedBy = CreatedBy, TableId = TableId };
         }
     }
 }

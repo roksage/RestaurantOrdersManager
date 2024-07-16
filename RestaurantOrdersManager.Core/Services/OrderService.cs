@@ -29,10 +29,8 @@ namespace RestaurantOrdersManager.Core.Services
                 throw new ArgumentNullException(nameof(AddRequest));
             }
 
-            EmployeeResponse employee = await _employeeService.GetEmployeeById(AddRequest.CreatedBy);
-
             //check if employee exists
-            if (employee == null)
+            if (await _employeeService.GetEmployeeById(AddRequest.CreatedBy) == null)
             {
                 throw new Exception($"Employee with id {AddRequest.CreatedBy} not found.");
             }
@@ -93,7 +91,13 @@ namespace RestaurantOrdersManager.Core.Services
                 return false;
             }
 
+            //set finish time UTC.now it means that order is finished
+
             order.TimeFinished = DateTime.UtcNow;
+
+            //
+
+            order.TableId = null;
 
             await _dbContext.SaveChangesAsync();
 

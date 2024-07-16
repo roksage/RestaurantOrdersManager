@@ -48,6 +48,11 @@ namespace RestaurantOrdersManager.Core.ServiceContracts
 
             bool isOrderCompleted = await _orderService.CheckIfOrderIsCompleted(orderedMenuItem.OrderId);
 
+            if (isOrderCompleted)
+            {
+                //remove order from table
+            }
+
 
 
             return orderedMenuItem.ToOrderedMenuItemResponse();
@@ -81,7 +86,7 @@ namespace RestaurantOrdersManager.Core.ServiceContracts
             }
 
             // Map the addRequest to the entity 
-            Entities.MenuItemToOrder orderedMenuItem = addRequest.ToMenuItemToOrderAddRequest();
+            MenuItemToOrder orderedMenuItem = addRequest.ToMenuItemToOrderAddRequest();
 
             // Add and save the entity
             _dbContext.Add(orderedMenuItem);
