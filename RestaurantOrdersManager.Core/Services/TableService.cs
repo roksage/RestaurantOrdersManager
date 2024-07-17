@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RestaurantOrdersManager.Core.Entities;
+using RestaurantOrdersManager.Core.Enums;
 using RestaurantOrdersManager.Core.ServiceContracts;
 using RestaurantOrdersManager.Core.ServiceContracts.DTO.TableDTO;
 using RestaurantOrdersManager.Infrastructure;
@@ -43,14 +44,42 @@ namespace RestaurantOrdersManager.Core.Services
 
         }
 
-        public Task<TableResponse> DeleteTable(int TableId)
+        public async Task<bool> DeleteTable(int TableId)
         {
-            throw new NotImplementedException();
+            Table? findTable = await _dbContext.Tables.FirstOrDefaultAsync(t => t.TableId == TableId);
+
+            if (findTable == null)
+            {
+                throw new NullReferenceException(nameof(findTable));
+            }
+
+            _dbContext.Attach(findTable);
+            _dbContext.Remove(findTable);
+            await _dbContext.SaveChangesAsync();
+
+            return true;
+
         }
 
         public Task<IEnumerable<TableResponse>> GetAllTables()
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<IEnumerable<TableResponse>> GetAllTablesFreeOccupied(TableStatus status)
+        {
+            if (!Enum.IsDefined(typeof(TableStatus), status))
+            {
+                throw new ArgumentException($"Invalid value for {nameof(status)}", nameof(status));
+            }
+
+            // Get all tables by status
+            var tables = await _dbContext.Tables
+                .Where(t => t.Status == status)
+                .Select(t => t.ToTableResponse())
+                .ToListAsync();
+
+            return tables;
         }
 
         public async Task<TableResponse> GetTableById(int TableId)

@@ -13,13 +13,13 @@ namespace RestaurantOrdersManager.Core.ServiceContracts
 
         Task<TableResponse> UpdateTableName(int TableId, string TableName);
 
-        Task<TableResponse> DeleteTable(int TableId);   
+        Task<bool> DeleteTable(int TableId);   
 
         Task<TableResponse> GetTableById(int TableId);
 
 
         //add parameter to check free or occupied
-        Task<IEnumerable<TableResponse>> GetAllTables();
+        Task<IEnumerable<TableResponse>> GetAllTablesFreeOccupied(Enums.TableStatus status);
 
     }
 }

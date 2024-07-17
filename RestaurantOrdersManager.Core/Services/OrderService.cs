@@ -15,11 +15,13 @@ namespace RestaurantOrdersManager.Core.Services
     {
         private readonly ManagerDbContext _dbContext;
         private readonly IEmployeeService _employeeService;
+        private readonly ITableService _tableService;
 
-        public OrderService(ManagerDbContext dbContext, IEmployeeService employeeService)
+        public OrderService(ManagerDbContext dbContext, IEmployeeService employeeService, ITableService tableService)
         {
             _dbContext = dbContext;
             _employeeService = employeeService;
+            _tableService = tableService;
         }
 
         public async Task<OrderResponse> createOrder(OrderCreateRequest AddRequest)
@@ -33,6 +35,12 @@ namespace RestaurantOrdersManager.Core.Services
             if (await _employeeService.GetEmployeeById(AddRequest.CreatedBy) == null)
             {
                 throw new Exception($"Employee with id {AddRequest.CreatedBy} not found.");
+            }
+
+            //check if table is free
+            if((await _tableService.GetTableById(AddRequest.TableId)).Status != Enums.TableStatus.Free)
+            {
+                throw new InvalidOperationException(nameof(AddRequest));
             }
 
             Order order = AddRequest.ToOrder();
@@ -94,7 +102,8 @@ namespace RestaurantOrdersManager.Core.Services
             //set finish time UTC.now it means that order is finished
 
             order.TimeFinished = DateTime.UtcNow;
-
+            
+            order.Table.Status = Enums.TableStatus.Free;
             //
 
             order.TableId = null;
