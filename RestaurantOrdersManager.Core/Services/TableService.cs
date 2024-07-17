@@ -4,11 +4,6 @@ using RestaurantOrdersManager.Core.Enums;
 using RestaurantOrdersManager.Core.ServiceContracts;
 using RestaurantOrdersManager.Core.ServiceContracts.DTO.TableDTO;
 using RestaurantOrdersManager.Infrastructure;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RestaurantOrdersManager.Core.Services
 {
@@ -44,13 +39,17 @@ namespace RestaurantOrdersManager.Core.Services
 
         }
 
-        public async Task<bool> DeleteTable(int TableId)
+        public async Task<bool> DeleteTable(TableDeleteRequest deleteRequest)
         {
-            Table? findTable = await _dbContext.Tables.FirstOrDefaultAsync(t => t.TableId == TableId);
+            if (deleteRequest == null)
+            {
+                throw new ArgumentNullException(nameof(deleteRequest));
+            }
+            Table? findTable = await _dbContext.Tables.FirstOrDefaultAsync(t => t.TableId == deleteRequest.TableId);
 
             if (findTable == null)
             {
-                throw new NullReferenceException(nameof(findTable));
+                throw new ArgumentException(nameof(findTable));
             }
 
             _dbContext.Attach(findTable);
@@ -89,18 +88,34 @@ namespace RestaurantOrdersManager.Core.Services
                 throw new ArgumentNullException(nameof(TableId));
             }
 
-
-
             Table? tableInfo = await _dbContext.Tables.FirstOrDefaultAsync(t => t.TableId == TableId);
+
+            if (tableInfo == null)
+            {
+                throw new ArgumentException(nameof(TableId));
+            }
+
 
             return tableInfo.ToTableResponse();
         }
 
-        public async Task<TableResponse> UpdateTableName(int TableId, string newTableName)
-        {
-            TableResponse tableToUpdate = await GetTableById(TableId);
 
-            tableToUpdate.TableName = newTableName;
+
+        public async Task<TableResponse> UpdateTable(TableUpdateRequest UpdateRequest)
+        {
+            TableResponse tableToUpdate = await GetTableById(UpdateRequest.TableId);
+
+            //possible that TableResponse convert to Table
+
+            if (UpdateRequest.TableName != null)
+            {
+                tableToUpdate.TableName = tableToUpdate.TableName;
+                
+            }
+            if (UpdateRequest.Seats != null)
+            {
+                tableToUpdate.Seats = (int)UpdateRequest.Seats;
+            }
 
             await _dbContext.SaveChangesAsync();
 

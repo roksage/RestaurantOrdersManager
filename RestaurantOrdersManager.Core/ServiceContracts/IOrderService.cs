@@ -15,8 +15,6 @@ namespace RestaurantOrdersManager.Core.ServiceContracts
 
         Task<IEnumerable<MenuItemToOrderResponse>> GetAllMenuItemsInOrder(int? OrderId);
 
-
-
         Task<bool> CheckIfOrderIsCompleted(int MenuItemId);
     }
 }

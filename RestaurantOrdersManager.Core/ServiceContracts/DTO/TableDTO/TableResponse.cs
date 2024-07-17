@@ -12,6 +12,7 @@ namespace RestaurantOrdersManager.Core.ServiceContracts.DTO.TableDTO
         public int TableId { get; set; }
         public string TableName { get; set; }
 
+        public int Seats { get; set; }
         public Enums.TableStatus Status { get; set; }
 
     }
@@ -25,6 +26,7 @@ namespace RestaurantOrdersManager.Core.ServiceContracts.DTO.TableDTO
                 TableId = request.TableId,
                 TableName = request.TableName,
                 Status = request.Status,
+                Seats = request.Seats,
             };
         }
     }

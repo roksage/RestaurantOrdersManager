@@ -44,11 +44,11 @@ namespace RestaurantOrdersManager.Infrastructure
 
 
             modelBuilder.Entity<Table>().HasData(
-                new Table { TableId = 1, TableName = "TakeAway", Seats = 0 },
-                new Table { TableId = 2, TableName = "Table 2", Seats = 3 },
-                new Table { TableId = 3, TableName = "Table 3", Seats = 2 },
-                new Table { TableId = 4, TableName = "Table 4", Seats = 8 },
-                new Table { TableId = 5, TableName = "Table 5", Seats = 2 }
+                new Table { TableId = 1, TableName = "TakeAway", Seats = 0, Status = Core.Enums.TableStatus.Free },
+                new Table { TableId = 2, TableName = "Table 2", Seats = 3, Status = Core.Enums.TableStatus.Free },
+                new Table { TableId = 3, TableName = "Table 3", Seats = 2, Status = Core.Enums.TableStatus.Free },
+                new Table { TableId = 4, TableName = "Table 4", Seats = 8, Status = Core.Enums.TableStatus.Free },
+                new Table { TableId = 5, TableName = "Table 5", Seats = 2, Status = Core.Enums.TableStatus.Free }
             );
 
             modelBuilder.Entity<Employee>().HasData(

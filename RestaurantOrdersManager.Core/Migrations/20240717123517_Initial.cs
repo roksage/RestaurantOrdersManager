@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace RestaurantOrdersManager.Core.Migrations
 {
     /// <inheritdoc />
-    public partial class Inititial : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -46,8 +46,9 @@ namespace RestaurantOrdersManager.Core.Migrations
                 {
                     TableId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TableName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Seats = table.Column<int>(type: "int", nullable: false)
+                    TableName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Seats = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -135,14 +136,14 @@ namespace RestaurantOrdersManager.Core.Migrations
 
             migrationBuilder.InsertData(
                 table: "Tables",
-                columns: new[] { "TableId", "Seats", "TableName" },
+                columns: new[] { "TableId", "Seats", "Status", "TableName" },
                 values: new object[,]
                 {
-                    { 1, 0, "TakeAway" },
-                    { 2, 3, "Table 2" },
-                    { 3, 2, "Table 3" },
-                    { 4, 8, "Table 4" },
-                    { 5, 2, "Table 5" }
+                    { 1, 0, 0, "TakeAway" },
+                    { 2, 3, 0, "Table 2" },
+                    { 3, 2, 0, "Table 3" },
+                    { 4, 8, 0, "Table 4" },
+                    { 5, 2, 0, "Table 5" }
                 });
 
             migrationBuilder.InsertData(
@@ -150,16 +151,16 @@ namespace RestaurantOrdersManager.Core.Migrations
                 columns: new[] { "OrderId", "CreatedBy", "TableId", "TimeCreated", "TimeFinished" },
                 values: new object[,]
                 {
-                    { 1, 1, 1, new DateTime(2024, 7, 16, 15, 7, 47, 621, DateTimeKind.Local).AddTicks(8122), null },
-                    { 2, 2, 1, new DateTime(2024, 7, 15, 15, 7, 47, 621, DateTimeKind.Local).AddTicks(8125), null },
-                    { 3, 3, 1, new DateTime(2024, 7, 14, 15, 7, 47, 621, DateTimeKind.Local).AddTicks(8131), null },
-                    { 4, 1, 2, new DateTime(2024, 7, 13, 15, 7, 47, 621, DateTimeKind.Local).AddTicks(8134), null },
-                    { 5, 2, 2, new DateTime(2024, 7, 12, 15, 7, 47, 621, DateTimeKind.Local).AddTicks(8138), null },
-                    { 6, 3, 3, new DateTime(2024, 7, 11, 15, 7, 47, 621, DateTimeKind.Local).AddTicks(8140), null },
-                    { 7, 1, 3, new DateTime(2024, 7, 10, 15, 7, 47, 621, DateTimeKind.Local).AddTicks(8142), null },
-                    { 8, 2, 4, new DateTime(2024, 7, 9, 15, 7, 47, 621, DateTimeKind.Local).AddTicks(8145), null },
-                    { 9, 3, 4, new DateTime(2024, 7, 8, 15, 7, 47, 621, DateTimeKind.Local).AddTicks(8147), null },
-                    { 10, 1, 5, new DateTime(2024, 7, 7, 15, 7, 47, 621, DateTimeKind.Local).AddTicks(8149), null }
+                    { 1, 1, 1, new DateTime(2024, 7, 17, 15, 35, 17, 582, DateTimeKind.Local).AddTicks(3102), null },
+                    { 2, 2, 1, new DateTime(2024, 7, 16, 15, 35, 17, 582, DateTimeKind.Local).AddTicks(3106), null },
+                    { 3, 3, 1, new DateTime(2024, 7, 15, 15, 35, 17, 582, DateTimeKind.Local).AddTicks(3111), null },
+                    { 4, 1, 2, new DateTime(2024, 7, 14, 15, 35, 17, 582, DateTimeKind.Local).AddTicks(3114), null },
+                    { 5, 2, 2, new DateTime(2024, 7, 13, 15, 35, 17, 582, DateTimeKind.Local).AddTicks(3116), null },
+                    { 6, 3, 3, new DateTime(2024, 7, 12, 15, 35, 17, 582, DateTimeKind.Local).AddTicks(3118), null },
+                    { 7, 1, 3, new DateTime(2024, 7, 11, 15, 35, 17, 582, DateTimeKind.Local).AddTicks(3120), null },
+                    { 8, 2, 4, new DateTime(2024, 7, 10, 15, 35, 17, 582, DateTimeKind.Local).AddTicks(3123), null },
+                    { 9, 3, 4, new DateTime(2024, 7, 9, 15, 35, 17, 582, DateTimeKind.Local).AddTicks(3125), null },
+                    { 10, 1, 5, new DateTime(2024, 7, 8, 15, 35, 17, 582, DateTimeKind.Local).AddTicks(3157), null }
                 });
 
             migrationBuilder.InsertData(
@@ -167,18 +168,18 @@ namespace RestaurantOrdersManager.Core.Migrations
                 columns: new[] { "OrderedMenuItemId", "MenuItemId", "OrderId", "ProcessCompleted", "ProcessStarted" },
                 values: new object[,]
                 {
-                    { 1, 1, 1, null, new DateTime(2024, 7, 16, 15, 7, 47, 621, DateTimeKind.Local).AddTicks(8165) },
-                    { 2, 2, 1, null, new DateTime(2024, 7, 16, 15, 7, 47, 621, DateTimeKind.Local).AddTicks(8168) },
-                    { 3, 3, 2, null, new DateTime(2024, 7, 15, 15, 7, 47, 621, DateTimeKind.Local).AddTicks(8170) },
-                    { 4, 4, 3, null, new DateTime(2024, 7, 14, 15, 7, 47, 621, DateTimeKind.Local).AddTicks(8172) },
-                    { 5, 5, 4, null, new DateTime(2024, 7, 13, 15, 7, 47, 621, DateTimeKind.Local).AddTicks(8174) },
-                    { 6, 6, 5, null, new DateTime(2024, 7, 12, 15, 7, 47, 621, DateTimeKind.Local).AddTicks(8176) },
-                    { 7, 7, 6, null, new DateTime(2024, 7, 11, 15, 7, 47, 621, DateTimeKind.Local).AddTicks(8178) },
-                    { 8, 8, 7, null, new DateTime(2024, 7, 10, 15, 7, 47, 621, DateTimeKind.Local).AddTicks(8180) },
-                    { 9, 9, 8, null, new DateTime(2024, 7, 9, 15, 7, 47, 621, DateTimeKind.Local).AddTicks(8183) },
-                    { 10, 10, 9, null, new DateTime(2024, 7, 8, 15, 7, 47, 621, DateTimeKind.Local).AddTicks(8186) },
-                    { 11, 1, 10, null, new DateTime(2024, 7, 7, 15, 7, 47, 621, DateTimeKind.Local).AddTicks(8194) },
-                    { 12, 2, 10, null, new DateTime(2024, 7, 7, 15, 7, 47, 621, DateTimeKind.Local).AddTicks(8197) }
+                    { 1, 1, 1, null, new DateTime(2024, 7, 17, 15, 35, 17, 582, DateTimeKind.Local).AddTicks(3175) },
+                    { 2, 2, 1, null, new DateTime(2024, 7, 17, 15, 35, 17, 582, DateTimeKind.Local).AddTicks(3177) },
+                    { 3, 3, 2, null, new DateTime(2024, 7, 16, 15, 35, 17, 582, DateTimeKind.Local).AddTicks(3179) },
+                    { 4, 4, 3, null, new DateTime(2024, 7, 15, 15, 35, 17, 582, DateTimeKind.Local).AddTicks(3181) },
+                    { 5, 5, 4, null, new DateTime(2024, 7, 14, 15, 35, 17, 582, DateTimeKind.Local).AddTicks(3183) },
+                    { 6, 6, 5, null, new DateTime(2024, 7, 13, 15, 35, 17, 582, DateTimeKind.Local).AddTicks(3185) },
+                    { 7, 7, 6, null, new DateTime(2024, 7, 12, 15, 35, 17, 582, DateTimeKind.Local).AddTicks(3187) },
+                    { 8, 8, 7, null, new DateTime(2024, 7, 11, 15, 35, 17, 582, DateTimeKind.Local).AddTicks(3189) },
+                    { 9, 9, 8, null, new DateTime(2024, 7, 10, 15, 35, 17, 582, DateTimeKind.Local).AddTicks(3191) },
+                    { 10, 10, 9, null, new DateTime(2024, 7, 9, 15, 35, 17, 582, DateTimeKind.Local).AddTicks(3194) },
+                    { 11, 1, 10, null, new DateTime(2024, 7, 8, 15, 35, 17, 582, DateTimeKind.Local).AddTicks(3196) },
+                    { 12, 2, 10, null, new DateTime(2024, 7, 8, 15, 35, 17, 582, DateTimeKind.Local).AddTicks(3198) }
                 });
 
             migrationBuilder.CreateIndex(

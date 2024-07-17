@@ -12,15 +12,18 @@ namespace RestaurantOrdersManager.Core.Entities
     {
         [Key]   
         public int TableId { get; set; }
-        [Required]
         [StringLength(50)]
         public string TableName { get; set; }
-        [Required]
         [Range(0, int.MaxValue)]
         public int Seats { get; set; }
 
         public TableStatus Status { get; set; }
         public ICollection<Order> Orders { get; set; } = new List<Order>();
 
+
+        public Table()
+        {
+            Status = TableStatus.Free;
+        }
     }
 }

@@ -11,9 +11,9 @@ namespace RestaurantOrdersManager.Core.ServiceContracts
     {
         Task<TableResponse> CreateTable(TableCreateRequest createTableRequest);
 
-        Task<TableResponse> UpdateTableName(int TableId, string TableName);
+        Task<TableResponse> UpdateTable(TableUpdateRequest UpdateRequest);
 
-        Task<bool> DeleteTable(int TableId);   
+        Task<bool> DeleteTable(TableDeleteRequest deleteRequest);   
 
         Task<TableResponse> GetTableById(int TableId);
 
