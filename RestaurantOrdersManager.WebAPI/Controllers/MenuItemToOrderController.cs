@@ -61,7 +61,7 @@ namespace Web.Controllers
             }
         }
 
-        [HttpPost("completeMenuItemInOrder")]
+        [HttpPut("completeMenuItemInOrder")]
         public async Task<IActionResult> completeMenuItemInOrder(MenuItemToOrderCompleteMenuItemById OrderedMenuItemId)
         {
             try

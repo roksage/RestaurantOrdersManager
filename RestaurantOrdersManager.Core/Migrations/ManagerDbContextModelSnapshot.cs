@@ -175,84 +175,84 @@ namespace RestaurantOrdersManager.Core.Migrations
                             OrderedMenuItemId = 1,
                             MenuItemId = 1,
                             OrderId = 1,
-                            ProcessStarted = new DateTime(2024, 7, 17, 15, 35, 17, 582, DateTimeKind.Local).AddTicks(3175)
+                            ProcessStarted = new DateTime(2024, 7, 18, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5408)
                         },
                         new
                         {
                             OrderedMenuItemId = 2,
                             MenuItemId = 2,
                             OrderId = 1,
-                            ProcessStarted = new DateTime(2024, 7, 17, 15, 35, 17, 582, DateTimeKind.Local).AddTicks(3177)
+                            ProcessStarted = new DateTime(2024, 7, 18, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5410)
                         },
                         new
                         {
                             OrderedMenuItemId = 3,
                             MenuItemId = 3,
                             OrderId = 2,
-                            ProcessStarted = new DateTime(2024, 7, 16, 15, 35, 17, 582, DateTimeKind.Local).AddTicks(3179)
+                            ProcessStarted = new DateTime(2024, 7, 17, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5412)
                         },
                         new
                         {
                             OrderedMenuItemId = 4,
                             MenuItemId = 4,
                             OrderId = 3,
-                            ProcessStarted = new DateTime(2024, 7, 15, 15, 35, 17, 582, DateTimeKind.Local).AddTicks(3181)
+                            ProcessStarted = new DateTime(2024, 7, 16, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5414)
                         },
                         new
                         {
                             OrderedMenuItemId = 5,
                             MenuItemId = 5,
                             OrderId = 4,
-                            ProcessStarted = new DateTime(2024, 7, 14, 15, 35, 17, 582, DateTimeKind.Local).AddTicks(3183)
+                            ProcessStarted = new DateTime(2024, 7, 15, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5416)
                         },
                         new
                         {
                             OrderedMenuItemId = 6,
                             MenuItemId = 6,
                             OrderId = 5,
-                            ProcessStarted = new DateTime(2024, 7, 13, 15, 35, 17, 582, DateTimeKind.Local).AddTicks(3185)
+                            ProcessStarted = new DateTime(2024, 7, 14, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5418)
                         },
                         new
                         {
                             OrderedMenuItemId = 7,
                             MenuItemId = 7,
                             OrderId = 6,
-                            ProcessStarted = new DateTime(2024, 7, 12, 15, 35, 17, 582, DateTimeKind.Local).AddTicks(3187)
+                            ProcessStarted = new DateTime(2024, 7, 13, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5420)
                         },
                         new
                         {
                             OrderedMenuItemId = 8,
                             MenuItemId = 8,
                             OrderId = 7,
-                            ProcessStarted = new DateTime(2024, 7, 11, 15, 35, 17, 582, DateTimeKind.Local).AddTicks(3189)
+                            ProcessStarted = new DateTime(2024, 7, 12, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5422)
                         },
                         new
                         {
                             OrderedMenuItemId = 9,
                             MenuItemId = 9,
                             OrderId = 8,
-                            ProcessStarted = new DateTime(2024, 7, 10, 15, 35, 17, 582, DateTimeKind.Local).AddTicks(3191)
+                            ProcessStarted = new DateTime(2024, 7, 11, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5424)
                         },
                         new
                         {
                             OrderedMenuItemId = 10,
                             MenuItemId = 10,
                             OrderId = 9,
-                            ProcessStarted = new DateTime(2024, 7, 9, 15, 35, 17, 582, DateTimeKind.Local).AddTicks(3194)
+                            ProcessStarted = new DateTime(2024, 7, 10, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5426)
                         },
                         new
                         {
                             OrderedMenuItemId = 11,
                             MenuItemId = 1,
                             OrderId = 10,
-                            ProcessStarted = new DateTime(2024, 7, 8, 15, 35, 17, 582, DateTimeKind.Local).AddTicks(3196)
+                            ProcessStarted = new DateTime(2024, 7, 9, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5428)
                         },
                         new
                         {
                             OrderedMenuItemId = 12,
                             MenuItemId = 2,
                             OrderId = 10,
-                            ProcessStarted = new DateTime(2024, 7, 8, 15, 35, 17, 582, DateTimeKind.Local).AddTicks(3198)
+                            ProcessStarted = new DateTime(2024, 7, 9, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5430)
                         });
                 });
 
@@ -288,70 +288,70 @@ namespace RestaurantOrdersManager.Core.Migrations
                             OrderId = 1,
                             CreatedBy = 1,
                             TableId = 1,
-                            TimeCreated = new DateTime(2024, 7, 17, 15, 35, 17, 582, DateTimeKind.Local).AddTicks(3102)
+                            TimeCreated = new DateTime(2024, 7, 18, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5338)
                         },
                         new
                         {
                             OrderId = 2,
                             CreatedBy = 2,
                             TableId = 1,
-                            TimeCreated = new DateTime(2024, 7, 16, 15, 35, 17, 582, DateTimeKind.Local).AddTicks(3106)
+                            TimeCreated = new DateTime(2024, 7, 17, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5341)
                         },
                         new
                         {
                             OrderId = 3,
                             CreatedBy = 3,
                             TableId = 1,
-                            TimeCreated = new DateTime(2024, 7, 15, 15, 35, 17, 582, DateTimeKind.Local).AddTicks(3111)
+                            TimeCreated = new DateTime(2024, 7, 16, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5345)
                         },
                         new
                         {
                             OrderId = 4,
                             CreatedBy = 1,
                             TableId = 2,
-                            TimeCreated = new DateTime(2024, 7, 14, 15, 35, 17, 582, DateTimeKind.Local).AddTicks(3114)
+                            TimeCreated = new DateTime(2024, 7, 15, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5347)
                         },
                         new
                         {
                             OrderId = 5,
                             CreatedBy = 2,
                             TableId = 2,
-                            TimeCreated = new DateTime(2024, 7, 13, 15, 35, 17, 582, DateTimeKind.Local).AddTicks(3116)
+                            TimeCreated = new DateTime(2024, 7, 14, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5349)
                         },
                         new
                         {
                             OrderId = 6,
                             CreatedBy = 3,
                             TableId = 3,
-                            TimeCreated = new DateTime(2024, 7, 12, 15, 35, 17, 582, DateTimeKind.Local).AddTicks(3118)
+                            TimeCreated = new DateTime(2024, 7, 13, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5352)
                         },
                         new
                         {
                             OrderId = 7,
                             CreatedBy = 1,
                             TableId = 3,
-                            TimeCreated = new DateTime(2024, 7, 11, 15, 35, 17, 582, DateTimeKind.Local).AddTicks(3120)
+                            TimeCreated = new DateTime(2024, 7, 12, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5354)
                         },
                         new
                         {
                             OrderId = 8,
                             CreatedBy = 2,
                             TableId = 4,
-                            TimeCreated = new DateTime(2024, 7, 10, 15, 35, 17, 582, DateTimeKind.Local).AddTicks(3123)
+                            TimeCreated = new DateTime(2024, 7, 11, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5356)
                         },
                         new
                         {
                             OrderId = 9,
                             CreatedBy = 3,
                             TableId = 4,
-                            TimeCreated = new DateTime(2024, 7, 9, 15, 35, 17, 582, DateTimeKind.Local).AddTicks(3125)
+                            TimeCreated = new DateTime(2024, 7, 10, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5358)
                         },
                         new
                         {
                             OrderId = 10,
                             CreatedBy = 1,
                             TableId = 5,
-                            TimeCreated = new DateTime(2024, 7, 8, 15, 35, 17, 582, DateTimeKind.Local).AddTicks(3157)
+                            TimeCreated = new DateTime(2024, 7, 9, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5360)
                         });
                 });
 

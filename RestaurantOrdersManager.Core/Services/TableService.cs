@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using RestaurantOrdersManager.Core.Entities;
 using RestaurantOrdersManager.Core.Enums;
 using RestaurantOrdersManager.Core.ServiceContracts;
 using RestaurantOrdersManager.Core.ServiceContracts.DTO.TableDTO;
 using RestaurantOrdersManager.Infrastructure;
+using Table = RestaurantOrdersManager.Core.Entities.Table;
 
 namespace RestaurantOrdersManager.Core.Services
 {
@@ -29,13 +31,15 @@ namespace RestaurantOrdersManager.Core.Services
                 throw new ArgumentException(nameof(createTableRequest));
             }
 
-            await _dbContext.AddAsync(createTableRequest);
+            Table newTable = createTableRequest.ToTable();
+
+            await _dbContext.AddAsync(newTable);
 
             await _dbContext.SaveChangesAsync();
 
-            Table table = createTableRequest.ToTable();
+            
 
-            return table.ToTableResponse();
+            return newTable.ToTableResponse();
 
         }
 
@@ -103,23 +107,36 @@ namespace RestaurantOrdersManager.Core.Services
 
         public async Task<TableResponse> UpdateTable(TableUpdateRequest UpdateRequest)
         {
-            TableResponse tableToUpdate = await GetTableById(UpdateRequest.TableId);
+            Table table = await _dbContext.Tables.FirstOrDefaultAsync(t => t.TableId == UpdateRequest.TableId);
+
+            if (table == null)
+            {
+                throw new ArgumentException($"Table id - {UpdateRequest.TableName} not found");
+            }
+
+            bool tableNameExists = await _dbContext.Tables.AnyAsync(t => t.TableName == UpdateRequest.TableName);
+
+            if (tableNameExists)
+            {
+                throw new ArgumentException($"Table name '{UpdateRequest.TableName}' already exists");
+            }
+
 
             //possible that TableResponse convert to Table
 
             if (UpdateRequest.TableName != null)
             {
-                tableToUpdate.TableName = tableToUpdate.TableName;
-                
+                table.TableName = UpdateRequest.TableName;
             }
             if (UpdateRequest.Seats != null)
             {
-                tableToUpdate.Seats = (int)UpdateRequest.Seats;
+                table.Seats = (int)UpdateRequest.Seats;
             }
+
 
             await _dbContext.SaveChangesAsync();
 
-            return tableToUpdate;
+            return table.ToTableResponse();
         }
     }
 }
