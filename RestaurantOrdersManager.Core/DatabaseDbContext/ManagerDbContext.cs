@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using RestaurantOrdersManager.Core.Entities;
+using RestaurantOrdersManager.Core.Enums;
 
 namespace RestaurantOrdersManager.Infrastructure
 {
@@ -15,6 +16,9 @@ namespace RestaurantOrdersManager.Infrastructure
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<MenuItemToOrder> OrderMenuItems { get; set; }
         public virtual DbSet<Table> Tables { get; set; }
+
+        public virtual DbSet<Ingredient> Ingredients { get; set; }
+        public virtual DbSet<IngredientInMenuItem> IngredientsInMenuItem { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -41,14 +45,17 @@ namespace RestaurantOrdersManager.Infrastructure
             modelBuilder.Entity<Order>().ToTable("Orders");
             modelBuilder.Entity<MenuItemToOrder>().ToTable("OrderMenuItems");
             modelBuilder.Entity<Table>().ToTable("Tables");
+            modelBuilder.Entity<Ingredient>().ToTable("Ingredients");
+            modelBuilder.Entity<IngredientInMenuItem>().ToTable("IngredientsInMenuItem");
+
 
 
             modelBuilder.Entity<Table>().HasData(
-                new Table { TableId = 1, TableName = "TakeAway", Seats = 0, Status = Core.Enums.TableStatus.Free },
-                new Table { TableId = 2, TableName = "Table 2", Seats = 3, Status = Core.Enums.TableStatus.Free },
-                new Table { TableId = 3, TableName = "Table 3", Seats = 2, Status = Core.Enums.TableStatus.Free },
-                new Table { TableId = 4, TableName = "Table 4", Seats = 8, Status = Core.Enums.TableStatus.Free },
-                new Table { TableId = 5, TableName = "Table 5", Seats = 2, Status = Core.Enums.TableStatus.Free }
+                new Table { TableId = 1, TableName = "TakeAway", Seats = 0, Status = Core.Enums.TableStatusEnums.Free },
+                new Table { TableId = 2, TableName = "Table 2", Seats = 3, Status = Core.Enums.TableStatusEnums.Free },
+                new Table { TableId = 3, TableName = "Table 3", Seats = 2, Status = Core.Enums.TableStatusEnums.Free },
+                new Table { TableId = 4, TableName = "Table 4", Seats = 8, Status = Core.Enums.TableStatusEnums.Free },
+                new Table { TableId = 5, TableName = "Table 5", Seats = 2, Status = Core.Enums.TableStatusEnums.Free }
             );
 
             modelBuilder.Entity<Employee>().HasData(
@@ -98,6 +105,22 @@ namespace RestaurantOrdersManager.Infrastructure
                 new MenuItemToOrder { OrderedMenuItemId = 11, OrderId = 10, MenuItemId = 1, ProcessStarted = DateTime.Now.AddDays(-9) },
                 new MenuItemToOrder { OrderedMenuItemId = 12, OrderId = 10, MenuItemId = 2, ProcessStarted = DateTime.Now.AddDays(-9) }
             );
+            modelBuilder.Entity<Ingredient>().HasData(
+                new Ingredient { IngredientId = 1, IngredientName = "Lettuce", IngredientUnit = IngredientEnums.Gram, IngredientAmount = 500 },
+                new Ingredient { IngredientId = 2, IngredientName = "Tomato", IngredientUnit = IngredientEnums.Gram, IngredientAmount = 200 },
+                new Ingredient { IngredientId = 3, IngredientName = "Cheese", IngredientUnit = IngredientEnums.Gram, IngredientAmount = 300 },
+                new Ingredient { IngredientId = 4, IngredientName = "Chicken", IngredientUnit = IngredientEnums.Gram, IngredientAmount = 1000 },
+                new Ingredient { IngredientId = 5, IngredientName = "Beef", IngredientUnit = IngredientEnums.Gram, IngredientAmount = 700 }
+            );
+
+
+            modelBuilder.Entity<IngredientInMenuItem>().HasData(
+                new IngredientInMenuItem { IngredientInMenuItemId = 1, IngredientId = 1, MenuItemId = 3 },
+                new IngredientInMenuItem { IngredientInMenuItemId = 2, IngredientId = 2, MenuItemId = 3 },
+                new IngredientInMenuItem { IngredientInMenuItemId = 3, IngredientId = 3, MenuItemId = 1 },
+                new IngredientInMenuItem { IngredientInMenuItemId = 4, IngredientId = 4, MenuItemId = 1 },
+                new IngredientInMenuItem { IngredientInMenuItemId = 5, IngredientId = 5, MenuItemId = 5 }
+            );
 
 
 
@@ -118,8 +141,20 @@ namespace RestaurantOrdersManager.Infrastructure
                 .ValueGeneratedOnAdd();
 
             modelBuilder.Entity<Table>()
-                .Property (f => f.TableId)
+                .Property(f => f.TableId)
                 .ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<Ingredient>()
+                .Property(f => f.IngredientId)
+                .ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<IngredientInMenuItem>()
+                .Property(f => f.IngredientId)
+                .ValueGeneratedOnAdd();
+
+
+
+
 
             modelBuilder.Entity<Order>()
                 .HasOne(o => o.Table)
@@ -131,13 +166,22 @@ namespace RestaurantOrdersManager.Infrastructure
                 .HasOne(om => om.Order)
                 .WithMany(o => o.OrderMenuItems)
                 .HasForeignKey(om => om.OrderId)
-                .OnDelete(DeleteBehavior.Cascade); 
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<MenuItemToOrder>()
                 .HasOne(om => om.MenuItem)
                 .WithMany(m => m.OrderMenuItems)
                 .HasForeignKey(om => om.MenuItemId)
-                .OnDelete(DeleteBehavior.Restrict); 
+                .OnDelete(DeleteBehavior.Restrict);
+
+
+            modelBuilder.Entity<IngredientInMenuItem>()
+                .HasOne(im => im.Ingredient)
+                .WithMany(m => m.IngredientsInMenuItems)
+                .HasForeignKey(im => im.IngredientId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+
         }
     }
 }

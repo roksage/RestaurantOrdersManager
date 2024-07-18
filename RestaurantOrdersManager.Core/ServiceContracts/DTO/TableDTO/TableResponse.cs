@@ -12,7 +12,7 @@ namespace RestaurantOrdersManager.Core.ServiceContracts.DTO.TableDTO
         public int TableId { get; set; }
         public string TableName { get; set; }
         public int Seats { get; set; }
-        public Enums.TableStatus Status { get; set; }
+        public Enums.TableStatusEnums Status { get; set; }
 
     }
 

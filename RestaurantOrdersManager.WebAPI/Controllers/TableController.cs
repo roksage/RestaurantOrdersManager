@@ -67,7 +67,7 @@ namespace RestaurantOrdersManager.WebAPI.Controllers
 
 
         [HttpGet("GetAllTablesFreeOccupied")]
-        public async Task<IActionResult> GetAllTablesFreeOccupied(TableStatus status)
+        public async Task<IActionResult> GetAllTablesFreeOccupied(TableStatusEnums status)
         {
             try
             {

@@ -28,6 +28,21 @@ namespace RestaurantOrdersManager.Core.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Ingredients",
+                columns: table => new
+                {
+                    IngredientId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IngredientName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IngredientUnit = table.Column<int>(type: "int", nullable: false),
+                    IngredientAmount = table.Column<double>(type: "float", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Ingredients", x => x.IngredientId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "MenuItems",
                 columns: table => new
                 {
@@ -53,6 +68,32 @@ namespace RestaurantOrdersManager.Core.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Tables", x => x.TableId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "IngredientsInMenuItem",
+                columns: table => new
+                {
+                    IngredientInMenuItemId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IngredientId = table.Column<int>(type: "int", nullable: false),
+                    MenuItemId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_IngredientsInMenuItem", x => x.IngredientInMenuItemId);
+                    table.ForeignKey(
+                        name: "FK_IngredientsInMenuItem_Ingredients_IngredientId",
+                        column: x => x.IngredientId,
+                        principalTable: "Ingredients",
+                        principalColumn: "IngredientId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_IngredientsInMenuItem_MenuItems_MenuItemId",
+                        column: x => x.MenuItemId,
+                        principalTable: "MenuItems",
+                        principalColumn: "MenuItemId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -118,6 +159,18 @@ namespace RestaurantOrdersManager.Core.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Ingredients",
+                columns: new[] { "IngredientId", "IngredientAmount", "IngredientName", "IngredientUnit" },
+                values: new object[,]
+                {
+                    { 1, 500.0, "Lettuce", 1 },
+                    { 2, 200.0, "Tomato", 1 },
+                    { 3, 300.0, "Cheese", 1 },
+                    { 4, 1000.0, "Chicken", 1 },
+                    { 5, 700.0, "Beef", 1 }
+                });
+
+            migrationBuilder.InsertData(
                 table: "MenuItems",
                 columns: new[] { "MenuItemId", "ItemName" },
                 values: new object[,]
@@ -147,20 +200,32 @@ namespace RestaurantOrdersManager.Core.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "IngredientsInMenuItem",
+                columns: new[] { "IngredientInMenuItemId", "IngredientId", "MenuItemId" },
+                values: new object[,]
+                {
+                    { 1, 1, 3 },
+                    { 2, 2, 3 },
+                    { 3, 3, 1 },
+                    { 4, 4, 1 },
+                    { 5, 5, 5 }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Orders",
                 columns: new[] { "OrderId", "CreatedBy", "TableId", "TimeCreated", "TimeFinished" },
                 values: new object[,]
                 {
-                    { 1, 1, 1, new DateTime(2024, 7, 18, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5338), null },
-                    { 2, 2, 1, new DateTime(2024, 7, 17, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5341), null },
-                    { 3, 3, 1, new DateTime(2024, 7, 16, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5345), null },
-                    { 4, 1, 2, new DateTime(2024, 7, 15, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5347), null },
-                    { 5, 2, 2, new DateTime(2024, 7, 14, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5349), null },
-                    { 6, 3, 3, new DateTime(2024, 7, 13, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5352), null },
-                    { 7, 1, 3, new DateTime(2024, 7, 12, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5354), null },
-                    { 8, 2, 4, new DateTime(2024, 7, 11, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5356), null },
-                    { 9, 3, 4, new DateTime(2024, 7, 10, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5358), null },
-                    { 10, 1, 5, new DateTime(2024, 7, 9, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5360), null }
+                    { 1, 1, 1, new DateTime(2024, 7, 18, 14, 37, 45, 900, DateTimeKind.Local).AddTicks(9891), null },
+                    { 2, 2, 1, new DateTime(2024, 7, 17, 14, 37, 45, 900, DateTimeKind.Local).AddTicks(9894), null },
+                    { 3, 3, 1, new DateTime(2024, 7, 16, 14, 37, 45, 900, DateTimeKind.Local).AddTicks(9899), null },
+                    { 4, 1, 2, new DateTime(2024, 7, 15, 14, 37, 45, 900, DateTimeKind.Local).AddTicks(9901), null },
+                    { 5, 2, 2, new DateTime(2024, 7, 14, 14, 37, 45, 900, DateTimeKind.Local).AddTicks(9903), null },
+                    { 6, 3, 3, new DateTime(2024, 7, 13, 14, 37, 45, 900, DateTimeKind.Local).AddTicks(9906), null },
+                    { 7, 1, 3, new DateTime(2024, 7, 12, 14, 37, 45, 900, DateTimeKind.Local).AddTicks(9908), null },
+                    { 8, 2, 4, new DateTime(2024, 7, 11, 14, 37, 45, 900, DateTimeKind.Local).AddTicks(9910), null },
+                    { 9, 3, 4, new DateTime(2024, 7, 10, 14, 37, 45, 900, DateTimeKind.Local).AddTicks(9912), null },
+                    { 10, 1, 5, new DateTime(2024, 7, 9, 14, 37, 45, 900, DateTimeKind.Local).AddTicks(9914), null }
                 });
 
             migrationBuilder.InsertData(
@@ -168,19 +233,29 @@ namespace RestaurantOrdersManager.Core.Migrations
                 columns: new[] { "OrderedMenuItemId", "MenuItemId", "OrderId", "ProcessCompleted", "ProcessStarted" },
                 values: new object[,]
                 {
-                    { 1, 1, 1, null, new DateTime(2024, 7, 18, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5408) },
-                    { 2, 2, 1, null, new DateTime(2024, 7, 18, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5410) },
-                    { 3, 3, 2, null, new DateTime(2024, 7, 17, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5412) },
-                    { 4, 4, 3, null, new DateTime(2024, 7, 16, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5414) },
-                    { 5, 5, 4, null, new DateTime(2024, 7, 15, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5416) },
-                    { 6, 6, 5, null, new DateTime(2024, 7, 14, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5418) },
-                    { 7, 7, 6, null, new DateTime(2024, 7, 13, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5420) },
-                    { 8, 8, 7, null, new DateTime(2024, 7, 12, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5422) },
-                    { 9, 9, 8, null, new DateTime(2024, 7, 11, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5424) },
-                    { 10, 10, 9, null, new DateTime(2024, 7, 10, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5426) },
-                    { 11, 1, 10, null, new DateTime(2024, 7, 9, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5428) },
-                    { 12, 2, 10, null, new DateTime(2024, 7, 9, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5430) }
+                    { 1, 1, 1, null, new DateTime(2024, 7, 18, 14, 37, 45, 900, DateTimeKind.Local).AddTicks(9956) },
+                    { 2, 2, 1, null, new DateTime(2024, 7, 18, 14, 37, 45, 900, DateTimeKind.Local).AddTicks(9959) },
+                    { 3, 3, 2, null, new DateTime(2024, 7, 17, 14, 37, 45, 900, DateTimeKind.Local).AddTicks(9961) },
+                    { 4, 4, 3, null, new DateTime(2024, 7, 16, 14, 37, 45, 900, DateTimeKind.Local).AddTicks(9963) },
+                    { 5, 5, 4, null, new DateTime(2024, 7, 15, 14, 37, 45, 900, DateTimeKind.Local).AddTicks(9965) },
+                    { 6, 6, 5, null, new DateTime(2024, 7, 14, 14, 37, 45, 900, DateTimeKind.Local).AddTicks(9967) },
+                    { 7, 7, 6, null, new DateTime(2024, 7, 13, 14, 37, 45, 900, DateTimeKind.Local).AddTicks(9970) },
+                    { 8, 8, 7, null, new DateTime(2024, 7, 12, 14, 37, 45, 900, DateTimeKind.Local).AddTicks(9972) },
+                    { 9, 9, 8, null, new DateTime(2024, 7, 11, 14, 37, 45, 900, DateTimeKind.Local).AddTicks(9974) },
+                    { 10, 10, 9, null, new DateTime(2024, 7, 10, 14, 37, 45, 900, DateTimeKind.Local).AddTicks(9976) },
+                    { 11, 1, 10, null, new DateTime(2024, 7, 9, 14, 37, 45, 900, DateTimeKind.Local).AddTicks(9978) },
+                    { 12, 2, 10, null, new DateTime(2024, 7, 9, 14, 37, 45, 900, DateTimeKind.Local).AddTicks(9980) }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_IngredientsInMenuItem_IngredientId",
+                table: "IngredientsInMenuItem",
+                column: "IngredientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_IngredientsInMenuItem_MenuItemId",
+                table: "IngredientsInMenuItem",
+                column: "MenuItemId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderMenuItems_MenuItemId",
@@ -205,7 +280,13 @@ namespace RestaurantOrdersManager.Core.Migrations
                 name: "Employees");
 
             migrationBuilder.DropTable(
+                name: "IngredientsInMenuItem");
+
+            migrationBuilder.DropTable(
                 name: "OrderMenuItems");
+
+            migrationBuilder.DropTable(
+                name: "Ingredients");
 
             migrationBuilder.DropTable(
                 name: "MenuItems");

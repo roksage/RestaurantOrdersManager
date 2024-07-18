@@ -19,7 +19,7 @@ namespace RestaurantOrdersManager.Core.ServiceContracts
 
 
         //add parameter to check free or occupied
-        Task<IEnumerable<TableResponse>> GetAllTablesFreeOccupied(Enums.TableStatus status);
+        Task<IEnumerable<TableResponse>> GetAllTablesFreeOccupied(Enums.TableStatusEnums status);
 
     }
 }

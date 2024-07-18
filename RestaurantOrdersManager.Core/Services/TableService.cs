@@ -69,9 +69,9 @@ namespace RestaurantOrdersManager.Core.Services
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<TableResponse>> GetAllTablesFreeOccupied(TableStatus status)
+        public async Task<IEnumerable<TableResponse>> GetAllTablesFreeOccupied(TableStatusEnums status)
         {
-            if (!Enum.IsDefined(typeof(TableStatus), status))
+            if (!Enum.IsDefined(typeof(TableStatusEnums), status))
             {
                 throw new ArgumentException($"Invalid value for {nameof(status)}", nameof(status));
             }

@@ -17,13 +17,13 @@ namespace RestaurantOrdersManager.Core.Entities
         [Range(0, int.MaxValue)]
         public int Seats { get; set; }
 
-        public TableStatus Status { get; set; }
+        public TableStatusEnums Status { get; set; }
         public ICollection<Order> Orders { get; set; } = new List<Order>();
 
 
         public Table()
         {
-            Status = TableStatus.Free;
+            Status = TableStatusEnums.Free;
         }
     }
 }

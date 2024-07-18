@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RestaurantOrdersManager.Core.Enums
 {
-    public enum TableStatus
+    public enum TableStatusEnums
     {
         Free,
         Occupied,

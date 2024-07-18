@@ -73,6 +73,122 @@ namespace RestaurantOrdersManager.Core.Migrations
                         });
                 });
 
+            modelBuilder.Entity("RestaurantOrdersManager.Core.Entities.Ingredient", b =>
+                {
+                    b.Property<int>("IngredientId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IngredientId"));
+
+                    b.Property<double>("IngredientAmount")
+                        .HasColumnType("float");
+
+                    b.Property<string>("IngredientName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("IngredientUnit")
+                        .HasColumnType("int");
+
+                    b.HasKey("IngredientId");
+
+                    b.ToTable("Ingredients", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            IngredientId = 1,
+                            IngredientAmount = 500.0,
+                            IngredientName = "Lettuce",
+                            IngredientUnit = 1
+                        },
+                        new
+                        {
+                            IngredientId = 2,
+                            IngredientAmount = 200.0,
+                            IngredientName = "Tomato",
+                            IngredientUnit = 1
+                        },
+                        new
+                        {
+                            IngredientId = 3,
+                            IngredientAmount = 300.0,
+                            IngredientName = "Cheese",
+                            IngredientUnit = 1
+                        },
+                        new
+                        {
+                            IngredientId = 4,
+                            IngredientAmount = 1000.0,
+                            IngredientName = "Chicken",
+                            IngredientUnit = 1
+                        },
+                        new
+                        {
+                            IngredientId = 5,
+                            IngredientAmount = 700.0,
+                            IngredientName = "Beef",
+                            IngredientUnit = 1
+                        });
+                });
+
+            modelBuilder.Entity("RestaurantOrdersManager.Core.Entities.IngredientInMenuItem", b =>
+                {
+                    b.Property<int>("IngredientInMenuItemId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IngredientInMenuItemId"));
+
+                    b.Property<int>("IngredientId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("MenuItemId")
+                        .HasColumnType("int");
+
+                    b.HasKey("IngredientInMenuItemId");
+
+                    b.HasIndex("IngredientId");
+
+                    b.HasIndex("MenuItemId");
+
+                    b.ToTable("IngredientsInMenuItem", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            IngredientInMenuItemId = 1,
+                            IngredientId = 1,
+                            MenuItemId = 3
+                        },
+                        new
+                        {
+                            IngredientInMenuItemId = 2,
+                            IngredientId = 2,
+                            MenuItemId = 3
+                        },
+                        new
+                        {
+                            IngredientInMenuItemId = 3,
+                            IngredientId = 3,
+                            MenuItemId = 1
+                        },
+                        new
+                        {
+                            IngredientInMenuItemId = 4,
+                            IngredientId = 4,
+                            MenuItemId = 1
+                        },
+                        new
+                        {
+                            IngredientInMenuItemId = 5,
+                            IngredientId = 5,
+                            MenuItemId = 5
+                        });
+                });
+
             modelBuilder.Entity("RestaurantOrdersManager.Core.Entities.MenuItem", b =>
                 {
                     b.Property<int>("MenuItemId")
@@ -175,84 +291,84 @@ namespace RestaurantOrdersManager.Core.Migrations
                             OrderedMenuItemId = 1,
                             MenuItemId = 1,
                             OrderId = 1,
-                            ProcessStarted = new DateTime(2024, 7, 18, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5408)
+                            ProcessStarted = new DateTime(2024, 7, 18, 14, 37, 45, 900, DateTimeKind.Local).AddTicks(9956)
                         },
                         new
                         {
                             OrderedMenuItemId = 2,
                             MenuItemId = 2,
                             OrderId = 1,
-                            ProcessStarted = new DateTime(2024, 7, 18, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5410)
+                            ProcessStarted = new DateTime(2024, 7, 18, 14, 37, 45, 900, DateTimeKind.Local).AddTicks(9959)
                         },
                         new
                         {
                             OrderedMenuItemId = 3,
                             MenuItemId = 3,
                             OrderId = 2,
-                            ProcessStarted = new DateTime(2024, 7, 17, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5412)
+                            ProcessStarted = new DateTime(2024, 7, 17, 14, 37, 45, 900, DateTimeKind.Local).AddTicks(9961)
                         },
                         new
                         {
                             OrderedMenuItemId = 4,
                             MenuItemId = 4,
                             OrderId = 3,
-                            ProcessStarted = new DateTime(2024, 7, 16, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5414)
+                            ProcessStarted = new DateTime(2024, 7, 16, 14, 37, 45, 900, DateTimeKind.Local).AddTicks(9963)
                         },
                         new
                         {
                             OrderedMenuItemId = 5,
                             MenuItemId = 5,
                             OrderId = 4,
-                            ProcessStarted = new DateTime(2024, 7, 15, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5416)
+                            ProcessStarted = new DateTime(2024, 7, 15, 14, 37, 45, 900, DateTimeKind.Local).AddTicks(9965)
                         },
                         new
                         {
                             OrderedMenuItemId = 6,
                             MenuItemId = 6,
                             OrderId = 5,
-                            ProcessStarted = new DateTime(2024, 7, 14, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5418)
+                            ProcessStarted = new DateTime(2024, 7, 14, 14, 37, 45, 900, DateTimeKind.Local).AddTicks(9967)
                         },
                         new
                         {
                             OrderedMenuItemId = 7,
                             MenuItemId = 7,
                             OrderId = 6,
-                            ProcessStarted = new DateTime(2024, 7, 13, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5420)
+                            ProcessStarted = new DateTime(2024, 7, 13, 14, 37, 45, 900, DateTimeKind.Local).AddTicks(9970)
                         },
                         new
                         {
                             OrderedMenuItemId = 8,
                             MenuItemId = 8,
                             OrderId = 7,
-                            ProcessStarted = new DateTime(2024, 7, 12, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5422)
+                            ProcessStarted = new DateTime(2024, 7, 12, 14, 37, 45, 900, DateTimeKind.Local).AddTicks(9972)
                         },
                         new
                         {
                             OrderedMenuItemId = 9,
                             MenuItemId = 9,
                             OrderId = 8,
-                            ProcessStarted = new DateTime(2024, 7, 11, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5424)
+                            ProcessStarted = new DateTime(2024, 7, 11, 14, 37, 45, 900, DateTimeKind.Local).AddTicks(9974)
                         },
                         new
                         {
                             OrderedMenuItemId = 10,
                             MenuItemId = 10,
                             OrderId = 9,
-                            ProcessStarted = new DateTime(2024, 7, 10, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5426)
+                            ProcessStarted = new DateTime(2024, 7, 10, 14, 37, 45, 900, DateTimeKind.Local).AddTicks(9976)
                         },
                         new
                         {
                             OrderedMenuItemId = 11,
                             MenuItemId = 1,
                             OrderId = 10,
-                            ProcessStarted = new DateTime(2024, 7, 9, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5428)
+                            ProcessStarted = new DateTime(2024, 7, 9, 14, 37, 45, 900, DateTimeKind.Local).AddTicks(9978)
                         },
                         new
                         {
                             OrderedMenuItemId = 12,
                             MenuItemId = 2,
                             OrderId = 10,
-                            ProcessStarted = new DateTime(2024, 7, 9, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5430)
+                            ProcessStarted = new DateTime(2024, 7, 9, 14, 37, 45, 900, DateTimeKind.Local).AddTicks(9980)
                         });
                 });
 
@@ -288,70 +404,70 @@ namespace RestaurantOrdersManager.Core.Migrations
                             OrderId = 1,
                             CreatedBy = 1,
                             TableId = 1,
-                            TimeCreated = new DateTime(2024, 7, 18, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5338)
+                            TimeCreated = new DateTime(2024, 7, 18, 14, 37, 45, 900, DateTimeKind.Local).AddTicks(9891)
                         },
                         new
                         {
                             OrderId = 2,
                             CreatedBy = 2,
                             TableId = 1,
-                            TimeCreated = new DateTime(2024, 7, 17, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5341)
+                            TimeCreated = new DateTime(2024, 7, 17, 14, 37, 45, 900, DateTimeKind.Local).AddTicks(9894)
                         },
                         new
                         {
                             OrderId = 3,
                             CreatedBy = 3,
                             TableId = 1,
-                            TimeCreated = new DateTime(2024, 7, 16, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5345)
+                            TimeCreated = new DateTime(2024, 7, 16, 14, 37, 45, 900, DateTimeKind.Local).AddTicks(9899)
                         },
                         new
                         {
                             OrderId = 4,
                             CreatedBy = 1,
                             TableId = 2,
-                            TimeCreated = new DateTime(2024, 7, 15, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5347)
+                            TimeCreated = new DateTime(2024, 7, 15, 14, 37, 45, 900, DateTimeKind.Local).AddTicks(9901)
                         },
                         new
                         {
                             OrderId = 5,
                             CreatedBy = 2,
                             TableId = 2,
-                            TimeCreated = new DateTime(2024, 7, 14, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5349)
+                            TimeCreated = new DateTime(2024, 7, 14, 14, 37, 45, 900, DateTimeKind.Local).AddTicks(9903)
                         },
                         new
                         {
                             OrderId = 6,
                             CreatedBy = 3,
                             TableId = 3,
-                            TimeCreated = new DateTime(2024, 7, 13, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5352)
+                            TimeCreated = new DateTime(2024, 7, 13, 14, 37, 45, 900, DateTimeKind.Local).AddTicks(9906)
                         },
                         new
                         {
                             OrderId = 7,
                             CreatedBy = 1,
                             TableId = 3,
-                            TimeCreated = new DateTime(2024, 7, 12, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5354)
+                            TimeCreated = new DateTime(2024, 7, 12, 14, 37, 45, 900, DateTimeKind.Local).AddTicks(9908)
                         },
                         new
                         {
                             OrderId = 8,
                             CreatedBy = 2,
                             TableId = 4,
-                            TimeCreated = new DateTime(2024, 7, 11, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5356)
+                            TimeCreated = new DateTime(2024, 7, 11, 14, 37, 45, 900, DateTimeKind.Local).AddTicks(9910)
                         },
                         new
                         {
                             OrderId = 9,
                             CreatedBy = 3,
                             TableId = 4,
-                            TimeCreated = new DateTime(2024, 7, 10, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5358)
+                            TimeCreated = new DateTime(2024, 7, 10, 14, 37, 45, 900, DateTimeKind.Local).AddTicks(9912)
                         },
                         new
                         {
                             OrderId = 10,
                             CreatedBy = 1,
                             TableId = 5,
-                            TimeCreated = new DateTime(2024, 7, 9, 9, 22, 8, 917, DateTimeKind.Local).AddTicks(5360)
+                            TimeCreated = new DateTime(2024, 7, 9, 14, 37, 45, 900, DateTimeKind.Local).AddTicks(9914)
                         });
                 });
 
@@ -416,6 +532,25 @@ namespace RestaurantOrdersManager.Core.Migrations
                         });
                 });
 
+            modelBuilder.Entity("RestaurantOrdersManager.Core.Entities.IngredientInMenuItem", b =>
+                {
+                    b.HasOne("RestaurantOrdersManager.Core.Entities.Ingredient", "Ingredient")
+                        .WithMany("IngredientsInMenuItems")
+                        .HasForeignKey("IngredientId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("RestaurantOrdersManager.Core.Entities.MenuItem", "MenuItem")
+                        .WithMany("Ingredients")
+                        .HasForeignKey("MenuItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Ingredient");
+
+                    b.Navigation("MenuItem");
+                });
+
             modelBuilder.Entity("RestaurantOrdersManager.Core.Entities.MenuItemToOrder", b =>
                 {
                     b.HasOne("RestaurantOrdersManager.Core.Entities.MenuItem", "MenuItem")
@@ -445,8 +580,15 @@ namespace RestaurantOrdersManager.Core.Migrations
                     b.Navigation("Table");
                 });
 
+            modelBuilder.Entity("RestaurantOrdersManager.Core.Entities.Ingredient", b =>
+                {
+                    b.Navigation("IngredientsInMenuItems");
+                });
+
             modelBuilder.Entity("RestaurantOrdersManager.Core.Entities.MenuItem", b =>
                 {
+                    b.Navigation("Ingredients");
+
                     b.Navigation("OrderMenuItems");
                 });
 

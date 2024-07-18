@@ -38,7 +38,7 @@ namespace RestaurantOrdersManager.Core.Services
             }
 
             //check if table is free
-            if((await _tableService.GetTableById(AddRequest.TableId)).Status != Enums.TableStatus.Free)
+            if((await _tableService.GetTableById(AddRequest.TableId)).Status != Enums.TableStatusEnums.Free)
             {
                 throw new InvalidOperationException(nameof(AddRequest));
             }
@@ -103,7 +103,7 @@ namespace RestaurantOrdersManager.Core.Services
 
             order.TimeFinished = DateTime.UtcNow;
             
-            order.Table.Status = Enums.TableStatus.Free;
+            order.Table.Status = Enums.TableStatusEnums.Free;
             //
 
             order.TableId = null;
