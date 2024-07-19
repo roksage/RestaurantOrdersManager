@@ -10,10 +10,5 @@ namespace RestaurantOrdersManager.Core.ServiceContracts.DTO.IngredientDTO
     public class IngredientDeleteRequest
     {
         public int IngredientId { get; set; } 
-
-        public Ingredient ToIngredient()
-        {
-            return new Ingredient { }
-        }
     }
 }
