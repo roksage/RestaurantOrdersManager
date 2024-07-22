@@ -11,6 +11,7 @@ namespace RestaurantOrdersManager.Core.ServiceContracts.DTO.IngredientDTO
 {
     public class IngredientUpdateRequest
     {
+        public int IngredientId { get; set; }   
         public string IngredientName { get; set; }
         public IngredientEnums IngredientUnit { get; set; }
         public double IngredientAmount { get; set; }
@@ -19,6 +20,7 @@ namespace RestaurantOrdersManager.Core.ServiceContracts.DTO.IngredientDTO
         {
             return new Ingredient
             {
+                IngredientId = IngredientId,
                 IngredientName = IngredientName,
                 IngredientUnit = IngredientUnit,
                 IngredientAmount = IngredientAmount

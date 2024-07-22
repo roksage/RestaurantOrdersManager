@@ -48,14 +48,49 @@ namespace RestaurantOrdersManager.Core.Services
             return true;
         }
 
-        public Task<IEnumerable<IngredientResponse>> GetAllIngredients()
+        public async Task<IEnumerable<IngredientResponse>> GetAllIngredients()
         {
-            throw new NotImplementedException();
+            return await _dbContext.Ingredients.Select(ingredient => ingredient.ToIngredientResponse()).ToListAsync();
         }
 
-        public Task<IngredientResponse> UpdateIngredient(IngredientUpdateRequest request)
+        public async Task<IngredientResponse> UpdateIngredient(IngredientUpdateRequest request)
         {
-            throw new NotImplementedException();
+
+
+            Ingredient? findIngredientById = await _dbContext.Ingredients.FirstOrDefaultAsync(i => i.IngredientId == request.IngredientId);
+
+
+
+            if (findIngredientById == null)
+            {
+                throw new ArgumentNullException($"Ingredient not found - {request.IngredientId}");
+            }
+
+            //check if that name doesn't exist already
+            bool findIngredientByName = await _dbContext.Ingredients.AnyAsync(i => i.IngredientName == request.IngredientName);
+
+            if (findIngredientByName)
+            {
+                throw new ArgumentException($"Ingredient with this name already exist {request.IngredientName}");
+            }
+
+            if (request.IngredientName != null)
+            {
+                findIngredientById.IngredientName = request.IngredientName;
+            }
+            if (request.IngredientUnit != null)
+            {
+                findIngredientById.IngredientUnit = request.IngredientUnit;
+            }
+            if (request.IngredientAmount != null)
+            {
+                findIngredientById.IngredientAmount = request.IngredientAmount;
+            }
+
+            await _dbContext.SaveChangesAsync();
+
+            return findIngredientById.ToIngredientResponse();
+
         }
     }
 }

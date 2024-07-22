@@ -21,7 +21,7 @@ namespace RestaurantOrdersManager.Core.ServiceContracts.DTO.IngredientDTO
         public static IngredientResponse ToIngredientResponse(this Ingredient ingredient)
         {
             return new IngredientResponse { IngredientId = ingredient.IngredientId,
-                IngredientName = ingredient.IngredientName,
+                                            IngredientName = ingredient.IngredientName,
                                             IngredientUnit = ingredient.IngredientUnit,
                                             IngredientAmount = ingredient.IngredientAmount
             };
