@@ -59,7 +59,7 @@ namespace RestaurantOrdersManager.Core.ServiceContracts
 
         }
 
-        public async Task<List<MenuItemToOrderResponse>> GetAllMenuItemToOrderService()
+        public async Task<IEnumerable<MenuItemToOrderResponse>> GetAllMenuItemToOrderService()
         {
             return await _dbContext.OrderMenuItems.Select(OrderedMenuItem => OrderedMenuItem.ToOrderedMenuItemResponse()).ToListAsync();
         }

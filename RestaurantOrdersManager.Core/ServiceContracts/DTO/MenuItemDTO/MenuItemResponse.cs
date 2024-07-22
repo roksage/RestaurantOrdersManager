@@ -1,10 +1,7 @@
 ﻿using RestaurantOrdersManager.Core.Entities;
 using RestaurantOrdersManager.Core.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using RestaurantOrdersManager.Core.ServiceContracts.DTO.IngredientInMenuItemDTO;
+
 
 namespace RestaurantOrdersManager.Core.ServiceContracts.DTO.MenuItemDTO
 {
@@ -12,12 +9,18 @@ namespace RestaurantOrdersManager.Core.ServiceContracts.DTO.MenuItemDTO
     {
         public int MenuItemId { get; set; }
         public string? ItemName { get; set; }
+
+        public ICollection<IngredientInMenuItemResponse> IngredientsInMenuItem { get; set; }
+
     }
     public static class MenuItemResponseExtension
     {
         public static MenuItemResponse MenuItemResponse(this MenuItem menuItem)
         {
-            return new MenuItemResponse() { MenuItemId = menuItem.MenuItemId, ItemName = menuItem.ItemName };
+            return new MenuItemResponse() { MenuItemId = menuItem.MenuItemId, 
+                                            ItemName = menuItem.ItemName,
+                                            IngredientsInMenuItem = menuItem.Ingredients.Select(omi => omi.ToIngredientInMenuItemResponse()).ToList(),
+            };
         }
     }
 }

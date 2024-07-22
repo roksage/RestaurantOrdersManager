@@ -13,7 +13,7 @@ namespace RestaurantOrdersManager.Core.ServiceContracts
     public interface IMenuItemToOrderService
     {
         Task<MenuItemToOrderResponse> MenuItemToOrderServiceAddRequest(MenuItemToOrderAddRequest addRequest);
-        Task<List<MenuItemToOrderResponse>> GetAllMenuItemToOrderService();
+        Task<IEnumerable<MenuItemToOrderResponse>> GetAllMenuItemToOrderService();
         Task<MenuItemToOrderResponse> CompleteMenuItemInOrder(MenuItemToOrderCompleteMenuItemById OrderedMenuItemId);
     }
 }

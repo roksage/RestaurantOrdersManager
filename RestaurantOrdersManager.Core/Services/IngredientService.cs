@@ -19,6 +19,18 @@ namespace RestaurantOrdersManager.Core.Services
 
         public async Task<IngredientResponse> CreateIngredient(IngredientAddRequest request)
         {
+
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+            bool findIngredientByName = await _dbContext.Ingredients.AnyAsync(i => i.IngredientName == request.IngredientName);
+            if (findIngredientByName)
+            {
+                throw new ArgumentException($"Ingredient with this name already exist {request.IngredientName}");
+            }
+
+
             Ingredient newIngredient = request.ToIngredient();
 
             await _dbContext.AddAsync(newIngredient);
@@ -47,6 +59,7 @@ namespace RestaurantOrdersManager.Core.Services
 
             return true;
         }
+
 
         public async Task<IEnumerable<IngredientResponse>> GetAllIngredients()
         {
