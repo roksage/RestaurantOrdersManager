@@ -2,6 +2,7 @@
 using RestaurantOrdersManager.Core.Entities;
 using RestaurantOrdersManager.Core.ServiceContracts;
 using RestaurantOrdersManager.Core.ServiceContracts.DTO.IngredientInMenuItemDTO;
+using RestaurantOrdersManager.Core.ServiceContracts.DTO.MenuItemDTO;
 using RestaurantOrdersManager.Infrastructure;
 using System;
 using System.Collections.Generic;
@@ -14,10 +15,14 @@ namespace RestaurantOrdersManager.Core.Services
     public class IngredientInMenuItemService : IIngredientInMenuItemService
     {
         private readonly ManagerDbContext _dbContext;
+        private readonly IMenuItemService _menuItemService;
+        private readonly IIngredientService _ingredientService;
 
-        public IngredientInMenuItemService(ManagerDbContext dbContext)
+        public IngredientInMenuItemService(ManagerDbContext dbContext, IMenuItemService menuItemService, IIngredientService ingredientService)
         {
             _dbContext = dbContext;
+            _menuItemService = menuItemService;
+            _ingredientService = ingredientService;
         }
         public async Task<IEnumerable<IngredientInMenuItemResponse>> GetAllIngredientInMenuItem()
         {
@@ -49,11 +54,20 @@ namespace RestaurantOrdersManager.Core.Services
             }
 
             //check if ingredient exist
-
+            if(_ingredientService.FindIngredientById(addRequest.IngredientId) != null)
+            {
+                throw new ArgumentException($"Ingredient with id - {addRequest.IngredientId} doesn't exist");
+            }
 
 
 
             //check if menuItem exist
+            if(_menuItemService.FindMenuItemById(addRequest.MenuItemId) != null)
+            {
+                throw new ArgumentException($"MenuItem with id - {addRequest.MenuItemId} doesn't exist");
+            } 
+
+
 
             IngredientInMenuItem ingredientInMenuItem = addRequest.ToIngredientInMenuItem();
 

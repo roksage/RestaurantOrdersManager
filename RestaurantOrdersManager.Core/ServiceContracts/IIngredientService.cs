@@ -17,5 +17,7 @@ namespace RestaurantOrdersManager.Core.ServiceContracts
 
         public Task<bool> DeleteIngredient(IngredientDeleteRequest request);
 
+        public Task<IngredientResponse> FindIngredientById(int ingredientId);
+
     }
 }

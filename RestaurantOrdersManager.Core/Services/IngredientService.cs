@@ -60,6 +60,12 @@ namespace RestaurantOrdersManager.Core.Services
             return true;
         }
 
+        public async Task<IngredientResponse> FindIngredientById(int ingredientId)
+        {
+            Ingredient? ingredient = await _dbContext.Ingredients.FirstOrDefaultAsync(ing => ing.IngredientId ==  ingredientId);
+
+            return ingredient.ToIngredientResponse();
+        }
 
         public async Task<IEnumerable<IngredientResponse>> GetAllIngredients()
         {
