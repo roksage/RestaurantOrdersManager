@@ -27,7 +27,7 @@ namespace RestaurantOrdersManager.Core.Services
             MenuItem menuItem = AddRequest.ToMenuItem();
             _dbContext.Add(menuItem);
             await _dbContext.SaveChangesAsync(); 
-            return menuItem.MenuItemResponse();
+            return menuItem.ToMenuItemResponse();
         }
 
         public async Task<MenuItemResponse> FindMenuItemById(int menuItemId)
@@ -35,12 +35,16 @@ namespace RestaurantOrdersManager.Core.Services
 
             MenuItem? menuItem = await _dbContext.MenuItems.FirstOrDefaultAsync(MenuItem => MenuItem.MenuItemId == menuItemId);
 
-            return menuItem.MenuItemResponse();
+            return menuItem.ToMenuItemResponse();
         }
 
         public async Task<List<MenuItemResponse>> GetAllMenuItems()
         {
-            return await _dbContext.MenuItems.Select(MenuItems => MenuItems.MenuItemResponse()).ToListAsync();
+            return await _dbContext.MenuItems
+                        .Include(o => o.IngredientsInMenuItem)
+                        .ThenInclude(om => om.Ingredient)
+                        .Select(menuItem => menuItem.ToMenuItemResponse())
+                        .ToListAsync();
         }
     }
 }

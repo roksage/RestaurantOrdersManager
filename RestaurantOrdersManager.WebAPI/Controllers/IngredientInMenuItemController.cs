@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RestaurantOrdersManager.Core.ServiceContracts;
 using RestaurantOrdersManager.Core.ServiceContracts.DTO.IngredientInMenuItemDTO;
+using RestaurantOrdersManager.Core.ServiceContracts.DTO.MenuItemDTO;
 
 namespace RestaurantOrdersManager.WebAPI.Controllers
 {
@@ -27,7 +28,6 @@ namespace RestaurantOrdersManager.WebAPI.Controllers
                 {
                     IngredientInMenuItemId = addedIngredientToMenuItem.IngredientInMenuItemId,
                     IngredientId = addedIngredientToMenuItem.IngredientId,
-                    MenuItemId = addedIngredientToMenuItem.MenuItemId
                 });
             }
             catch (ArgumentException ex)

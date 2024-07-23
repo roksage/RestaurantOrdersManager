@@ -32,6 +32,7 @@ namespace RestaurantOrdersManager.Core.Services
 
         public async Task<bool> GetIngredientInMenuItemByIds(IngredientInMenuItemAddRequest searchRequest)
         {
+
             bool findIngredient = await _dbContext.IngredientsInMenuItem.AnyAsync(ing => ing.IngredientId == searchRequest.IngredientId
                                                                                        && ing.MenuItemId == searchRequest.MenuItemId);
 
@@ -42,6 +43,7 @@ namespace RestaurantOrdersManager.Core.Services
 
         public async Task<IngredientInMenuItemResponse> AddIngredientToMenuItem(IngredientInMenuItemAddRequest addRequest)
         {
+
 
             if( addRequest == null)
             {
@@ -55,7 +57,7 @@ namespace RestaurantOrdersManager.Core.Services
             }
 
             //check if ingredient exist
-            if(_ingredientService.FindIngredientById(addRequest.IngredientId) != null)
+            if(_ingredientService.FindIngredientById(addRequest.IngredientId) == null)
             {
                 throw new ArgumentException($"Ingredient with id - {addRequest.IngredientId} doesn't exist");
             }
@@ -63,7 +65,7 @@ namespace RestaurantOrdersManager.Core.Services
 
 
             //check if menuItem exist
-            if(_menuItemService.FindMenuItemById(addRequest.MenuItemId) != null)
+            if(_menuItemService.FindMenuItemById(addRequest.MenuItemId) == null)
             {
                 throw new ArgumentException($"MenuItem with id - {addRequest.MenuItemId} doesn't exist");
             } 

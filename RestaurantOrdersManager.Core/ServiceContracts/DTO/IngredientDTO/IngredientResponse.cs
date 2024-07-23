@@ -1,5 +1,6 @@
 ﻿using RestaurantOrdersManager.Core.Entities;
 using RestaurantOrdersManager.Core.Enums;
+using RestaurantOrdersManager.Core.ServiceContracts.DTO.IngredientDTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,10 +27,10 @@ namespace RestaurantOrdersManager.Core.ServiceContracts.DTO.IngredientDTO
                                             IngredientAmount = ingredient.IngredientAmount
             };
         }
-        public static IEnumerable<IngredientResponse> ToIngredientResponse(this IEnumerable<Ingredient> ingredients)
-        {
-            return  ingredients.Select(ingredient => ingredient.ToIngredientResponse()).ToList();
+        //public static IEnumerable<IngredientResponse> ToIngredientResponse(this IEnumerable<Ingredient> ingredients)
+        //{
+        //    return  ingredients.Select(ingredient => ingredient.ToIngredientResponse()).ToList();
             
-        }
+        //}
     }
 }

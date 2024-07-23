@@ -10,16 +10,16 @@ namespace RestaurantOrdersManager.Core.ServiceContracts.DTO.MenuItemDTO
         public int MenuItemId { get; set; }
         public string? ItemName { get; set; }
 
-        public ICollection<IngredientInMenuItemResponse> IngredientsInMenuItem { get; set; }
+        public ICollection<IngredientInMenuItemResponse>? IngredientsInMenuItem { get; set; }
 
     }
     public static class MenuItemResponseExtension
     {
-        public static MenuItemResponse MenuItemResponse(this MenuItem menuItem)
+        public static MenuItemResponse ToMenuItemResponse(this MenuItem menuItem)
         {
-            return new MenuItemResponse() { MenuItemId = menuItem.MenuItemId, 
+            return new MenuItemResponse { MenuItemId = menuItem.MenuItemId, 
                                             ItemName = menuItem.ItemName,
-                                            IngredientsInMenuItem = menuItem.Ingredients.Select(omi => omi.ToIngredientInMenuItemResponse()).ToList(),
+                                            IngredientsInMenuItem = menuItem.IngredientsInMenuItem.Select(i => i.ToIngredientInMenuItemResponse()).ToList(),
             };
         }
     }

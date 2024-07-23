@@ -1,4 +1,5 @@
 ﻿using RestaurantOrdersManager.Core.ServiceContracts.DTO.IngredientInMenuItemDTO;
+using RestaurantOrdersManager.Core.ServiceContracts.DTO.MenuItemDTO;
 using RestaurantOrdersManager.Core.ServiceContracts.DTO.MenuItemToOrderDTO;
 using RestaurantOrdersManager.Core.ServiceContracts.DTO.OrderedMenuItem;
 using RestaurantOrdersManager.Core.ServiceContracts.DTO.OrderedMenuItemDTO;
