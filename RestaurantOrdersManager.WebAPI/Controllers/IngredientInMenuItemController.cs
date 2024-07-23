@@ -40,7 +40,6 @@ namespace RestaurantOrdersManager.WebAPI.Controllers
             }
         }
 
-
         [HttpGet("getAllIngredientToMenuItem")]
         public async Task<IActionResult> getAllIngredientToMenuItem()
         {
