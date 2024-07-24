@@ -4,14 +4,14 @@ using RestaurantOrdersManager.Infrastructure;
 
 namespace Entities
 {
-    public class RestaurantOrdersManagerContextFactory : IDesignTimeDbContextFactory<ManagerDbContext>
+    public class RestaurantOrdersManagerContextFactory : IDesignTimeDbContextFactory<RestaurantOrdersDbContext>
     {
-        public ManagerDbContext CreateDbContext(string[] args)
+        public RestaurantOrdersDbContext CreateDbContext(string[] args)
         {
-            var optionsBuilder = new DbContextOptionsBuilder<ManagerDbContext>();
+            var optionsBuilder = new DbContextOptionsBuilder<RestaurantOrdersDbContext>();
             optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=master;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
 
-            return new ManagerDbContext(optionsBuilder.Options);
+            return new RestaurantOrdersDbContext(optionsBuilder.Options);
         }
     }
 }
