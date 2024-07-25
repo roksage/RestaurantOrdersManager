@@ -4,6 +4,7 @@ using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using RestaurantOrdersManager.Core.DatabaseDbContext;
 using RestaurantOrdersManager.Core.Entities.RolesAndUsers;
+using RestaurantOrdersManager.Core.Helpers;
 using RestaurantOrdersManager.Core.Helpers.AuthenticationAuthorization.JwtMiddleware;
 using RestaurantOrdersManager.Core.ServiceContracts.RestaurantOrdersServices;
 using RestaurantOrdersManager.Core.ServiceContracts.RolesAndUsersServices;
@@ -100,6 +101,7 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 app.UseMiddleware<JwtMiddleware>();
+app.UseMiddleware<RequestLogger>();
 app.MapControllers();
 
 app.Run();
