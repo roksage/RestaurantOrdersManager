@@ -26,7 +26,7 @@ namespace RestaurantOrdersManager.Core.Services.RestaurantOrdersServices
         }
         public async Task<IEnumerable<IngredientInMenuItemResponse>> GetAllIngredientInMenuItem()
         {
-            return await _dbContext.IngredientsInMenuItem.Select(ingredInMenuItem => ingredInMenuItem.ToIngredientInMenuItemResponse()).ToListAsync();
+            return await _dbContext.IngredientsInMenuItem.Select(i => i.ToIngredientInMenuItemResponse()).ToListAsync();
 
         }
 

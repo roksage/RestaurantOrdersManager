@@ -13,9 +13,7 @@ namespace RestaurantOrdersManager.Core.ServiceContracts.DTO.MenuItemDTO
     {
         public int IngredientInMenuItemId { get; set; }
         public int IngredientId { get; set; }
-        public string IngredientName { get; set; }
-        public IngredientEnums IngredientUnit { get; set; }
-        public double IngredientAmount { get; set; }
+        public int MenuItemId { get; set; }
     }
 
     public static class IngredientInMenuItemResponseExtension
@@ -26,9 +24,7 @@ namespace RestaurantOrdersManager.Core.ServiceContracts.DTO.MenuItemDTO
             {
                 IngredientInMenuItemId = ingredientInMenuItem.IngredientInMenuItemId,
                 IngredientId = ingredientInMenuItem.IngredientId,
-                IngredientName = ingredientInMenuItem.Ingredient.IngredientName,
-                IngredientUnit = ingredientInMenuItem.Ingredient.IngredientUnit,
-                IngredientAmount = ingredientInMenuItem.Ingredient.IngredientAmount
+                MenuItemId = ingredientInMenuItem.MenuItemId,
             };
         }
     }

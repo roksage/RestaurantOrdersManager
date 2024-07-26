@@ -18,18 +18,35 @@ namespace RestaurantOrdersManager.Core.Helpers
 
         public (string id, string role) GetUserIDByJwt(string token)
         {
-            var var = new JwtSecurityToken(token);
-            string id = var.Claims.FirstOrDefault(x => x.Type == "id").ToString();
-            string role = var.Claims.FirstOrDefault(x => x.Type == "role").ToString();
-            return (id, role);
+            try
+            {
+                var var = new JwtSecurityToken(token);
+                string id = var.Claims.FirstOrDefault(x => x.Type == "id").ToString();
+                string role = var.Claims.FirstOrDefault(x => x.Type == "role").ToString();
+                return (id, role);
+            }
+
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public async Task Invoke(HttpContext context)
         {
             try
             {
-                var userInfo = GetUserIDByJwt(context.Request.Headers.Authorization.FirstOrDefault().Split(" ").Last());
-                _logger.LogInformation(userInfo.id + " " + userInfo.role + " method: " + context.Request.Method + " endpoint: " + context.Request.Path);
+                var jwtToken = context.Request.Headers.Authorization.FirstOrDefault()?.Split(" ").Last();
+                if (jwtToken == null)
+                {
+                    _logger.LogInformation("Request was made without JWT token " + " method: " + context.Request.Method + " endpoint: " + context.Request.Path);
+                }
+                else
+                {
+                    var userInfo = GetUserIDByJwt(jwtToken);
+                    _logger.LogInformation(userInfo.id + " " + userInfo.role + " method: " + context.Request.Method + " endpoint: " + context.Request.Path);
+                }
+
                 await _next.Invoke(context);
             }
             catch (Exception ex)
