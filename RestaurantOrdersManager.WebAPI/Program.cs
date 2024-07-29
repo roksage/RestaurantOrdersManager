@@ -1,4 +1,5 @@
 
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
@@ -11,6 +12,7 @@ using RestaurantOrdersManager.Core.ServiceContracts.RolesAndUsersServices;
 using RestaurantOrdersManager.Core.Services.RestaurantOrdersServices;
 using RestaurantOrdersManager.Core.Services.RolesAndUsersServies;
 using RestaurantOrdersManager.Infrastructure;
+using RestaurantOrdersManager.WebAPI.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -84,9 +86,14 @@ builder.Services.AddSwaggerGen(swagger =>
 });
 
 
+builder.Services.AddSignalR();
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+
+
 
 var app = builder.Build();
 
@@ -103,5 +110,7 @@ app.UseAuthorization();
 app.UseMiddleware<JwtMiddleware>();
 app.UseMiddleware<RequestLogger>();
 app.MapControllers();
+
+app.MapHub<OrdersHub>("/orders");
 
 app.Run();
