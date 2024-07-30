@@ -41,16 +41,12 @@ namespace RestaurantOrdersManager.Tests
                 LastName = "Doe"
             };
 
-
             var dbContext = await GetDbContext();
             var EmployeeService = new EmployeeService(dbContext);
-
 
             EmployeeResponse result = await EmployeeService.AddEmployee(employee);
 
             EmployeeResponse findEmployee = await EmployeeService.GetEmployeeById(result.EmployeeId);
-
-            Assert.Equal(result,findEmployee);
 
             result.Should().Be(findEmployee);
         }
@@ -76,12 +72,9 @@ namespace RestaurantOrdersManager.Tests
             EmployeeResponse addEmployee = await EmployeeService.AddEmployee(new EmployeeAddRequest { Name = "Second",
                                                                                                       LastName = "SecondLast" });
 
-
             EmployeeResponse employee = await EmployeeService.GetEmployeeById(addEmployee.EmployeeId);
 
             employee.Should().Be(employee);
-
-
         }
     }
 }
