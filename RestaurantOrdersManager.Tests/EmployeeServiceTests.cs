@@ -1,8 +1,9 @@
+using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
+using RestaurantOrdersManager.Core.Entities.RestaurantOrders;
+using RestaurantOrdersManager.Core.ServiceContracts.DTO.EmployeeDTO;
+using RestaurantOrdersManager.Core.Services.RestaurantOrdersServices;
 using RestaurantOrdersManager.Infrastructure;
-using System;
-using System.Threading.Tasks;
-
 
 namespace RestaurantOrdersManager.Tests
 {
@@ -14,30 +15,40 @@ namespace RestaurantOrdersManager.Tests
             var options = new DbContextOptionsBuilder<RestaurantOrdersDbContext>()
                 .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
                 .Options;
-            var databaseContext = new ApplicationDbContext(options);
+            var databaseContext = new RestaurantOrdersDbContext(options);
             databaseContext.Database.EnsureCreated();
-            
-            if(await databaseContext.Employees.CountAsync() < 0)
+
+            if (await databaseContext.Employees.CountAsync() < 0)
             {
                 databaseContext.Employees.Add(
-                new Employee { EmployeeId = 1, Name = "John", LastName = "Doe" },
-                new Employee { EmployeeId = 2, Name = "Jane", LastName = "Smith" },
-                new Employee { EmployeeId = 3, Name = "Alice", LastName = "Johnson" },
-                new Employee { EmployeeId = 4, Name = "Bob", LastName = "Brown" },
-                new Employee { EmployeeId = 5, Name = "Charlie", LastName = "Davis" }
+                new Employee { EmployeeId = 1, Name = "J1ohn", LastName = "Doe" }
                 );
-
-                    await databaseContext.SaveChangesAsync();
+                await databaseContext.SaveChangesAsync();
             }
-
+            return databaseContext;
         }
 
 
-
         [Fact]
-        public void Test1()
+        public async void Employees_AddEmployee_ReturnEmployee()
         {
+            var employee = new EmployeeAddRequest
+            {
+                Name = "John12312312333333",  
+                LastName = "Doe"
+            };
 
+
+            var dbContext = await GetDbContext();
+            var EmployeeService = new EmployeeService(dbContext);
+
+            EmployeeResponse result = await EmployeeService.AddEmployee(employee);
+
+            EmployeeResponse findEmployee = await EmployeeService.GetEmployeeById(result.EmployeeId);
+
+            result.Should().BeSameAs(findEmployee);
+            result.Should().BeOfType<EmployeeResponse>();
+            result.Should().BeEquivalentTo(findEmployee);
         }
     }
 }
