@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestaurantOrdersManager.Web
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestaurantOrdersManager.Core", "..\RestaurantOrdersManager.Core\RestaurantOrdersManager.Core.csproj", "{23CB9AFF-0544-42FB-B358-3657B1FF0250}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestaurantOrdersManager.Tests", "..\RestaurantOrdersManager.Tests\RestaurantOrdersManager.Tests.csproj", "{BA12A596-5E24-4E08-82D7-8DE9A0449FE9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{23CB9AFF-0544-42FB-B358-3657B1FF0250}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{23CB9AFF-0544-42FB-B358-3657B1FF0250}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{23CB9AFF-0544-42FB-B358-3657B1FF0250}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA12A596-5E24-4E08-82D7-8DE9A0449FE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA12A596-5E24-4E08-82D7-8DE9A0449FE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA12A596-5E24-4E08-82D7-8DE9A0449FE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA12A596-5E24-4E08-82D7-8DE9A0449FE9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
