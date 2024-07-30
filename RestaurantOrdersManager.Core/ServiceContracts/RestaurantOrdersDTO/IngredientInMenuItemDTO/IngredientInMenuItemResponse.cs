@@ -1,5 +1,6 @@
 ﻿using RestaurantOrdersManager.Core.Entities.RestaurantOrders;
 using RestaurantOrdersManager.Core.Enums;
+using RestaurantOrdersManager.Core.ServiceContracts.DTO.EmployeeDTO;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,6 +15,17 @@ namespace RestaurantOrdersManager.Core.ServiceContracts.DTO.MenuItemDTO
         public int IngredientInMenuItemId { get; set; }
         public int IngredientId { get; set; }
         public int MenuItemId { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            var other = obj as IngredientInMenuItemResponse;
+            if (other == null)
+                return false;
+
+            return this.IngredientInMenuItemId == other.IngredientInMenuItemId &&
+                   this.MenuItemId == other.MenuItemId &&
+                   this.IngredientId == other.IngredientId;
+        }
     }
 
     public static class IngredientInMenuItemResponseExtension

@@ -16,8 +16,8 @@ namespace RestaurantOrdersManager.Tests
                 .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
                 .Options;
             var databaseContext = new RestaurantOrdersDbContext(options);
-            databaseContext.Database.EnsureCreatedAsync();
-            databaseContext.Database.EnsureDeletedAsync();
+            await databaseContext.Database.EnsureCreatedAsync();
+            await databaseContext.Database.EnsureDeletedAsync();
 
             var employee = new Employee
             {
@@ -26,7 +26,7 @@ namespace RestaurantOrdersManager.Tests
             };
 
             databaseContext.Add(employee);
-            databaseContext.SaveChangesAsync();
+            await databaseContext.SaveChangesAsync();
 
             return databaseContext;
         }
