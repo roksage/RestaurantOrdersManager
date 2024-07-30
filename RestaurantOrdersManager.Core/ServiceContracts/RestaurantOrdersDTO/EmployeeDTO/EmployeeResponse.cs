@@ -12,6 +12,16 @@ namespace RestaurantOrdersManager.Core.ServiceContracts.DTO.EmployeeDTO
         public int EmployeeId { get; set; }
         public string? Name { get; set; }
         public string? LastName { get; set; }
+        public override bool Equals(object obj)
+        {
+            var other = obj as EmployeeResponse;
+            if (other == null)
+                return false;
+
+            return this.EmployeeId == other.EmployeeId &&
+                   this.LastName == other.LastName &&
+                   this.Name == other.Name;
+        }
     }
     public static class EmployeeResponseExtension
     {
@@ -20,4 +30,5 @@ namespace RestaurantOrdersManager.Core.ServiceContracts.DTO.EmployeeDTO
             return new EmployeeResponse { EmployeeId = employee.EmployeeId, Name = employee.Name, LastName = employee.LastName };
         }
     }
+
 }

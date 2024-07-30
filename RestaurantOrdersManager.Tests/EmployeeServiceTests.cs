@@ -16,25 +16,28 @@ namespace RestaurantOrdersManager.Tests
                 .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
                 .Options;
             var databaseContext = new RestaurantOrdersDbContext(options);
-            databaseContext.Database.EnsureCreated();
+            databaseContext.Database.EnsureCreatedAsync();
+            databaseContext.Database.EnsureDeletedAsync();
 
-            if (await databaseContext.Employees.CountAsync() < 0)
+            var employee = new Employee
             {
-                databaseContext.Employees.Add(
-                new Employee { EmployeeId = 1, Name = "J1ohn", LastName = "Doe" }
-                );
-                await databaseContext.SaveChangesAsync();
-            }
+                Name = "John123123123123333333",
+                LastName = "Doe"
+            };
+
+            databaseContext.Add(employee);
+            databaseContext.SaveChangesAsync();
+
             return databaseContext;
         }
 
 
         [Fact]
-        public async void Employees_AddEmployee_ReturnEmployee()
+        public async Task Employees_AddEmployee_ReturnEmployee()
         {
             var employee = new EmployeeAddRequest
             {
-                Name = "John12312312333333",  
+                Name = "John1231231233313333",  
                 LastName = "Doe"
             };
 
@@ -42,13 +45,43 @@ namespace RestaurantOrdersManager.Tests
             var dbContext = await GetDbContext();
             var EmployeeService = new EmployeeService(dbContext);
 
+
             EmployeeResponse result = await EmployeeService.AddEmployee(employee);
 
             EmployeeResponse findEmployee = await EmployeeService.GetEmployeeById(result.EmployeeId);
 
-            result.Should().BeSameAs(findEmployee);
-            result.Should().BeOfType<EmployeeResponse>();
-            result.Should().BeEquivalentTo(findEmployee);
+            Assert.Equal(result,findEmployee);
+
+            result.Should().Be(findEmployee);
+        }
+
+        [Fact]
+        public async Task Employees_GetAllEmployee_ReturnEmoplyees()
+        {
+            var dbContext = await GetDbContext();
+            var EmployeeService = new EmployeeService(dbContext);
+
+            IEnumerable<EmployeeResponse> result = await EmployeeService.GetAllEmployee();
+            EmployeeResponse employee = result.FirstOrDefault();
+            result.Should().Contain(employee);
+            result.Should().HaveCount(1);
+        }
+
+        [Fact]
+        public async Task Emploee_GetEmployeeById_ReturnSpecificEmployee()
+        {
+            var dbContext = await GetDbContext();
+            var EmployeeService = new EmployeeService(dbContext);
+
+            EmployeeResponse addEmployee = await EmployeeService.AddEmployee(new EmployeeAddRequest { Name = "Second",
+                                                                                                      LastName = "SecondLast" });
+
+
+            EmployeeResponse employee = await EmployeeService.GetEmployeeById(addEmployee.EmployeeId);
+
+            employee.Should().Be(employee);
+
+
         }
     }
 }
