@@ -54,9 +54,9 @@ namespace RestaurantOrdersManager.Tests
             });
 
 
-            bool getItem = await ingredientInMenuItemService.GetIngredientInMenuItemByIds(new IngredientInMenuItemAddRequest { MenuItemId = addItem.MenuItemId, IngredientId = addItem.IngredientId });
+            bool act = await ingredientInMenuItemService.GetIngredientInMenuItemByIds(new IngredientInMenuItemAddRequest { MenuItemId = addItem.MenuItemId, IngredientId = addItem.IngredientId });
 
-            Assert.True(getItem);
+            Assert.True(act);
         }
 
 
@@ -76,10 +76,10 @@ namespace RestaurantOrdersManager.Tests
                 MenuItemId = 4
             });
 
-            IEnumerable<IngredientInMenuItemResponse> allItems = await ingredientInMenuItemService.GetAllIngredientInMenuItem();
+            IEnumerable<IngredientInMenuItemResponse> act = await ingredientInMenuItemService.GetAllIngredientInMenuItem();
 
-            allItems.Should().Contain(addItem);
-            allItems.Should().HaveCount(2);
+            act.Should().Contain(addItem);
+            act.Should().HaveCount(2);
 
         }
     }

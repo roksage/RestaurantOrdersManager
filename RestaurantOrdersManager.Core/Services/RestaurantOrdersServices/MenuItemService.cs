@@ -33,9 +33,9 @@ namespace RestaurantOrdersManager.Core.Services.RestaurantOrdersServices
         public async Task<MenuItemResponse> FindMenuItemById(int menuItemId)
         {
 
-            MenuItem? menuItem = await _dbContext.MenuItems.FirstOrDefaultAsync(MenuItem => MenuItem.MenuItemId == menuItemId);
+            MenuItem? menuItem = await _dbContext.MenuItems.FindAsync(menuItemId);
 
-            return menuItem.ToMenuItemResponse();
+            return menuItem?.ToMenuItemResponse();
         }
 
         public async Task<List<MenuItemResponse>> GetAllMenuItems()

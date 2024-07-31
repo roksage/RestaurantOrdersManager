@@ -44,11 +44,11 @@ namespace RestaurantOrdersManager.Tests
             var dbContext = await GetDbContext();
             var EmployeeService = new EmployeeService(dbContext);
 
-            EmployeeResponse result = await EmployeeService.AddEmployee(employee);
+            EmployeeResponse act = await EmployeeService.AddEmployee(employee);
 
-            EmployeeResponse findEmployee = await EmployeeService.GetEmployeeById(result.EmployeeId);
+            EmployeeResponse findEmployee = await EmployeeService.GetEmployeeById(act.EmployeeId);
 
-            result.Should().Be(findEmployee);
+            act.Should().Be(findEmployee);
         }
 
         [Fact]
@@ -69,12 +69,12 @@ namespace RestaurantOrdersManager.Tests
             var dbContext = await GetDbContext();
             var EmployeeService = new EmployeeService(dbContext);
 
-            EmployeeResponse addEmployee = await EmployeeService.AddEmployee(new EmployeeAddRequest { Name = "Second",
+            EmployeeResponse act = await EmployeeService.AddEmployee(new EmployeeAddRequest { Name = "Second",
                                                                                                       LastName = "SecondLast" });
 
-            EmployeeResponse employee = await EmployeeService.GetEmployeeById(addEmployee.EmployeeId);
+            EmployeeResponse employee = await EmployeeService.GetEmployeeById(act.EmployeeId);
 
-            employee.Should().Be(employee);
+            act.Should().Be(employee);
         }
     }
 }
