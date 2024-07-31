@@ -122,5 +122,12 @@ namespace RestaurantOrdersManager.Core.Services.RestaurantOrdersServices
                 .Select(order => order.ToOrderResponse())
                 .ToListAsync();
         }
+
+        public async Task<OrderResponse> GetOrderByOrderId(int OrderId)
+        {
+            Order? order = await _dbContext.Orders.FindAsync(OrderId);
+
+            return order.ToOrderResponse();
+        }
     }
 }
