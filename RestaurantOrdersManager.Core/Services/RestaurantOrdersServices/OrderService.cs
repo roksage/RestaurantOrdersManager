@@ -34,13 +34,13 @@ namespace RestaurantOrdersManager.Core.Services.RestaurantOrdersServices
             //check if employee exists
             if (await _employeeService.GetEmployeeById(AddRequest.CreatedBy) == null)
             {
-                throw new Exception($"Employee with id {AddRequest.CreatedBy} not found.");
+                throw new InvalidOperationException($"Employee with id {AddRequest.CreatedBy} not found.");
             }
 
             //check if table is free
             if ((await _tableService.GetTableById(AddRequest.TableId)).Status != Enums.TableStatusEnums.Free)
             {
-                throw new InvalidOperationException(nameof(AddRequest));
+                throw new InvalidOperationException($"Table with id {AddRequest.CreatedBy} not found.");
             }
 
             Order order = AddRequest.ToOrder();

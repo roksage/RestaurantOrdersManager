@@ -52,7 +52,7 @@ namespace RestaurantOrdersManager.Core.Services.RestaurantOrdersServices
 
             if (findTable == null)
             {
-                throw new ArgumentException(nameof(findTable));
+                throw new ArgumentException($"Table not found with id {deleteRequest.TableId}");
             }
 
             _dbContext.Attach(findTable);
@@ -63,9 +63,9 @@ namespace RestaurantOrdersManager.Core.Services.RestaurantOrdersServices
 
         }
 
-        public Task<IEnumerable<TableResponse>> GetAllTables()
+        public async Task<IEnumerable<TableResponse>> GetAllTables()
         {
-            throw new NotImplementedException();
+            return _dbContext.Tables.Select(t => t.ToTableResponse());
         }
 
         public async Task<IEnumerable<TableResponse>> GetAllTablesFreeOccupied(TableStatusEnums status)
@@ -86,10 +86,6 @@ namespace RestaurantOrdersManager.Core.Services.RestaurantOrdersServices
 
         public async Task<TableResponse> GetTableById(int TableId)
         {
-            if (TableId == null)
-            {
-                throw new ArgumentNullException(nameof(TableId));
-            }
 
             Table? tableInfo = await _dbContext.Tables.FirstOrDefaultAsync(t => t.TableId == TableId);
 
@@ -110,7 +106,7 @@ namespace RestaurantOrdersManager.Core.Services.RestaurantOrdersServices
 
             if (table == null)
             {
-                throw new ArgumentException($"Table id - {UpdateRequest.TableName} not found");
+                throw new ArgumentException($"Table id - {UpdateRequest.TableId} not found");
             }
 
             bool tableNameExists = await _dbContext.Tables.AnyAsync(t => t.TableName == UpdateRequest.TableName);
