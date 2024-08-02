@@ -24,7 +24,7 @@ namespace RestaurantOrdersManager.API.IntegrationTests
             var employees = await response.Content.ReadFromJsonAsync<List<Table>>();
 
 
-            response.EnsureSuccessStatusCode();
+            response1.EnsureSuccessStatusCode();
         }
     }
 }
