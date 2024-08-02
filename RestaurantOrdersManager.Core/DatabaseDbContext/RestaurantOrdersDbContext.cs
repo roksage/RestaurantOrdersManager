@@ -55,7 +55,8 @@ namespace RestaurantOrdersManager.Infrastructure
                 new Table { TableId = 2, TableName = "Table 2", Seats = 3, Status = Core.Enums.TableStatusEnums.Free },
                 new Table { TableId = 3, TableName = "Table 3", Seats = 2, Status = Core.Enums.TableStatusEnums.Free },
                 new Table { TableId = 4, TableName = "Table 4", Seats = 8, Status = Core.Enums.TableStatusEnums.Free },
-                new Table { TableId = 5, TableName = "Table 5", Seats = 2, Status = Core.Enums.TableStatusEnums.Free }
+                new Table { TableId = 5, TableName = "Table 5", Seats = 2, Status = Core.Enums.TableStatusEnums.Free },
+                new Table { TableId = 6, TableName = "Table 6", Seats = 2, Status = Core.Enums.TableStatusEnums.Free }
             );
 
             modelBuilder.Entity<Employee>().HasData(

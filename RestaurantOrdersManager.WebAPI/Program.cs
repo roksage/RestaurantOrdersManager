@@ -114,3 +114,4 @@ app.MapControllers();
 app.MapHub<OrdersHub>("/orders");
 
 app.Run();
+public partial class Program { }
