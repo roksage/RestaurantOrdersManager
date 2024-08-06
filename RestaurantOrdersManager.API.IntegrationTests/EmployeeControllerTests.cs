@@ -25,7 +25,7 @@ namespace RestaurantOrdersManager.API.IntegrationTests
             var request = new HttpRequestMessage(HttpMethod.Get, "/api/Employee/getAllEmpolyees");
 
 
-
+            var response = await _client.SendAsync(request);
 
             // Assert
             response.EnsureSuccessStatusCode();

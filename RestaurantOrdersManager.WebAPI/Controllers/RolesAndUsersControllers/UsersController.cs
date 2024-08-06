@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RestaurantOrdersManager.Core.Entities.RolesAndUsers;
-using RestaurantOrdersManager.Core.Helpers.AuthenticationAuthorization.AuthorizeAttribute;
 using RestaurantOrdersManager.Core.ServiceContracts.RolesAndUserDTO;
 using RestaurantOrdersManager.Core.ServiceContracts.RolesAndUsersServices;
 
