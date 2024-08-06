@@ -35,7 +35,7 @@ builder.Services.AddTransient<IAuthorizationService, AuthorizationService>();
 
 builder.Services.AddDbContext<RestaurantOrdersDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ManagerDbContext")));
-builder.Services.AddDbContext<RolesAndUsersDbContext>(options =>
+builder.Services.AddDbContext<AuthorizationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ManagerDbContext")));
 
 
@@ -107,7 +107,6 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuerSigningKey = true
     };
 });
-builder.Services.AddAuthorization();
 
 
 var app = builder.Build();

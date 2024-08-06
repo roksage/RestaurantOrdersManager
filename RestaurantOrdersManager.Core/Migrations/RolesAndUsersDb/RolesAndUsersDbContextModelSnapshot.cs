@@ -9,7 +9,7 @@ using RestaurantOrdersManager.Core.DatabaseDbContext;
 
 namespace RestaurantOrdersManager.Core.Migrations.RolesAndUsersDb
 {
-    [DbContext(typeof(RolesAndUsersDbContext))]
+    [DbContext(typeof(AuthorizationDbContext))]
     partial class RolesAndUsersDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

@@ -10,7 +10,7 @@ using RestaurantOrdersManager.Core.DatabaseDbContext;
 
 namespace RestaurantOrdersManager.Core.Migrations.RolesAndUsersDb
 {
-    [DbContext(typeof(RolesAndUsersDbContext))]
+    [DbContext(typeof(AuthorizationDbContext))]
     [Migration("20240724135806_InitialCreate")]
     partial class InitialCreate
     {

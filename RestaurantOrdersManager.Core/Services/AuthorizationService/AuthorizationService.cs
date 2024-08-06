@@ -17,9 +17,9 @@ namespace RestaurantOrdersManager.Core.Services.RolesAndUsersServies
     public class AuthorizationService : IAuthorizationService
     {
         private readonly IConfiguration _configuration;
-        private readonly RolesAndUsersDbContext _dbContext;
+        private readonly AuthorizationDbContext _dbContext;
 
-        public AuthorizationService(IConfiguration configuration, RolesAndUsersDbContext dbContext)
+        public AuthorizationService(IConfiguration configuration, AuthorizationDbContext dbContext)
         {
             _dbContext = dbContext;
             _configuration = configuration;

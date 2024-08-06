@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace RestaurantOrdersManager.Core.DatabaseDbContext
 {
-    public class RolesAndUsersDbContext : DbContext
+    public class AuthorizationDbContext : DbContext
     {
-        public RolesAndUsersDbContext(DbContextOptions<RolesAndUsersDbContext> options) : base(options)
+        public AuthorizationDbContext(DbContextOptions<AuthorizationDbContext> options) : base(options)
         {
         }
 
