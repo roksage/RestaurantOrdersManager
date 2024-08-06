@@ -4,7 +4,7 @@ using RestaurantOrdersManager.Core.ServiceContracts.RolesAndUsersDTO;
 
 namespace RestaurantOrdersManager.Core.ServiceContracts.RolesAndUsersServices
 {
-    public interface IRolesAndUsersService
+    public interface IAuthorizationService
     {
         Task<AuthenticateResponse?> Authenticate(AuthenticateRequest model);
         Task<User?> GetById(int id);

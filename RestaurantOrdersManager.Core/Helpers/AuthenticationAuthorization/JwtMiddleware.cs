@@ -20,7 +20,7 @@ namespace RestaurantOrdersManager.Core.Helpers.AuthenticationAuthorization.JwtMi
             _appSettings = appSettings.Value;
         }
 
-        public async Task Invoke(HttpContext context, IRolesAndUsersService userService)
+        public async Task Invoke(HttpContext context, IAuthorizationService userService)
         {
             var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
 
@@ -30,7 +30,7 @@ namespace RestaurantOrdersManager.Core.Helpers.AuthenticationAuthorization.JwtMi
             await _next(context);
         }
 
-        private async Task attachUserToContext(HttpContext context, IRolesAndUsersService userService, string token)
+        private async Task attachUserToContext(HttpContext context, IAuthorizationService userService, string token)
         {
             try
             {

@@ -10,9 +10,9 @@ namespace RestaurantOrdersManager.WebAPI.Controllers.RolesAndUsersControllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly IRolesAndUsersService _rolesAndUsersService;
+        private readonly IAuthorizationService _rolesAndUsersService;
 
-        public UsersController(IRolesAndUsersService rolesAndUsersService)
+        public UsersController(IAuthorizationService rolesAndUsersService)
         {
             _rolesAndUsersService = rolesAndUsersService;
         }

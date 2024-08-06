@@ -3,8 +3,8 @@ using RestaurantOrdersManager.Core.ServiceContracts.DTO.MenuItemDTO;
 using RestaurantOrdersManager.Core.ServiceContracts.RestaurantOrdersServices;
 using RestaurantOrdersManager.Core.Services;
 using System.ComponentModel.DataAnnotations;
-using RestaurantOrdersManager.Core.Helpers.AuthenticationAuthorization.AuthorizeAttribute;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace RestaurantOrdersManager.WebAPI.Controllers.RestaurantOrdersControllers
 {
