@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
@@ -12,44 +14,27 @@ using RestaurantOrdersManager.Infrastructure;
 
 namespace RestaurantOrdersManager.API.IntegrationTests
 {
-    internal class RestaurantOrdersManagerWebApplicationFactory : WebApplicationFactory<Program>
+    public class CustomWebApplicationFactory<TStartup> : WebApplicationFactory<TStartup> where TStartup : class
     {
-
-
-
-
-        protected override IHost CreateHost(IHostBuilder builder)
+        protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
-            // Add mock/test services to the builder here
             builder.ConfigureServices(services =>
             {
-                services.AddScoped(scope =>
+                // Remove the existing authentication setup
+                services.RemoveAll(typeof(IAuthenticationSchemeProvider));
+
+                // Add the custom test authentication handler
+                services.AddAuthentication("Test")
+                    .AddScheme<AuthenticationSchemeOptions, TestAuthHandler>("Test", options => { });
+
+                // Ensure the test authentication is the default scheme
+                services.AddAuthorization(options =>
                 {
-                    // Replace SQLite with in-memory database for tests
-                    return new DbContextOptionsBuilder<RestaurantOrdersDbContext>()
-                        .UseInMemoryDatabase("Tests")
-                        .UseApplicationServiceProvider(scope)
-                        .Options;
+                    options.DefaultPolicy = new AuthorizationPolicyBuilder("Test")
+                        .RequireAuthenticatedUser()
+                        .Build();
                 });
-
-                // Ensure the database is seeded
-                var serviceProvider = services.BuildServiceProvider();
-                using (var scope = serviceProvider.CreateScope())
-                {
-                    var scopedServices = scope.ServiceProvider;
-                    var db = scopedServices.GetRequiredService<RestaurantOrdersDbContext>();
-                    SeedDatabase(db);
-                }
             });
-
-            return base.CreateHost(builder);
-        }
-
-        private void SeedDatabase(RestaurantOrdersDbContext context)
-        {
-            // Ensure the database is created
-            context.Database.EnsureCreated();
-            context.SaveChanges();
         }
     }
 }
