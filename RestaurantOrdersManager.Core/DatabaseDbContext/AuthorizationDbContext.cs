@@ -55,10 +55,6 @@ namespace RestaurantOrdersManager.Core.DatabaseDbContext
                 Role = "User"
             });
 
-
-
-
-
             modelBuilder.Entity<User>()
             .Property(f => f.Id)
             .ValueGeneratedOnAdd();

@@ -2,15 +2,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Hosting;
-using Microsoft.VisualStudio.TestPlatform.TestHost;
-using RestaurantOrdersManager.Core.Entities.RestaurantOrders;
 using RestaurantOrdersManager.Infrastructure;
-
 
 namespace RestaurantOrdersManager.API.IntegrationTests
 {
@@ -20,6 +15,32 @@ namespace RestaurantOrdersManager.API.IntegrationTests
         {
             builder.ConfigureServices(services =>
             {
+                // Remove the existing RestaurantOrdersDbContext registration
+                var descriptor = services.SingleOrDefault(
+                    d => d.ServiceType == typeof(DbContextOptions<RestaurantOrdersDbContext>));
+                if (descriptor != null)
+                {
+                    services.Remove(descriptor);
+                }
+
+                // Add the in-memory database for testing
+                services.AddDbContext<RestaurantOrdersDbContext>(options =>
+                {
+                    options.UseInMemoryDatabase("InMemoryDatabase");
+                });
+
+                var serviceProvider = services.BuildServiceProvider();
+
+                using (var scope = serviceProvider.CreateScope())
+                {
+                    var scopedServices = scope.ServiceProvider;
+                    var db = scopedServices.GetRequiredService<RestaurantOrdersDbContext>();
+
+                    db.Database.EnsureCreated();
+
+
+                }
+
                 // Remove the existing authentication setup
                 services.RemoveAll(typeof(IAuthenticationSchemeProvider));
 
