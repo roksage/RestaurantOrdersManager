@@ -1,4 +1,5 @@
 
+using FluentAssertions.Common;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -16,8 +17,6 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 
 
 
@@ -47,6 +46,7 @@ builder.Services.AddControllers()
         options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
         options.SerializerSettings.PreserveReferencesHandling = PreserveReferencesHandling.None;
     });
+
 
 
 
@@ -88,6 +88,8 @@ builder.Services.AddSwaggerGen(option =>
 });
 
 
+//reservation caching
+builder.Services.AddMemoryCache();
 
 builder.Services.AddAuthentication(options =>
 {
