@@ -126,7 +126,7 @@ namespace RestaurantOrdersManager.Infrastructure
             );
 
             modelBuilder.Entity<Reservation>().HasData(
-                new Reservation { ReservationId = 1, ReservationInfo = "Test Reservation", StartTime = DateTime.Now, EndTime = DateTime.Now.AddHours(2), TableId = 2 }
+                new Reservation { ReservationId = 1, ReservationInfo = "Test Reservation", StartTime = DateTime.Now, EndTime = DateTime.Now.AddHours(2), ReservationStatus = ReservationEnums.Pending, TableId = 2 }
                 );
 
 

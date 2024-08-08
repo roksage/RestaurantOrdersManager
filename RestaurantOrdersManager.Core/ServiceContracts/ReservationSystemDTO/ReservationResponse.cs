@@ -1,4 +1,5 @@
 ﻿using RestaurantOrdersManager.Core.Entities.ReservationSystem;
+using RestaurantOrdersManager.Core.Enums;
 
 namespace RestaurantOrdersManager.Core.ServiceContracts.ReservationSystemDTO
 {
@@ -9,6 +10,7 @@ namespace RestaurantOrdersManager.Core.ServiceContracts.ReservationSystemDTO
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
 
+        public ReservationEnums ReservationStatus { get; set; }
     }
     public static class ReservationResponseExtension
     {
@@ -19,7 +21,8 @@ namespace RestaurantOrdersManager.Core.ServiceContracts.ReservationSystemDTO
                 ReservationId = request.ReservationId,
                 ReservationInfo = request.ReservationInfo,
                 StartTime = request.StartTime,
-                EndTime = request.EndTime
+                EndTime = request.EndTime,
+                ReservationStatus = request.ReservationStatus
             };
         }
     }

@@ -16,7 +16,6 @@ namespace RestaurantOrdersManager.Core.ServiceContracts.ReservationSystemDTO
         public DateTime StartTime { get; set; }
         [Required]
         public DateTime EndTime { get; set; }
-
         public Reservation Reservation()
         {
             return new Reservation()
