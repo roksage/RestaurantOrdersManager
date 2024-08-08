@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using RestaurantOrdersManager.Core.Entities.ReservationSystem;
 using RestaurantOrdersManager.Core.Entities.RestaurantOrders;
 using RestaurantOrdersManager.Core.Enums;
 
@@ -19,6 +20,7 @@ namespace RestaurantOrdersManager.Infrastructure
 
         public virtual DbSet<Ingredient> Ingredients { get; set; }
         public virtual DbSet<IngredientInMenuItem> IngredientsInMenuItem { get; set; }
+        public virtual DbSet<Reservation> Reservations { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -47,7 +49,7 @@ namespace RestaurantOrdersManager.Infrastructure
             modelBuilder.Entity<Table>().ToTable("Tables");
             modelBuilder.Entity<Ingredient>().ToTable("Ingredients");
             modelBuilder.Entity<IngredientInMenuItem>().ToTable("IngredientsInMenuItem");
-
+            modelBuilder.Entity<Reservation>().ToFunction("Reservations");
 
 
             modelBuilder.Entity<Table>().HasData(
@@ -123,6 +125,10 @@ namespace RestaurantOrdersManager.Infrastructure
                 new IngredientInMenuItem { IngredientInMenuItemId = 5, IngredientId = 5, MenuItemId = 5 }
             );
 
+            modelBuilder.Entity<Reservation>().HasData(
+                new Reservation { ReservationId = 1, ReservationInfo = "Test Reservation", StartTime = DateTime.Now, EndTime = DateTime.Now.AddHours(2), TableId = 2 }
+                );
+
 
 
             modelBuilder.Entity<Employee>()
@@ -153,6 +159,9 @@ namespace RestaurantOrdersManager.Infrastructure
                 .Property(f => f.IngredientId)
                 .ValueGeneratedOnAdd();
 
+            modelBuilder.Entity<Reservation>()
+                .Property (f => f.ReservationId)
+                .ValueGeneratedOnAdd();
 
 
 
@@ -182,7 +191,11 @@ namespace RestaurantOrdersManager.Infrastructure
                 .HasForeignKey(im => im.IngredientId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-
+            modelBuilder.Entity<Reservation>()
+                .HasOne(o => o.Table)
+                .WithMany(o => o.Reservations)
+                .HasForeignKey(o => o.TableId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

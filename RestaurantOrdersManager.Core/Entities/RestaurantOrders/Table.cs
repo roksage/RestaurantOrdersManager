@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RestaurantOrdersManager.Core.Entities.ReservationSystem;
 
 namespace RestaurantOrdersManager.Core.Entities.RestaurantOrders
 {
@@ -20,6 +21,7 @@ namespace RestaurantOrdersManager.Core.Entities.RestaurantOrders
         public TableStatusEnums Status { get; set; }
         public ICollection<Order> Orders { get; set; } = new List<Order>();
 
+        public ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
 
         public Table()
         {

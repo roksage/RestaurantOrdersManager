@@ -21,6 +21,8 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
+    <Folder Include="ServiceContracts\ReservationSystemServices\" />
+    <Folder Include="Services\ReservationSystemService\" />
   </ItemGroup>
 
 </Project>
