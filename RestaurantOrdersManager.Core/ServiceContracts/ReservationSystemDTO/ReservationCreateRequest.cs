@@ -16,13 +16,17 @@ namespace RestaurantOrdersManager.Core.ServiceContracts.ReservationSystemDTO
         public DateTime StartTime { get; set; }
         [Required]
         public DateTime EndTime { get; set; }
+
+        [Required]
+        public int PeopleCount { get; set; }
         public Reservation Reservation()
         {
             return new Reservation()
             {
                 ReservationInfo = ReservationInfo,
                 StartTime = StartTime,
-                EndTime = EndTime
+                EndTime = EndTime,
+                PeopleCount = PeopleCount
             };
         }
     }

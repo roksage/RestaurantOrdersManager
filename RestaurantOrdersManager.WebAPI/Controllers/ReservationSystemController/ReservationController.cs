@@ -1,7 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
+using RestaurantOrdersManager.Core.ServiceContracts.ReservationSystemDTO;
+using RestaurantOrdersManager.Core.ServiceContracts.ReservationSystemServices;
 using RestaurantOrdersManager.Core.ServiceContracts.RestaurantOrdersServices;
+using RestaurantOrdersManager.Infrastructure;
 using System;
 using System.Threading.Tasks;
 
@@ -11,15 +15,17 @@ namespace RestaurantOrdersManager.API.Controllers
     [ApiController]
     public class ReservationController : ControllerBase
     {
+        private readonly RestaurantOrdersDbContext _dbContext;
         private readonly IMemoryCache _memoryCache;
-        private readonly ITableService _tableService;
+        private readonly IReservationSystem _reservationSystem;
         private readonly ILogger<ReservationController> _logger;
 
-        public ReservationController(IMemoryCache memoryCache, ITableService tableService, ILogger<ReservationController> logger)
+        public ReservationController(IMemoryCache memoryCache, IReservationSystem reservationSystem, ILogger<ReservationController> logger, RestaurantOrdersDbContext dbContext)
         {
             _memoryCache = memoryCache;
-            _tableService = tableService;
             _logger = logger;
+            _dbContext = dbContext;
+            _reservationSystem = reservationSystem;
         }
 
 
@@ -75,5 +81,23 @@ namespace RestaurantOrdersManager.API.Controllers
             RemoveValueFromCache(code);
             return Ok(value);
         }
+
+
+        [HttpPost("reserveTable")]
+        public async Task<ReservationResponse> reserveTable(ReservationCreateRequest request)
+        {
+            ReservationResponse reserve = await _reservationSystem.CreateReservation(request);
+
+            return reserve;
+        }
+
+
+        //needs update
+        [HttpGet("getreservations")]
+        public async Task<ActionResult<IEnumerable<(DateTime start, DateTime end)>>> GetFreeSlots()
+        {
+            return Ok();
+        }
+
     }
 }

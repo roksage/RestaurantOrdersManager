@@ -7,8 +7,10 @@ using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using RestaurantOrdersManager.Core.DatabaseDbContext;
 using RestaurantOrdersManager.Core.Entities.RolesAndUsers;
+using RestaurantOrdersManager.Core.ServiceContracts.ReservationSystemServices;
 using RestaurantOrdersManager.Core.ServiceContracts.RestaurantOrdersServices;
 using RestaurantOrdersManager.Core.ServiceContracts.RolesAndUsersServices;
+using RestaurantOrdersManager.Core.Services.ReservationSystemService;
 using RestaurantOrdersManager.Core.Services.RestaurantOrdersServices;
 using RestaurantOrdersManager.Core.Services.RolesAndUsersServies;
 using RestaurantOrdersManager.Infrastructure;
@@ -29,7 +31,7 @@ builder.Services.AddScoped<ITableService, TableService>();
 builder.Services.AddScoped<IIngredientService, IngredientService>();
 builder.Services.AddScoped<IIngredientInMenuItemService, IngredientInMenuItemService>();
 builder.Services.AddTransient<IAuthorizationService, AuthorizationService>();
-
+builder.Services.AddScoped<IReservationSystem, ReservationSystem>();
 
 
 builder.Services.AddDbContext<RestaurantOrdersDbContext>(options =>

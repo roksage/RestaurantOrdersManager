@@ -49,7 +49,7 @@ namespace RestaurantOrdersManager.Infrastructure
             modelBuilder.Entity<Table>().ToTable("Tables");
             modelBuilder.Entity<Ingredient>().ToTable("Ingredients");
             modelBuilder.Entity<IngredientInMenuItem>().ToTable("IngredientsInMenuItem");
-            modelBuilder.Entity<Reservation>().ToFunction("Reservations");
+            modelBuilder.Entity<Reservation>().ToTable("Reservations");
 
 
             modelBuilder.Entity<Table>().HasData(

@@ -17,7 +17,7 @@ namespace RestaurantOrdersManager.Core.ServiceContracts.RestaurantOrdersServices
 
         Task<TableResponse> GetTableById(int TableId);
 
-
+        Task<IEnumerable<TableResponse>> GetAllTables();
         //add parameter to check free or occupied
         Task<IEnumerable<TableResponse>> GetAllTablesFreeOccupied(Enums.TableStatusEnums status);
 

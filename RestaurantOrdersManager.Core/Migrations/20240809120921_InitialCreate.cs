@@ -128,7 +128,8 @@ namespace RestaurantOrdersManager.Core.Migrations
                     StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ReservationStatus = table.Column<int>(type: "int", nullable: false),
-                    TableId = table.Column<int>(type: "int", nullable: true)
+                    TableId = table.Column<int>(type: "int", nullable: false),
+                    PeopleCount = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -240,40 +241,40 @@ namespace RestaurantOrdersManager.Core.Migrations
                 columns: new[] { "OrderId", "CreatedBy", "TableId", "TimeCreated", "TimeFinished" },
                 values: new object[,]
                 {
-                    { 1, 1, 1, new DateTime(2024, 8, 8, 16, 4, 28, 410, DateTimeKind.Local).AddTicks(4413), null },
-                    { 2, 2, 1, new DateTime(2024, 8, 7, 16, 4, 28, 410, DateTimeKind.Local).AddTicks(4416), null },
-                    { 3, 3, 1, new DateTime(2024, 8, 6, 16, 4, 28, 410, DateTimeKind.Local).AddTicks(4423), null },
-                    { 4, 1, 2, new DateTime(2024, 8, 5, 16, 4, 28, 410, DateTimeKind.Local).AddTicks(4425), null },
-                    { 5, 2, 2, new DateTime(2024, 8, 4, 16, 4, 28, 410, DateTimeKind.Local).AddTicks(4428), null },
-                    { 6, 3, 3, new DateTime(2024, 8, 3, 16, 4, 28, 410, DateTimeKind.Local).AddTicks(4430), null },
-                    { 7, 1, 3, new DateTime(2024, 8, 2, 16, 4, 28, 410, DateTimeKind.Local).AddTicks(4432), null },
-                    { 8, 2, 4, new DateTime(2024, 8, 1, 16, 4, 28, 410, DateTimeKind.Local).AddTicks(4434), null },
-                    { 9, 3, 4, new DateTime(2024, 7, 31, 16, 4, 28, 410, DateTimeKind.Local).AddTicks(4436), null },
-                    { 10, 1, 5, new DateTime(2024, 7, 30, 16, 4, 28, 410, DateTimeKind.Local).AddTicks(4438), null }
+                    { 1, 1, 1, new DateTime(2024, 8, 9, 15, 9, 21, 109, DateTimeKind.Local).AddTicks(8502), null },
+                    { 2, 2, 1, new DateTime(2024, 8, 8, 15, 9, 21, 109, DateTimeKind.Local).AddTicks(8505), null },
+                    { 3, 3, 1, new DateTime(2024, 8, 7, 15, 9, 21, 109, DateTimeKind.Local).AddTicks(8511), null },
+                    { 4, 1, 2, new DateTime(2024, 8, 6, 15, 9, 21, 109, DateTimeKind.Local).AddTicks(8513), null },
+                    { 5, 2, 2, new DateTime(2024, 8, 5, 15, 9, 21, 109, DateTimeKind.Local).AddTicks(8515), null },
+                    { 6, 3, 3, new DateTime(2024, 8, 4, 15, 9, 21, 109, DateTimeKind.Local).AddTicks(8517), null },
+                    { 7, 1, 3, new DateTime(2024, 8, 3, 15, 9, 21, 109, DateTimeKind.Local).AddTicks(8519), null },
+                    { 8, 2, 4, new DateTime(2024, 8, 2, 15, 9, 21, 109, DateTimeKind.Local).AddTicks(8521), null },
+                    { 9, 3, 4, new DateTime(2024, 8, 1, 15, 9, 21, 109, DateTimeKind.Local).AddTicks(8524), null },
+                    { 10, 1, 5, new DateTime(2024, 7, 31, 15, 9, 21, 109, DateTimeKind.Local).AddTicks(8526), null }
                 });
 
             migrationBuilder.InsertData(
                 table: "Reservations",
-                columns: new[] { "ReservationId", "EndTime", "ReservationInfo", "ReservationStatus", "StartTime", "TableId" },
-                values: new object[] { 1, new DateTime(2024, 8, 8, 18, 4, 28, 410, DateTimeKind.Local).AddTicks(4568), "Test Reservation", 1, new DateTime(2024, 8, 8, 16, 4, 28, 410, DateTimeKind.Local).AddTicks(4566), 2 });
+                columns: new[] { "ReservationId", "EndTime", "PeopleCount", "ReservationInfo", "ReservationStatus", "StartTime", "TableId" },
+                values: new object[] { 1, new DateTime(2024, 8, 9, 17, 9, 21, 109, DateTimeKind.Local).AddTicks(8681), 0, "Test Reservation", 1, new DateTime(2024, 8, 9, 15, 9, 21, 109, DateTimeKind.Local).AddTicks(8680), 2 });
 
             migrationBuilder.InsertData(
                 table: "OrderMenuItems",
                 columns: new[] { "OrderedMenuItemId", "MenuItemId", "OrderId", "ProcessCompleted", "ProcessStarted" },
                 values: new object[,]
                 {
-                    { 1, 1, 1, null, new DateTime(2024, 8, 8, 16, 4, 28, 410, DateTimeKind.Local).AddTicks(4487) },
-                    { 2, 2, 1, null, new DateTime(2024, 8, 8, 16, 4, 28, 410, DateTimeKind.Local).AddTicks(4490) },
-                    { 3, 3, 2, null, new DateTime(2024, 8, 7, 16, 4, 28, 410, DateTimeKind.Local).AddTicks(4492) },
-                    { 4, 4, 3, null, new DateTime(2024, 8, 6, 16, 4, 28, 410, DateTimeKind.Local).AddTicks(4495) },
-                    { 5, 5, 4, null, new DateTime(2024, 8, 5, 16, 4, 28, 410, DateTimeKind.Local).AddTicks(4497) },
-                    { 6, 6, 5, null, new DateTime(2024, 8, 4, 16, 4, 28, 410, DateTimeKind.Local).AddTicks(4499) },
-                    { 7, 7, 6, null, new DateTime(2024, 8, 3, 16, 4, 28, 410, DateTimeKind.Local).AddTicks(4501) },
-                    { 8, 8, 7, null, new DateTime(2024, 8, 2, 16, 4, 28, 410, DateTimeKind.Local).AddTicks(4504) },
-                    { 9, 9, 8, null, new DateTime(2024, 8, 1, 16, 4, 28, 410, DateTimeKind.Local).AddTicks(4506) },
-                    { 10, 10, 9, null, new DateTime(2024, 7, 31, 16, 4, 28, 410, DateTimeKind.Local).AddTicks(4509) },
-                    { 11, 1, 10, null, new DateTime(2024, 7, 30, 16, 4, 28, 410, DateTimeKind.Local).AddTicks(4511) },
-                    { 12, 2, 10, null, new DateTime(2024, 7, 30, 16, 4, 28, 410, DateTimeKind.Local).AddTicks(4513) }
+                    { 1, 1, 1, null, new DateTime(2024, 8, 9, 15, 9, 21, 109, DateTimeKind.Local).AddTicks(8543) },
+                    { 2, 2, 1, null, new DateTime(2024, 8, 9, 15, 9, 21, 109, DateTimeKind.Local).AddTicks(8545) },
+                    { 3, 3, 2, null, new DateTime(2024, 8, 8, 15, 9, 21, 109, DateTimeKind.Local).AddTicks(8547) },
+                    { 4, 4, 3, null, new DateTime(2024, 8, 7, 15, 9, 21, 109, DateTimeKind.Local).AddTicks(8549) },
+                    { 5, 5, 4, null, new DateTime(2024, 8, 6, 15, 9, 21, 109, DateTimeKind.Local).AddTicks(8551) },
+                    { 6, 6, 5, null, new DateTime(2024, 8, 5, 15, 9, 21, 109, DateTimeKind.Local).AddTicks(8553) },
+                    { 7, 7, 6, null, new DateTime(2024, 8, 4, 15, 9, 21, 109, DateTimeKind.Local).AddTicks(8555) },
+                    { 8, 8, 7, null, new DateTime(2024, 8, 3, 15, 9, 21, 109, DateTimeKind.Local).AddTicks(8560) },
+                    { 9, 9, 8, null, new DateTime(2024, 8, 2, 15, 9, 21, 109, DateTimeKind.Local).AddTicks(8562) },
+                    { 10, 10, 9, null, new DateTime(2024, 8, 1, 15, 9, 21, 109, DateTimeKind.Local).AddTicks(8628) },
+                    { 11, 1, 10, null, new DateTime(2024, 7, 31, 15, 9, 21, 109, DateTimeKind.Local).AddTicks(8630) },
+                    { 12, 2, 10, null, new DateTime(2024, 7, 31, 15, 9, 21, 109, DateTimeKind.Local).AddTicks(8632) }
                 });
 
             migrationBuilder.CreateIndex(

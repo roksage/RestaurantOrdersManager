@@ -10,7 +10,8 @@ namespace RestaurantOrdersManager.Core.Entities.ReservationSystem
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
         public ReservationEnums ReservationStatus { get; set; }
-        public int? TableId { get; set; }
+        public int TableId { get; set; }
+        public int PeopleCount {  get; set; } 
         public Table Table { get; set; }
 
         public Reservation()

@@ -9,6 +9,7 @@ namespace RestaurantOrdersManager.Core.ServiceContracts.ReservationSystemDTO
         public string ReservationInfo { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
+        public int PeopleCount { get; set; }
 
         public ReservationEnums ReservationStatus { get; set; }
     }
@@ -22,7 +23,8 @@ namespace RestaurantOrdersManager.Core.ServiceContracts.ReservationSystemDTO
                 ReservationInfo = request.ReservationInfo,
                 StartTime = request.StartTime,
                 EndTime = request.EndTime,
-                ReservationStatus = request.ReservationStatus
+                ReservationStatus = request.ReservationStatus,
+                PeopleCount = request.PeopleCount
             };
         }
     }
