@@ -4,24 +4,46 @@ using RestaurantOrdersManager.Core.ServiceContracts.ReservationSystemDTO;
 using RestaurantOrdersManager.Core.ServiceContracts.ReservationSystemServices;
 using RestaurantOrdersManager.Core.ServiceContracts.RestaurantOrdersServices;
 using RestaurantOrdersManager.Infrastructure;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RestaurantOrdersManager.Core.Services.ReservationSystemService
 {
     public class ReservationSystem : IReservationSystem
-    { 
+    {
         private readonly RestaurantOrdersDbContext _dbContext;
         private readonly ITableService _tableService;
+
+
 
         public ReservationSystem(RestaurantOrdersDbContext dbContext, ITableService tableService)
         {
             _dbContext = dbContext;
             _tableService = tableService;
         }
+
+        public static DateTime RoundUpTime(DateTime dateTime, bool roundUp)
+        {
+            int quarterHour = 15;
+            int minutes = dateTime.Minute;
+            int roundedMinutes;
+
+            if (roundUp)
+            {
+                roundedMinutes = (minutes / quarterHour) * quarterHour;
+            }
+            else
+            {
+                roundedMinutes = ((minutes / quarterHour) + 1) * quarterHour;
+                if (roundedMinutes == 60)
+                {
+                    roundedMinutes = 0;
+                    dateTime = dateTime.AddHours(1);
+                }
+            }
+
+            return new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, dateTime.Hour, roundedMinutes, 0);
+        }
+
 
         public async Task<ReservationResponse> CreateReservation(ReservationCreateRequest request)
         {
@@ -35,16 +57,34 @@ namespace RestaurantOrdersManager.Core.Services.ReservationSystemService
             IEnumerable<TableResponse> tablesWithEnoughSeats = tables.Where(seats => seats.Seats >= request.PeopleCount).OrderBy(s => s.Seats);
 
             //find table that is not reserved or occupied at specific time
-            foreach(TableResponse table in tablesWithEnoughSeats)
+            foreach (TableResponse table in tablesWithEnoughSeats)
             {
-                var emptySlotForSpecificTableAndDate = await GetFreeTimeSlotsByTable(table.TableId, request.StartTime);
+                IEnumerable<(DateTime start, DateTime end)> emptySlotForSpecificTableAndDate = await GetFreeTimeSlotsByTable(table.TableId, request.StartTime);
 
-                await Console.Out.WriteLineAsync(table.TableId.ToString());
-                foreach (var item in emptySlotForSpecificTableAndDate)
+                //round up start time to 15minutes interval
+                DateTime RoundedStartTime = RoundUpTime(request.StartTime, true);
+
+                //round up end time to 15minutes interval
+                DateTime RoundedEndTime = RoundUpTime(request.EndTime, false);
+
+                var allSlotsInReservationTime = new List<(DateTime start, DateTime end)>();
+                // Generate all possible 15-minute slots within the start and end times
+                for (var slotStart = RoundedStartTime; slotStart < RoundedEndTime; slotStart = slotStart.AddMinutes(15))
                 {
-                    await Console.Out.WriteLineAsync(item.ToString());
+                    var slotEnd = slotStart.AddMinutes(15);
+                    allSlotsInReservationTime.Add((slotStart, slotEnd));
                 }
-                
+
+
+
+                var checkIfok = allSlotsInReservationTime.All(x => emptySlotForSpecificTableAndDate.Any(y => y == x));
+
+                await Console.Out.WriteLineAsync(RoundedStartTime.ToString());
+                await Console.Out.WriteLineAsync(RoundedEndTime.ToString());
+                //if (checkIfok)
+                //{
+
+                //}
             }
 
 
@@ -59,7 +99,7 @@ namespace RestaurantOrdersManager.Core.Services.ReservationSystemService
             var workingHoursEnd = new TimeSpan(17, 0, 0);
 
             //set date to 12:00AM
-            DateTime dateTime = date.Date.Add(new TimeSpan(0,0,0));
+            DateTime dateTime = date.Date.Add(new TimeSpan(0, 0, 0));
 
             //set to working hours
             var startOfWorkDay = dateTime.Add(workingHoursStart);
