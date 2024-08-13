@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using RestaurantOrdersManager.Core.Entities.ReservationSystem;
 using RestaurantOrdersManager.Core.ServiceContracts.DTO.TableDTO;
 using RestaurantOrdersManager.Core.ServiceContracts.ReservationSystemDTO;
 using RestaurantOrdersManager.Core.ServiceContracts.ReservationSystemServices;
 using RestaurantOrdersManager.Core.ServiceContracts.RestaurantOrdersServices;
 using RestaurantOrdersManager.Infrastructure;
-using System.Linq;
+using System.Collections.Generic;
 
 namespace RestaurantOrdersManager.Core.Services.ReservationSystemService
 {
@@ -12,13 +13,25 @@ namespace RestaurantOrdersManager.Core.Services.ReservationSystemService
     {
         private readonly RestaurantOrdersDbContext _dbContext;
         private readonly ITableService _tableService;
-
-
+        private List<(int tableId, List<(DateTime start, DateTime end)>)> freeTimeSlotsByTable;
 
         public ReservationSystem(RestaurantOrdersDbContext dbContext, ITableService tableService)
         {
             _dbContext = dbContext;
             _tableService = tableService;
+        }
+
+        public static List<(DateTime, DateTime)> Generate15minuteSlots(DateTime startTime, DateTime endTime)
+        {
+            List<(DateTime, DateTime)> slotsList = new List<(DateTime, DateTime)>();
+
+            for (var slotStart = startTime; slotStart < endTime; slotStart = slotStart.AddMinutes(15))
+            {
+                var slotEnd = slotStart.AddMinutes(15);
+                slotsList.Add((slotStart, slotEnd));
+            }
+
+            return slotsList;
         }
 
         public static DateTime RoundUpTime(DateTime dateTime, bool roundUp)
@@ -67,58 +80,92 @@ namespace RestaurantOrdersManager.Core.Services.ReservationSystemService
                 //round up end time to 15minutes interval
                 DateTime RoundedEndTime = RoundUpTime(request.EndTime, false);
 
-                var allSlotsInReservationTime = new List<(DateTime start, DateTime end)>();
                 // Generate all possible 15-minute slots within the start and end times
-                for (var slotStart = RoundedStartTime; slotStart < RoundedEndTime; slotStart = slotStart.AddMinutes(15))
-                {
-                    var slotEnd = slotStart.AddMinutes(15);
-                    allSlotsInReservationTime.Add((slotStart, slotEnd));
-                }
 
+                var allSlotsInReservationTime = Generate15minuteSlots(RoundedStartTime, RoundedEndTime);
 
 
                 var checkIfok = allSlotsInReservationTime.All(x => emptySlotForSpecificTableAndDate.Any(y => y == x));
 
-                await Console.Out.WriteLineAsync(RoundedStartTime.ToString());
-                await Console.Out.WriteLineAsync(RoundedEndTime.ToString());
-                //if (checkIfok)
-                //{
-
-                //}
+                if (checkIfok)
+                {
+                    Reservation reservation = request.ToReservation();
+                    reservation.StartTime = RoundedStartTime;
+                    reservation.EndTime = RoundedEndTime;
+                    reservation.TableId = table.TableId;
+                    await _dbContext.AddAsync(reservation);
+                    await _dbContext.SaveChangesAsync();
+                    return reservation.ToReservationResponse();
+                }
             }
 
 
-            return new ReservationResponse { };
+            return null;
             //set table as reserved
 
         }
 
-        public async Task<IEnumerable<(DateTime start, DateTime end)>> GetFreeTimeSlotsByTable(int TableId, DateTime date)
+        public async Task<IEnumerable<(int tableId, IEnumerable<(DateTime start, DateTime end)>)>> GetFreeTimeSlotsAllTables(DateTime searchDate)
         {
-            var workingHoursStart = new TimeSpan(9, 0, 0);
-            var workingHoursEnd = new TimeSpan(17, 0, 0);
-
+            //
+            var freeTimeSlotsByTable = new List<(int tableId, IEnumerable<(DateTime start, DateTime end)>)>();           
             //set date to 12:00AM
-            DateTime dateTime = date.Date.Add(new TimeSpan(0, 0, 0));
+            DateTime dateTime = searchDate.Date.Add(new TimeSpan(0, 0, 0));
 
             //set to working hours
-            var startOfWorkDay = dateTime.Add(workingHoursStart);
-            var endOfWorkDay = dateTime.Add(workingHoursEnd);
+            var startOfWorkDay = dateTime.Add(new TimeSpan(9, 0, 0));
+            var endOfWorkDay = dateTime.Add(new TimeSpan(17, 0, 0));
+
+
+            IEnumerable<TableResponse> allTables = await _tableService.GetAllTables();
+
+            foreach (var table in allTables)
+            {
+
+                // First, retrieve all reservations for the day and store them in a list
+                var reservations = await _dbContext.Reservations
+                    .AsNoTracking()
+                    .Where(r => r.StartTime.Date == dateTime && r.TableId == table.TableId)
+                    .OrderBy(r => r.StartTime)
+                    .ToListAsync();
+
+                //get 15minute slots of working hours
+                List<(DateTime start, DateTime end)> allSlots = Generate15minuteSlots(startOfWorkDay, endOfWorkDay);
+
+
+                // Filter out the slots that overlap with any existing reservation
+                var freeSlots = allSlots.Where(slot =>
+                    !reservations.Any(reservation =>
+                        slot.start < reservation.EndTime && reservation.StartTime < slot.end))
+                    .ToList();
+
+                freeTimeSlotsByTable.Add((table.TableId, freeSlots));
+            }
+
+            return freeTimeSlotsByTable;
+        }
+
+        public async Task<IEnumerable<(DateTime start, DateTime end)>> GetFreeTimeSlotsByTable(int TableId, DateTime searchDate)
+        {
+
+            //set date to 12:00AM
+            DateTime dateTime = searchDate.Date.Add(new TimeSpan(0, 0, 0));
+
+            //set to working hours
+            var startOfWorkDay = dateTime.Add(new TimeSpan(9, 0, 0));
+            var endOfWorkDay = dateTime.Add(new TimeSpan(17, 0, 0));
+
+
 
             // First, retrieve all reservations for the day and store them in a list
             var reservations = await _dbContext.Reservations
                 .Where(r => r.StartTime.Date == dateTime && r.TableId == TableId)
                 .OrderBy(r => r.StartTime)
-                .ToListAsync();  // Execute query and store result in a list
+                .ToListAsync();
 
-            var allSlots = new List<(DateTime start, DateTime end)>();
+            //get 15minute slots of working hours
+            List<(DateTime start, DateTime end)> allSlots = Generate15minuteSlots(startOfWorkDay, endOfWorkDay);
 
-            // Generate all possible 15-minute slots within the working hours
-            for (var slotStart = startOfWorkDay; slotStart < endOfWorkDay; slotStart = slotStart.AddMinutes(15))
-            {
-                var slotEnd = slotStart.AddMinutes(15);
-                allSlots.Add((slotStart, slotEnd));
-            }
 
             // Filter out the slots that overlap with any existing reservation
             var freeSlots = allSlots.Where(slot =>

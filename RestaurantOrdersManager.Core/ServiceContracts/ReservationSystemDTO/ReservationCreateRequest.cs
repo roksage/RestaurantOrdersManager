@@ -19,7 +19,7 @@ namespace RestaurantOrdersManager.Core.ServiceContracts.ReservationSystemDTO
 
         [Required]
         public int PeopleCount { get; set; }
-        public Reservation Reservation()
+        public Reservation ToReservation()
         {
             return new Reservation()
             {

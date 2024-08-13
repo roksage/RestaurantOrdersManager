@@ -93,10 +93,12 @@ namespace RestaurantOrdersManager.API.Controllers
 
 
         //needs update
-        [HttpGet("getreservations")]
-        public async Task<ActionResult<IEnumerable<(DateTime start, DateTime end)>>> GetFreeSlots()
+        [HttpGet("GetFreeTimeSlotsAllTables")]
+        public async Task<IActionResult> GetFreeTimeSlotsAllTables(DateTime date)
         {
-            return Ok();
+            var timeSlots = await _reservationSystem.GetFreeTimeSlotsAllTables(date);
+
+            return Ok(timeSlots);
         }
 
     }

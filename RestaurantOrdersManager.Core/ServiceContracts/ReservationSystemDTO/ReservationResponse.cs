@@ -11,6 +11,7 @@ namespace RestaurantOrdersManager.Core.ServiceContracts.ReservationSystemDTO
         public DateTime EndTime { get; set; }
         public int PeopleCount { get; set; }
 
+        public int TableId { get; set; }
         public ReservationEnums ReservationStatus { get; set; }
     }
     public static class ReservationResponseExtension
@@ -24,7 +25,8 @@ namespace RestaurantOrdersManager.Core.ServiceContracts.ReservationSystemDTO
                 StartTime = request.StartTime,
                 EndTime = request.EndTime,
                 ReservationStatus = request.ReservationStatus,
-                PeopleCount = request.PeopleCount
+                PeopleCount = request.PeopleCount,
+                TableId = request.TableId
             };
         }
     }
