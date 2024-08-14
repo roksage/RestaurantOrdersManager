@@ -1,13 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using RestaurantOrdersManager.Core.ServiceContracts.ReservationSystemDTO;
 using RestaurantOrdersManager.Core.ServiceContracts.ReservationSystemServices;
-using RestaurantOrdersManager.Core.ServiceContracts.RestaurantOrdersServices;
-using RestaurantOrdersManager.Infrastructure;
-using System;
-using System.Threading.Tasks;
 
 namespace RestaurantOrdersManager.API.Controllers
 {
@@ -15,90 +9,94 @@ namespace RestaurantOrdersManager.API.Controllers
     [ApiController]
     public class ReservationController : ControllerBase
     {
-        private readonly RestaurantOrdersDbContext _dbContext;
-        private readonly IMemoryCache _memoryCache;
         private readonly IReservationSystem _reservationSystem;
         private readonly ILogger<ReservationController> _logger;
 
-        public ReservationController(IMemoryCache memoryCache, IReservationSystem reservationSystem, ILogger<ReservationController> logger, RestaurantOrdersDbContext dbContext)
+        public ReservationController(IReservationSystem reservationSystem, ILogger<ReservationController> logger)
         {
-            _memoryCache = memoryCache;
             _logger = logger;
-            _dbContext = dbContext;
             _reservationSystem = reservationSystem;
         }
 
 
-        private string SetValueToCache(string code, string value)
+
+
+        [HttpGet("confirmReservation/{verificationCode}")]
+        public async Task<IActionResult> confirmReservation(string verificationCode)
         {
-            var cacheExpiryOptions = new MemoryCacheEntryOptions
+            try
             {
-                AbsoluteExpiration = DateTime.Now.AddMinutes(1),
-                SlidingExpiration = TimeSpan.FromMinutes(1),
-                Priority = CacheItemPriority.High,
-            };
-            return _memoryCache.Set(code, value, cacheExpiryOptions);
-        }
-
-        private string GetValueFromCache(string code)
-        {
-            _memoryCache.TryGetValue(code, out string value);
-            return value;
-        }
-
-        private void RemoveValueFromCache(string code)
-        {
-            _memoryCache.Remove(code);
-        }
-
-        [HttpPost("add")]
-        public async Task<IActionResult> Add(string value)
-        {
-            var chars = "ABCDEFGHIJKLMNOPQRSTUVWXY";
-            var stringChars = new char[4];
-            var random = new Random();
-            for (int i = 0; i < stringChars.Length; i++)
-            {
-                stringChars[i] = chars[random.Next(chars.Length)];
+                ReservationResponse confirmReservation = await _reservationSystem.ConfirmReservation(verificationCode);
+                return Ok(new ReservationResponse
+                {
+                    ReservationId = confirmReservation.ReservationId,
+                    StartTime = confirmReservation.StartTime,
+                    EndTime = confirmReservation.EndTime,
+                    PeopleCount = confirmReservation.PeopleCount,
+                    ReservationInfo = confirmReservation.ReservationInfo,
+                    ReservationStatus = confirmReservation.ReservationStatus
+                });
             }
-            var code = new string(stringChars);
-
-            string result = SetValueToCache(code, value);
-            _logger.LogInformation($"Added cache entry with code: {code}");
-
-            return Ok(code);
-        }
-
-        [HttpGet("getByCode/{code}")]
-        public async Task<IActionResult> GetByCode(string code)
-        {
-            string value = GetValueFromCache(code);
-            if (value == null)
+            catch (InvalidOperationException ex)
             {
-                _logger.LogInformation($"Code {code} was not found, expired or wrong one");
-                return NotFound("code expired");
+                return Conflict(new { Message = ex.Message });
             }
-            RemoveValueFromCache(code);
-            return Ok(value);
+            catch (ArgumentNullException ex)
+            {
+                return NotFound(new { Message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = ex.Message });
+            }
+
         }
 
 
         [HttpPost("reserveTable")]
-        public async Task<ReservationResponse> reserveTable(ReservationCreateRequest request)
+        public async Task<IActionResult> reserveTable(ReservationCreateRequest request)
         {
-            ReservationResponse reserve = await _reservationSystem.CreateReservation(request);
-
-            return reserve;
+            try
+            {
+                ReservationResponse reserve = await _reservationSystem.CreateReservation(request);
+                if (reserve != null)
+                {
+                    return Ok(new { ReservationId = reserve.ReservationId });
+                }
+                else
+                {
+                    return Conflict(new { messsage = "Failed to reserve table" });
+                }
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(new { Message = ex.Message });
+            }
+            catch (ArgumentNullException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, new { Message = "An unexpected error occurred. Please try again later." });
+            }
         }
 
 
         //needs update
         [HttpGet("GetFreeTimeSlotsAllTables")]
-        public async Task<IActionResult> GetFreeTimeSlotsAllTables(DateTime date)
+        public async Task<IActionResult> GetFreeTimeSlotsAllTables(DateTime date, int seats)
         {
-            var timeSlots = await _reservationSystem.GetFreeTimeSlotsAllTables(date);
+            try
+            {
+                var timeSlots = await _reservationSystem.GetFreeTimeSlotsAllTables(date, seats);
 
-            return Ok(timeSlots);
+                return Ok(timeSlots);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = ex.Message });
+            }
         }
 
     }

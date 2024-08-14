@@ -51,6 +51,9 @@ namespace RestaurantOrdersManager.Infrastructure
             modelBuilder.Entity<IngredientInMenuItem>().ToTable("IngredientsInMenuItem");
             modelBuilder.Entity<Reservation>().ToTable("Reservations");
 
+            //verification code has to be unique
+            modelBuilder.Entity<Reservation>().HasIndex(e => e.VerificationCode).IsUnique(true);
+
 
             modelBuilder.Entity<Table>().HasData(
                 new Table { TableId = 1, TableName = "TakeAway", Seats = 0, Status = Core.Enums.TableStatusEnums.Free },
@@ -126,7 +129,8 @@ namespace RestaurantOrdersManager.Infrastructure
             );
 
             modelBuilder.Entity<Reservation>().HasData(
-                new Reservation { ReservationId = 1, ReservationInfo = "Test Reservation", StartTime = DateTime.Now, EndTime = DateTime.Now.AddHours(2), ReservationStatus = ReservationEnums.Pending, TableId = 2 }
+                new Reservation { ReservationId = 1, ReservationInfo = "Test Reservation", StartTime = DateTime.Now, EndTime = DateTime.Now.AddHours(2), ReservationStatus = ReservationEnums.Pending, TableId = 2, Email = "test@email.com", VerificationCode = "ABCD" },
+                new Reservation { ReservationId = 21, ReservationInfo = "Test Reservation2", StartTime = DateTime.Now, EndTime = DateTime.Now.AddHours(3), ReservationStatus = ReservationEnums.Pending, TableId = 2, Email = "test@email.com", VerificationCode = "ABCDE" }
                 );
 
 

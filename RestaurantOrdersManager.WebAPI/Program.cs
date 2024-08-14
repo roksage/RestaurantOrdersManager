@@ -31,8 +31,8 @@ builder.Services.AddScoped<ITableService, TableService>();
 builder.Services.AddScoped<IIngredientService, IngredientService>();
 builder.Services.AddScoped<IIngredientInMenuItemService, IngredientInMenuItemService>();
 builder.Services.AddTransient<IAuthorizationService, AuthorizationService>();
-builder.Services.AddScoped<IReservationSystem, ReservationSystem>();
-
+builder.Services.AddScoped<IReservationSystem, ReservationSystemService>();
+builder.Services.AddScoped<ReservationServiceHelper>();
 
 builder.Services.AddDbContext<RestaurantOrdersDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ManagerDbContext")));

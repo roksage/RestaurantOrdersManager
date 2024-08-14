@@ -129,7 +129,10 @@ namespace RestaurantOrdersManager.Core.Migrations
                     EndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ReservationStatus = table.Column<int>(type: "int", nullable: false),
                     TableId = table.Column<int>(type: "int", nullable: false),
-                    PeopleCount = table.Column<int>(type: "int", nullable: false)
+                    PeopleCount = table.Column<int>(type: "int", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TimeCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    VerificationCode = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -241,40 +244,44 @@ namespace RestaurantOrdersManager.Core.Migrations
                 columns: new[] { "OrderId", "CreatedBy", "TableId", "TimeCreated", "TimeFinished" },
                 values: new object[,]
                 {
-                    { 1, 1, 1, new DateTime(2024, 8, 9, 15, 9, 21, 109, DateTimeKind.Local).AddTicks(8502), null },
-                    { 2, 2, 1, new DateTime(2024, 8, 8, 15, 9, 21, 109, DateTimeKind.Local).AddTicks(8505), null },
-                    { 3, 3, 1, new DateTime(2024, 8, 7, 15, 9, 21, 109, DateTimeKind.Local).AddTicks(8511), null },
-                    { 4, 1, 2, new DateTime(2024, 8, 6, 15, 9, 21, 109, DateTimeKind.Local).AddTicks(8513), null },
-                    { 5, 2, 2, new DateTime(2024, 8, 5, 15, 9, 21, 109, DateTimeKind.Local).AddTicks(8515), null },
-                    { 6, 3, 3, new DateTime(2024, 8, 4, 15, 9, 21, 109, DateTimeKind.Local).AddTicks(8517), null },
-                    { 7, 1, 3, new DateTime(2024, 8, 3, 15, 9, 21, 109, DateTimeKind.Local).AddTicks(8519), null },
-                    { 8, 2, 4, new DateTime(2024, 8, 2, 15, 9, 21, 109, DateTimeKind.Local).AddTicks(8521), null },
-                    { 9, 3, 4, new DateTime(2024, 8, 1, 15, 9, 21, 109, DateTimeKind.Local).AddTicks(8524), null },
-                    { 10, 1, 5, new DateTime(2024, 7, 31, 15, 9, 21, 109, DateTimeKind.Local).AddTicks(8526), null }
+                    { 1, 1, 1, new DateTime(2024, 8, 14, 14, 56, 58, 677, DateTimeKind.Local).AddTicks(1570), null },
+                    { 2, 2, 1, new DateTime(2024, 8, 13, 14, 56, 58, 677, DateTimeKind.Local).AddTicks(1574), null },
+                    { 3, 3, 1, new DateTime(2024, 8, 12, 14, 56, 58, 677, DateTimeKind.Local).AddTicks(1579), null },
+                    { 4, 1, 2, new DateTime(2024, 8, 11, 14, 56, 58, 677, DateTimeKind.Local).AddTicks(1581), null },
+                    { 5, 2, 2, new DateTime(2024, 8, 10, 14, 56, 58, 677, DateTimeKind.Local).AddTicks(1583), null },
+                    { 6, 3, 3, new DateTime(2024, 8, 9, 14, 56, 58, 677, DateTimeKind.Local).AddTicks(1585), null },
+                    { 7, 1, 3, new DateTime(2024, 8, 8, 14, 56, 58, 677, DateTimeKind.Local).AddTicks(1587), null },
+                    { 8, 2, 4, new DateTime(2024, 8, 7, 14, 56, 58, 677, DateTimeKind.Local).AddTicks(1591), null },
+                    { 9, 3, 4, new DateTime(2024, 8, 6, 14, 56, 58, 677, DateTimeKind.Local).AddTicks(1593), null },
+                    { 10, 1, 5, new DateTime(2024, 8, 5, 14, 56, 58, 677, DateTimeKind.Local).AddTicks(1595), null }
                 });
 
             migrationBuilder.InsertData(
                 table: "Reservations",
-                columns: new[] { "ReservationId", "EndTime", "PeopleCount", "ReservationInfo", "ReservationStatus", "StartTime", "TableId" },
-                values: new object[] { 1, new DateTime(2024, 8, 9, 17, 9, 21, 109, DateTimeKind.Local).AddTicks(8681), 0, "Test Reservation", 1, new DateTime(2024, 8, 9, 15, 9, 21, 109, DateTimeKind.Local).AddTicks(8680), 2 });
+                columns: new[] { "ReservationId", "Email", "EndTime", "PeopleCount", "ReservationInfo", "ReservationStatus", "StartTime", "TableId", "TimeCreated", "VerificationCode" },
+                values: new object[,]
+                {
+                    { 1, "test@email.com", new DateTime(2024, 8, 14, 16, 56, 58, 677, DateTimeKind.Local).AddTicks(1687), 0, "Test Reservation", 1, new DateTime(2024, 8, 14, 14, 56, 58, 677, DateTimeKind.Local).AddTicks(1686), 2, new DateTime(2024, 8, 14, 11, 56, 58, 677, DateTimeKind.Utc).AddTicks(1685), "ABCD" },
+                    { 21, "test@email.com", new DateTime(2024, 8, 14, 17, 56, 58, 677, DateTimeKind.Local).AddTicks(1690), 0, "Test Reservation2", 1, new DateTime(2024, 8, 14, 14, 56, 58, 677, DateTimeKind.Local).AddTicks(1689), 2, new DateTime(2024, 8, 14, 11, 56, 58, 677, DateTimeKind.Utc).AddTicks(1689), "ABCDE" }
+                });
 
             migrationBuilder.InsertData(
                 table: "OrderMenuItems",
                 columns: new[] { "OrderedMenuItemId", "MenuItemId", "OrderId", "ProcessCompleted", "ProcessStarted" },
                 values: new object[,]
                 {
-                    { 1, 1, 1, null, new DateTime(2024, 8, 9, 15, 9, 21, 109, DateTimeKind.Local).AddTicks(8543) },
-                    { 2, 2, 1, null, new DateTime(2024, 8, 9, 15, 9, 21, 109, DateTimeKind.Local).AddTicks(8545) },
-                    { 3, 3, 2, null, new DateTime(2024, 8, 8, 15, 9, 21, 109, DateTimeKind.Local).AddTicks(8547) },
-                    { 4, 4, 3, null, new DateTime(2024, 8, 7, 15, 9, 21, 109, DateTimeKind.Local).AddTicks(8549) },
-                    { 5, 5, 4, null, new DateTime(2024, 8, 6, 15, 9, 21, 109, DateTimeKind.Local).AddTicks(8551) },
-                    { 6, 6, 5, null, new DateTime(2024, 8, 5, 15, 9, 21, 109, DateTimeKind.Local).AddTicks(8553) },
-                    { 7, 7, 6, null, new DateTime(2024, 8, 4, 15, 9, 21, 109, DateTimeKind.Local).AddTicks(8555) },
-                    { 8, 8, 7, null, new DateTime(2024, 8, 3, 15, 9, 21, 109, DateTimeKind.Local).AddTicks(8560) },
-                    { 9, 9, 8, null, new DateTime(2024, 8, 2, 15, 9, 21, 109, DateTimeKind.Local).AddTicks(8562) },
-                    { 10, 10, 9, null, new DateTime(2024, 8, 1, 15, 9, 21, 109, DateTimeKind.Local).AddTicks(8628) },
-                    { 11, 1, 10, null, new DateTime(2024, 7, 31, 15, 9, 21, 109, DateTimeKind.Local).AddTicks(8630) },
-                    { 12, 2, 10, null, new DateTime(2024, 7, 31, 15, 9, 21, 109, DateTimeKind.Local).AddTicks(8632) }
+                    { 1, 1, 1, null, new DateTime(2024, 8, 14, 14, 56, 58, 677, DateTimeKind.Local).AddTicks(1615) },
+                    { 2, 2, 1, null, new DateTime(2024, 8, 14, 14, 56, 58, 677, DateTimeKind.Local).AddTicks(1617) },
+                    { 3, 3, 2, null, new DateTime(2024, 8, 13, 14, 56, 58, 677, DateTimeKind.Local).AddTicks(1619) },
+                    { 4, 4, 3, null, new DateTime(2024, 8, 12, 14, 56, 58, 677, DateTimeKind.Local).AddTicks(1621) },
+                    { 5, 5, 4, null, new DateTime(2024, 8, 11, 14, 56, 58, 677, DateTimeKind.Local).AddTicks(1623) },
+                    { 6, 6, 5, null, new DateTime(2024, 8, 10, 14, 56, 58, 677, DateTimeKind.Local).AddTicks(1625) },
+                    { 7, 7, 6, null, new DateTime(2024, 8, 9, 14, 56, 58, 677, DateTimeKind.Local).AddTicks(1627) },
+                    { 8, 8, 7, null, new DateTime(2024, 8, 8, 14, 56, 58, 677, DateTimeKind.Local).AddTicks(1629) },
+                    { 9, 9, 8, null, new DateTime(2024, 8, 7, 14, 56, 58, 677, DateTimeKind.Local).AddTicks(1631) },
+                    { 10, 10, 9, null, new DateTime(2024, 8, 6, 14, 56, 58, 677, DateTimeKind.Local).AddTicks(1633) },
+                    { 11, 1, 10, null, new DateTime(2024, 8, 5, 14, 56, 58, 677, DateTimeKind.Local).AddTicks(1635) },
+                    { 12, 2, 10, null, new DateTime(2024, 8, 5, 14, 56, 58, 677, DateTimeKind.Local).AddTicks(1637) }
                 });
 
             migrationBuilder.CreateIndex(
@@ -306,6 +313,12 @@ namespace RestaurantOrdersManager.Core.Migrations
                 name: "IX_Reservations_TableId",
                 table: "Reservations",
                 column: "TableId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reservations_VerificationCode",
+                table: "Reservations",
+                column: "VerificationCode",
+                unique: true);
         }
 
         /// <inheritdoc />

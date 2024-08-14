@@ -19,6 +19,9 @@ namespace RestaurantOrdersManager.Core.ServiceContracts.ReservationSystemDTO
 
         [Required]
         public int PeopleCount { get; set; }
+        [Required]
+        [EmailAddress]
+        public string Email {  get; set; }
         public Reservation ToReservation()
         {
             return new Reservation()
@@ -26,7 +29,8 @@ namespace RestaurantOrdersManager.Core.ServiceContracts.ReservationSystemDTO
                 ReservationInfo = ReservationInfo,
                 StartTime = StartTime,
                 EndTime = EndTime,
-                PeopleCount = PeopleCount
+                PeopleCount = PeopleCount,
+                Email = Email
             };
         }
     }

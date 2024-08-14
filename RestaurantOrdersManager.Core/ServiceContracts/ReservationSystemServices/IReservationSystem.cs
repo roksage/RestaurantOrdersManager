@@ -12,8 +12,8 @@ namespace RestaurantOrdersManager.Core.ServiceContracts.ReservationSystemService
         Task<ReservationResponse> CreateReservation(ReservationCreateRequest request);
         Task<IEnumerable<(DateTime start, DateTime end)>> GetFreeTimeSlotsByTable(int TableId, DateTime date);
 
-
-        Task<IEnumerable<(int tableId, IEnumerable<(DateTime start, DateTime end)>)>> GetFreeTimeSlotsAllTables(DateTime date);
+        Task<ReservationResponse> ConfirmReservation(string verification);
+        Task<IEnumerable<(int tableId, IEnumerable<(DateTime start, DateTime end)>)>> GetFreeTimeSlotsAllTables(DateTime date, int seats);
         
     }
 }

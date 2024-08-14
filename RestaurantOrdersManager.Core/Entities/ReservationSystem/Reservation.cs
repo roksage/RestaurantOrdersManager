@@ -1,5 +1,6 @@
 ﻿using RestaurantOrdersManager.Core.Entities.RestaurantOrders;
 using RestaurantOrdersManager.Core.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace RestaurantOrdersManager.Core.Entities.ReservationSystem
 {
@@ -13,10 +14,14 @@ namespace RestaurantOrdersManager.Core.Entities.ReservationSystem
         public int TableId { get; set; }
         public int PeopleCount {  get; set; } 
         public Table Table { get; set; }
+        public string Email {  get; set; } 
+        public DateTime TimeCreated { get; set; }
+        public string VerificationCode { get; set; }
 
         public Reservation()
         {
             ReservationStatus = ReservationEnums.Pending;
+            TimeCreated = DateTime.UtcNow;
         }
     }
 }
