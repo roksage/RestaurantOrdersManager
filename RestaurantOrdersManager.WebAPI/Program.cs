@@ -33,7 +33,7 @@ builder.Services.AddScoped<IIngredientInMenuItemService, IngredientInMenuItemSer
 builder.Services.AddTransient<IAuthorizationService, AuthorizationService>();
 builder.Services.AddScoped<IReservationSystem, ReservationSystemService>();
 builder.Services.AddScoped<ReservationServiceHelper>();
-builder.Services.AddHostedService<ReservationTimeHosterServices>();
+builder.Services.AddHostedService<ReservationTimedHostedService>();
 
 
 
