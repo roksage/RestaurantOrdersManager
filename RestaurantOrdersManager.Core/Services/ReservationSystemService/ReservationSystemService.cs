@@ -109,10 +109,10 @@ namespace RestaurantOrdersManager.Core.Services.ReservationSystemService
             foreach (var table in tablesWithEnoughSeats)
             {
 
-                // First, retrieve all reservations for the day and store them in a list
+                // retrieve all reservations for the day and store them in a list
                 var reservations = await _dbContext.Reservations
                     .AsNoTracking()
-                    .Where(r => r.StartTime.Date == dateTime && r.TableId == table.TableId)
+                    .Where(r => r.StartTime.Date == dateTime && r.TableId == table.TableId && r.ReservationStatus == Enums.ReservationEnums.Reserved)
                     .OrderBy(r => r.StartTime)
                     .ToListAsync();
 
@@ -144,9 +144,9 @@ namespace RestaurantOrdersManager.Core.Services.ReservationSystemService
 
 
 
-            // First, retrieve all reservations for the day and store them in a list
+            //  retrieve all reservations for the day and store them in a list
             var reservations = await _dbContext.Reservations
-                .Where(r => r.StartTime.Date == dateTime && r.TableId == TableId)
+                .Where(r => r.StartTime.Date == dateTime && r.TableId == TableId && r.ReservationStatus == Enums.ReservationEnums.Reserved)
                 .OrderBy(r => r.StartTime)
                 .ToListAsync();
 
