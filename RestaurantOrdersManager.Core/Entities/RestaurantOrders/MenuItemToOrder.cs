@@ -12,6 +12,8 @@ namespace RestaurantOrdersManager.Core.Entities.RestaurantOrders
         public MenuItem MenuItem { get; set; }
         public DateTime ProcessStarted { get; set; }
         public DateTime? ProcessCompleted { get; set; }
+        public int CookingStationId { get; set; }
+        public CookingStation CookingStation { get; set; }
 
         public MenuItemToOrder()
         {

@@ -24,7 +24,6 @@ namespace RestaurantOrdersManager.Core.Services.ReservationSystemService
         {
             _logger.LogInformation("Reservation checker running");
 
-            // When the timer should have no due-time, then do the work once now.
             DoWork();
 
             using PeriodicTimer timer = new(TimeSpan.FromSeconds(30));
@@ -42,7 +41,6 @@ namespace RestaurantOrdersManager.Core.Services.ReservationSystemService
             }
         }
 
-        // Could also be a async method, that can be awaited in ExecuteAsync above
         private async void DoWork()
         {
             int count = Interlocked.Increment(ref _executionCount);

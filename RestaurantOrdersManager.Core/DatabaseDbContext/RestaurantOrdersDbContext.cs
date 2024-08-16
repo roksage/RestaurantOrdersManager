@@ -17,10 +17,10 @@ namespace RestaurantOrdersManager.Infrastructure
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<MenuItemToOrder> OrderMenuItems { get; set; }
         public virtual DbSet<Table> Tables { get; set; }
-
         public virtual DbSet<Ingredient> Ingredients { get; set; }
         public virtual DbSet<IngredientInMenuItem> IngredientsInMenuItem { get; set; }
         public virtual DbSet<Reservation> Reservations { get; set; }
+        public virtual DbSet<CookingStation> CookingStations { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -50,6 +50,7 @@ namespace RestaurantOrdersManager.Infrastructure
             modelBuilder.Entity<Ingredient>().ToTable("Ingredients");
             modelBuilder.Entity<IngredientInMenuItem>().ToTable("IngredientsInMenuItem");
             modelBuilder.Entity<Reservation>().ToTable("Reservations");
+            modelBuilder.Entity<CookingStation>().ToTable("CookingStation");
 
             //verification code has to be unique
             modelBuilder.Entity<Reservation>().HasIndex(e => e.VerificationCode).IsUnique(true);
@@ -98,18 +99,18 @@ namespace RestaurantOrdersManager.Infrastructure
             );
 
             modelBuilder.Entity<MenuItemToOrder>().HasData(
-                new MenuItemToOrder { OrderedMenuItemId = 1, OrderId = 1, MenuItemId = 1, ProcessStarted = DateTime.Now },
-                new MenuItemToOrder { OrderedMenuItemId = 2, OrderId = 1, MenuItemId = 2, ProcessStarted = DateTime.Now },
-                new MenuItemToOrder { OrderedMenuItemId = 3, OrderId = 2, MenuItemId = 3, ProcessStarted = DateTime.Now.AddDays(-1) },
-                new MenuItemToOrder { OrderedMenuItemId = 4, OrderId = 3, MenuItemId = 4, ProcessStarted = DateTime.Now.AddDays(-2) },
-                new MenuItemToOrder { OrderedMenuItemId = 5, OrderId = 4, MenuItemId = 5, ProcessStarted = DateTime.Now.AddDays(-3) },
-                new MenuItemToOrder { OrderedMenuItemId = 6, OrderId = 5, MenuItemId = 6, ProcessStarted = DateTime.Now.AddDays(-4) },
-                new MenuItemToOrder { OrderedMenuItemId = 7, OrderId = 6, MenuItemId = 7, ProcessStarted = DateTime.Now.AddDays(-5) },
-                new MenuItemToOrder { OrderedMenuItemId = 8, OrderId = 7, MenuItemId = 8, ProcessStarted = DateTime.Now.AddDays(-6) },
-                new MenuItemToOrder { OrderedMenuItemId = 9, OrderId = 8, MenuItemId = 9, ProcessStarted = DateTime.Now.AddDays(-7) },
-                new MenuItemToOrder { OrderedMenuItemId = 10, OrderId = 9, MenuItemId = 10, ProcessStarted = DateTime.Now.AddDays(-8) },
-                new MenuItemToOrder { OrderedMenuItemId = 11, OrderId = 10, MenuItemId = 1, ProcessStarted = DateTime.Now.AddDays(-9) },
-                new MenuItemToOrder { OrderedMenuItemId = 12, OrderId = 10, MenuItemId = 2, ProcessStarted = DateTime.Now.AddDays(-9) }
+                new MenuItemToOrder { OrderedMenuItemId = 1, OrderId = 1, MenuItemId = 1, ProcessStarted = DateTime.Now, CookingStationId = 1 },
+                new MenuItemToOrder { OrderedMenuItemId = 2, OrderId = 1, MenuItemId = 2, ProcessStarted = DateTime.Now, CookingStationId = 1 },
+                new MenuItemToOrder { OrderedMenuItemId = 3, OrderId = 2, MenuItemId = 3, ProcessStarted = DateTime.Now.AddDays(-1), CookingStationId = 1 },
+                new MenuItemToOrder { OrderedMenuItemId = 4, OrderId = 3, MenuItemId = 4, ProcessStarted = DateTime.Now.AddDays(-2), CookingStationId = 1 },
+                new MenuItemToOrder { OrderedMenuItemId = 5, OrderId = 4, MenuItemId = 5, ProcessStarted = DateTime.Now.AddDays(-3), CookingStationId = 1 },
+                new MenuItemToOrder { OrderedMenuItemId = 6, OrderId = 5, MenuItemId = 6, ProcessStarted = DateTime.Now.AddDays(-4), CookingStationId = 1 },
+                new MenuItemToOrder { OrderedMenuItemId = 7, OrderId = 6, MenuItemId = 7, ProcessStarted = DateTime.Now.AddDays(-5), CookingStationId = 2 },
+                new MenuItemToOrder { OrderedMenuItemId = 8, OrderId = 7, MenuItemId = 8, ProcessStarted = DateTime.Now.AddDays(-6), CookingStationId = 2 },
+                new MenuItemToOrder { OrderedMenuItemId = 9, OrderId = 8, MenuItemId = 9, ProcessStarted = DateTime.Now.AddDays(-7), CookingStationId = 2 },
+                new MenuItemToOrder { OrderedMenuItemId = 10, OrderId = 9, MenuItemId = 10, ProcessStarted = DateTime.Now.AddDays(-8), CookingStationId = 2 },
+                new MenuItemToOrder { OrderedMenuItemId = 11, OrderId = 10, MenuItemId = 1, ProcessStarted = DateTime.Now.AddDays(-9), CookingStationId = 2 },
+                new MenuItemToOrder { OrderedMenuItemId = 12, OrderId = 10, MenuItemId = 2, ProcessStarted = DateTime.Now.AddDays(-9), CookingStationId = 2 }
             );
             modelBuilder.Entity<Ingredient>().HasData(
                 new Ingredient { IngredientId = 1, IngredientName = "Lettuce", IngredientUnit = IngredientEnums.Gram, IngredientAmount = 500 },
@@ -132,7 +133,10 @@ namespace RestaurantOrdersManager.Infrastructure
                 new Reservation { ReservationId = 1, ReservationInfo = "Test Reservation", StartTime = DateTime.Now, EndTime = DateTime.Now.AddHours(2), ReservationStatus = ReservationEnums.Pending, TableId = 2, Email = "test@email.com", VerificationCode = "ABCD" },
                 new Reservation { ReservationId = 21, ReservationInfo = "Test Reservation2", StartTime = DateTime.Now, EndTime = DateTime.Now.AddHours(3), ReservationStatus = ReservationEnums.Pending, TableId = 2, Email = "test@email.com", VerificationCode = "ABCDE" }
                 );
-
+            modelBuilder.Entity<CookingStation>().HasData(
+                new CookingStation { cookingStationId = 1, cookingStationName = "Friers" },
+                new CookingStation { cookingStationId = 2, cookingStationName = "Garnishes" }
+                );
 
 
             modelBuilder.Entity<Employee>()
@@ -164,7 +168,11 @@ namespace RestaurantOrdersManager.Infrastructure
                 .ValueGeneratedOnAdd();
 
             modelBuilder.Entity<Reservation>()
-                .Property (f => f.ReservationId)
+                .Property(f => f.ReservationId)
+                .ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<CookingStation>()
+                .Property(f => f.cookingStationId)
                 .ValueGeneratedOnAdd();
 
 
@@ -199,6 +207,13 @@ namespace RestaurantOrdersManager.Infrastructure
                 .HasOne(o => o.Table)
                 .WithMany(o => o.Reservations)
                 .HasForeignKey(o => o.TableId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+
+            modelBuilder.Entity<CookingStation>()
+                .HasMany(o => o.cookingStationOrders)
+                .WithOne(o => o.CookingStation)
+                .HasForeignKey(o => o.CookingStationId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

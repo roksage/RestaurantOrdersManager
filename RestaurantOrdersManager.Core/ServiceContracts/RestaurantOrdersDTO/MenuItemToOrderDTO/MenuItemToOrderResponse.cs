@@ -17,7 +17,7 @@ namespace RestaurantOrdersManager.Core.ServiceContracts.DTO.OrderedMenuItemDTO
         public MenuItem MenuItem { get; set; }
         public DateTime ProcessStarted { get; set; }
         public DateTime? ProcessCompleted { get; set; }
-
+        public int CookingStationId { get; set; }
     }
 
     public static class OrderedMenuItemResponseExtension
@@ -30,7 +30,8 @@ namespace RestaurantOrdersManager.Core.ServiceContracts.DTO.OrderedMenuItemDTO
                 OrderId = response.OrderId,
                 MenuItemId = response.MenuItemId,
                 ProcessStarted = response.ProcessStarted,
-                ProcessCompleted = response.ProcessCompleted
+                ProcessCompleted = response.ProcessCompleted,
+                CookingStationId = response.CookingStationId
             };
         }
         public static IEnumerable<MenuItemToOrderResponse> ToOrderedMenuItemResponse(this ICollection<MenuItemToOrder> responses)

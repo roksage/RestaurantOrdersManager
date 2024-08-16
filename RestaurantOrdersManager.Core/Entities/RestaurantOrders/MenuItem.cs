@@ -12,8 +12,7 @@ namespace RestaurantOrdersManager.Core.Entities.RestaurantOrders
     {
         [Key]
         public int MenuItemId { get; set; }
-        public string? ItemName { get; set; }
-
+        public string ItemName { get; set; }
         public ICollection<IngredientInMenuItem> IngredientsInMenuItem { get; set; } = new List<IngredientInMenuItem>();
         public ICollection<MenuItemToOrder> OrderMenuItems { get; set; } = new List<MenuItemToOrder>();
     }
