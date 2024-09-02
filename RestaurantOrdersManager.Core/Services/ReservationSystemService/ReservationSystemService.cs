@@ -39,9 +39,16 @@ namespace RestaurantOrdersManager.Core.Services.ReservationSystemService
             {
                 throw new InvalidOperationException($"Working hours are {openingHours} - {closingHours}");
             }
+
+            //takeaway table cant be reserved
+            if (request.PeopleCount == 0)
+            {
+                throw new InvalidOperationException($"TakeAway table can't be reserved");
+            }
+
             //get all tables
             IEnumerable<TableResponse> tables = await _tableService.GetAllTables();
-            //filter table that have enough seats 
+            //filter table that have enough seats and are free
             IEnumerable<TableResponse> tablesWithEnoughSeats = tables.Where(seats => seats.Seats >= request.PeopleCount).OrderBy(s => s.Seats);
 
 
@@ -49,6 +56,7 @@ namespace RestaurantOrdersManager.Core.Services.ReservationSystemService
             //find table that is not reserved or occupied at specific time
             foreach (TableResponse table in tablesWithEnoughSeats)
             {
+
                 IEnumerable<(DateTime start, DateTime end)> emptySlotForSpecificTableAndDate = await GetFreeTimeSlotsByTable(table.TableId, request.StartTime);
 
                 //round up start time to 15minutes interval
@@ -61,10 +69,10 @@ namespace RestaurantOrdersManager.Core.Services.ReservationSystemService
 
                 var allSlotsInReservationTime = _reservationServiceHelper.Generate15minuteSlots(RoundedStartTime, RoundedEndTime);
 
+                //check if table have empty slots for 
+                bool checkIfTimeSlotsAreAvailable = allSlotsInReservationTime.All(x => emptySlotForSpecificTableAndDate.Any(y => y == x));
 
-                var checkIfok = allSlotsInReservationTime.All(x => emptySlotForSpecificTableAndDate.Any(y => y == x));
-
-                if (checkIfok)
+                if (checkIfTimeSlotsAreAvailable)
                 {
                     Reservation reservation = request.ToReservation();
                     reservation.StartTime = RoundedStartTime;
@@ -81,7 +89,7 @@ namespace RestaurantOrdersManager.Core.Services.ReservationSystemService
 
                     return reservation.ToReservationResponse();
                 }
-            }
+            }   
 
             return null;
             //set table as reserved
@@ -146,7 +154,7 @@ namespace RestaurantOrdersManager.Core.Services.ReservationSystemService
 
             //  retrieve all reservations for the day and store them in a list
             var reservations = await _dbContext.Reservations
-                .Where(r => r.StartTime.Date == dateTime && r.TableId == TableId && r.ReservationStatus == Enums.ReservationEnums.Reserved)
+                .Where(r => r.StartTime.Date == dateTime && r.TableId == TableId && (r.ReservationStatus == Enums.ReservationEnums.Reserved || r.ReservationStatus == Enums.ReservationEnums.Pending))
                 .OrderBy(r => r.StartTime)
                 .ToListAsync();
 
