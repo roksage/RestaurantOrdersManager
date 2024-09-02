@@ -24,7 +24,7 @@ namespace RestaurantOrdersManager.Core.Services.ReservationSystemService
         {
             _logger.LogInformation("Reservation checker running");
 
-            DoWork();
+            RunReservationChecker();
 
             using PeriodicTimer timer = new(TimeSpan.FromSeconds(30));
 
@@ -32,7 +32,7 @@ namespace RestaurantOrdersManager.Core.Services.ReservationSystemService
             {
                 while (await timer.WaitForNextTickAsync(stoppingToken))
                 {
-                    DoWork();
+                    RunReservationChecker();
                 }
             }
             catch (OperationCanceledException)
@@ -41,7 +41,7 @@ namespace RestaurantOrdersManager.Core.Services.ReservationSystemService
             }
         }
 
-        private async void DoWork()
+        private async void RunReservationChecker()
         {
             int count = Interlocked.Increment(ref _executionCount);
 
@@ -53,12 +53,16 @@ namespace RestaurantOrdersManager.Core.Services.ReservationSystemService
 
 
 
-                Reservation reservation = await _dbContext.Reservations.FirstOrDefaultAsync(r => r.TimeCreated < DateTime.UtcNow.AddMinutes(-15) && r.ReservationStatus == Enums.ReservationEnums.Pending);
-                if (reservation != null)
+                List<Reservation> reservation = await _dbContext.Reservations.Where(r => r.TimeCreated < DateTime.UtcNow.AddMinutes(-15) && r.ReservationStatus == Enums.ReservationEnums.Pending).ToListAsync();
+
+                foreach (Reservation obj in reservation)
                 {
-                    reservation.ReservationStatus = Enums.ReservationEnums.Canceled;
-                    _logger.LogInformation($"reservation with ID {reservation.ReservationId} set to {Enums.ReservationEnums.Canceled.ToString().ToUpper()}");
-                    await _dbContext.SaveChangesAsync();
+                    if (obj != null)
+                    {
+                        obj.ReservationStatus = Enums.ReservationEnums.Canceled;
+                        _logger.LogInformation($"reservation with ID {obj.ReservationId} set to {Enums.ReservationEnums.Canceled.ToString().ToUpper()}");
+                        await _dbContext.SaveChangesAsync();
+                    }
                 }
             }
         }
