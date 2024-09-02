@@ -10,6 +10,6 @@ namespace RestaurantOrdersManager.Core.Entities.RestaurantOrders
     {
         public int cookingStationId {  get; set; }
         public string cookingStationName { get; set; }
-        public ICollection<MenuItemToOrder> cookingStationOrders { get; set; }
+        public ICollection<MenuItemToOrder> cookingStationOrders { get; set; } = new List<MenuItemToOrder>();
     }
 }
