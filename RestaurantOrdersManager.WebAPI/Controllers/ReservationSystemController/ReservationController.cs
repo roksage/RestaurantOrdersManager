@@ -65,7 +65,7 @@ namespace RestaurantOrdersManager.API.Controllers
                 }
                 else
                 {
-                    return Conflict(new { messsage = "Failed to reserve table" });
+                    return Conflict(new { messsage = "No free tables found" });
                 }
             }
             catch (InvalidOperationException ex)
