@@ -2,7 +2,7 @@
 
 namespace RestaurantOrdersManager.WebAPI.Helpers
 {
-    public class OrdersHub : Hub
+    public class CookingStationsHub : Hub
     {
         public override async Task OnConnectedAsync()
         {

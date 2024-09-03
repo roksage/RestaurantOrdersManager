@@ -30,6 +30,7 @@ builder.Services.AddScoped<IMenuItemToOrderService, MenuItemToOrderService>();
 builder.Services.AddScoped<ITableService, TableService>();
 builder.Services.AddScoped<IIngredientService, IngredientService>();
 builder.Services.AddScoped<IIngredientInMenuItemService, IngredientInMenuItemService>();
+builder.Services.AddScoped<ICookingStationService, CookingStationService>();    
 builder.Services.AddTransient<IAuthorizationService, AuthorizationService>();
 builder.Services.AddScoped<IReservationSystem, ReservationSystemService>();
 builder.Services.AddScoped<ReservationServiceHelper>();
@@ -132,6 +133,7 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.MapHub<OrdersHub>("/orders");
+app.MapHub<CookingStationsHub>("/cookingStations");
 
 app.Run();
 public partial class Program { }

@@ -15,34 +15,39 @@ namespace RestaurantOrdersManager.Core.Services.RestaurantOrdersServices
 {
     public class CookingStationService : ICookingStationService
     {
-        private readonly ICookingStationService _cookingStationService;
         private readonly RestaurantOrdersDbContext _dbContext;
-        public CookingStationService(RestaurantOrdersDbContext dbContext, ICookingStationService cookingStationService)
+        public CookingStationService(RestaurantOrdersDbContext dbContext)
         {
-            _cookingStationService = cookingStationService;
             _dbContext = dbContext;
         }
-        public async Task<IEnumerable<CookingStationResponse>> GetAllCookingStation()
+        public async Task<IEnumerable<CookingStationResponse>> GetAllCookingStations()
         {
             IEnumerable<CookingStationResponse> allCookingStations = await _dbContext.CookingStations.Select(t => t.ToCookingStationResponse()).ToListAsync();
             return allCookingStations;
         }
 
-        public async Task<IEnumerable<MenuItemToOrderResponse>> GetItemsInCookingStation(int cookingStationId)
+        public async Task<IEnumerable<MenuItemResponse>> GetItemsInCookingStation(int cookingStationId)
         {
-            var result = await _dbContext.CookingStations.Where(cs => cs.cookingStationId == cookingStationId)
-                                 .Include(cs => cs.cookingStationOrders)
-                                 .ThenInclude(order => order.MenuItem)
-                                 .ThenInclude(menuItem => menuItem.OrderMenuItems)
-                                 .Select(cs => new MenuItemToOrderResponse
-                                 {
-                                     // Populate the MenuItemToOrderResponse properties here
-                                     MenuItemId = cs.cookingStationOrders.MenuItem.MenuItemId,
-                                     MenuItemName = cs.cookingStationOrders.MenuItem.Name,
-                                     Quantity = cs.cookingStationOrders.OrderMenuItems.Count,
-                                     // Add other necessary properties
-                                 })
-                                 .ToListAsync();
+            var result = await _dbContext.CookingStations
+                                         .Where(cs => cs.cookingStationId == cookingStationId)
+                                         .SelectMany(cs => cs.cookingStationOrders)
+                                         .Select(order => new MenuItemResponse
+                                         {
+                                             ItemName = order.MenuItem.ItemName,
+                                             MenuItemId = order.MenuItem.MenuItemId,    
+                                             IngredientsInMenuItem = order.MenuItem.IngredientsInMenuItem
+                                                                       .Select(ingredientInMenuItem => new IngredientInMenuItemResponse
+                                                                       {
+                                                                           IngredientId = ingredientInMenuItem.Ingredient.IngredientId,
+                                                                           IngredientInMenuItemId = ingredientInMenuItem.IngredientInMenuItemId,
+                                                                           MenuItemId = ingredientInMenuItem.MenuItemId,
+                                                                           IngredientName = ingredientInMenuItem.Ingredient.IngredientName,
+                                                                           IngredientQuantity = ingredientInMenuItem.Ingredient.IngredientAmount,
+                                                                           IngredientUnit = ingredientInMenuItem.Ingredient.IngredientUnit.ToString(),
+                                                                       })
+                                                                       .ToList(),
+                                         })
+                                         .ToListAsync();
             return result;
         }
     }

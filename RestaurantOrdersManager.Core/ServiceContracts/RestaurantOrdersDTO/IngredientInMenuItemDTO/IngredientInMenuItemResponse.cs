@@ -15,6 +15,10 @@ namespace RestaurantOrdersManager.Core.ServiceContracts.DTO.MenuItemDTO
         public int IngredientInMenuItemId { get; set; }
         public int IngredientId { get; set; }
         public int MenuItemId { get; set; }
+        public string IngredientName { get; set; }
+        public double IngredientQuantity { get; set; }
+
+        public string IngredientUnit {  get; set; }
 
         public override bool Equals(object obj)
         {
@@ -24,7 +28,10 @@ namespace RestaurantOrdersManager.Core.ServiceContracts.DTO.MenuItemDTO
 
             return this.IngredientInMenuItemId == other.IngredientInMenuItemId &&
                    this.MenuItemId == other.MenuItemId &&
-                   this.IngredientId == other.IngredientId;
+                   this.IngredientId == other.IngredientId &&
+                   this.IngredientName == other.IngredientName &&
+                   this.IngredientQuantity == other.IngredientQuantity &&
+                   this.IngredientUnit == other.IngredientUnit;
         }
     }
 
