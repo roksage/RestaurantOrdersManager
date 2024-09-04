@@ -86,8 +86,14 @@ namespace RestaurantOrdersManager.Core.Services.RestaurantOrdersServices
                 throw new ArgumentException("Invalid OrderId: Order does not exist.");
             }
 
+
+
             // Map the addRequest to the entity 
             MenuItemToOrder orderedMenuItem = addRequest.ToMenuItemToOrderAddRequest();
+
+
+            //find menu item cooking station
+            orderedMenuItem.CookingStationId = 1;
 
             // Add and save the entity
             _dbContext.Add(orderedMenuItem);

@@ -1,6 +1,6 @@
 dotnet ef migrations add InitialCreate --context RestaurantOrdersDbContext --project ../RestaurantOrdersManager.Core --startup-project .
-dotnet ef migrations add InitialCreate --context RolesAndUsersDbContext --project ../RestaurantOrdersManager.Core --startup-project .
+dotnet ef migrations add InitialCreate --context AuthorizationDbContext --project ../RestaurantOrdersManager.Core --startup-project .
 
 
 Update-Database -Context RestaurantOrdersDbContext
-Update-Database -Context RolesAndUsersDbContext
+Update-Database -Context AuthorizationDbContext

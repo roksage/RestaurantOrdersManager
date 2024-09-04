@@ -13,10 +13,10 @@ namespace RestaurantOrdersManager.WebAPI.Helpers
         }
         public override async Task OnConnectedAsync()
         {
-            await Clients.All.SendAsync("receive message", $"{Context.ConnectionId} has joined");
+            await Clients.All.SendAsync("Successfully connected", await _cookingStationService.GetAllCookingStations());
         }
 
-        public async Task SendToWorkStations(string orders)
+        public async Task NotifyWorkStations()
         {
             await Clients.All.SendAsync("SendToWorkStations ", await _cookingStationService.GetAllCookingStations());
         }

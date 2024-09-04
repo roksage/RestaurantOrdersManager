@@ -8,10 +8,10 @@ using RestaurantOrdersManager.Core.DatabaseDbContext;
 
 #nullable disable
 
-namespace RestaurantOrdersManager.Core.Migrations.RolesAndUsersDb
+namespace RestaurantOrdersManager.Core.Migrations
 {
     [DbContext(typeof(AuthorizationDbContext))]
-    [Migration("20240724135806_InitialCreate")]
+    [Migration("20240904120847_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

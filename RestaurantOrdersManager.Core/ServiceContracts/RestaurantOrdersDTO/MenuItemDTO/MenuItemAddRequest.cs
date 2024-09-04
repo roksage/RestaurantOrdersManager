@@ -13,10 +13,11 @@ namespace RestaurantOrdersManager.Core.ServiceContracts.DTO.MenuItemDTO
     {
         [Required(ErrorMessage = "Please provide name of menu item")]
         public string? ItemName { get; set; }
+        public int CookingStationId { get; set; }
 
         public MenuItem ToMenuItem()
         {
-            return new MenuItem() { ItemName = ItemName };
+            return new MenuItem() { ItemName = ItemName, CookingStationId = CookingStationId };
         }
     }
 }

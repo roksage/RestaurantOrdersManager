@@ -74,16 +74,16 @@ namespace RestaurantOrdersManager.Infrastructure
             );
 
             modelBuilder.Entity<MenuItem>().HasData(
-                new MenuItem { MenuItemId = 1, ItemName = "Burger" },
-                new MenuItem { MenuItemId = 2, ItemName = "Pizza" },
-                new MenuItem { MenuItemId = 3, ItemName = "Salad" },
-                new MenuItem { MenuItemId = 4, ItemName = "Pasta" },
-                new MenuItem { MenuItemId = 5, ItemName = "Steak" },
-                new MenuItem { MenuItemId = 6, ItemName = "Sushi" },
-                new MenuItem { MenuItemId = 7, ItemName = "Tacos" },
-                new MenuItem { MenuItemId = 8, ItemName = "Sandwich" },
-                new MenuItem { MenuItemId = 9, ItemName = "Soup" },
-                new MenuItem { MenuItemId = 10, ItemName = "Ice Cream" }
+                new MenuItem { MenuItemId = 1, ItemName = "Burger", CookingStationId = 1 },
+                new MenuItem { MenuItemId = 2, ItemName = "Pizza", CookingStationId = 1 },
+                new MenuItem { MenuItemId = 3, ItemName = "Salad", CookingStationId = 2 },
+                new MenuItem { MenuItemId = 4, ItemName = "Pasta", CookingStationId = 1 },
+                new MenuItem { MenuItemId = 5, ItemName = "Steak", CookingStationId = 1 },
+                new MenuItem { MenuItemId = 6, ItemName = "Sushi", CookingStationId = 2 },
+                new MenuItem { MenuItemId = 7, ItemName = "Tacos", CookingStationId = 1 },
+                new MenuItem { MenuItemId = 8, ItemName = "Sandwich", CookingStationId = 2 },
+                new MenuItem { MenuItemId = 9, ItemName = "Soup", CookingStationId = 2 },
+                new MenuItem { MenuItemId = 10, ItemName = "Ice Cream", CookingStationId = 2 }
             );
             modelBuilder.Entity<Order>().HasData(
                 new Order { OrderId = 1, CreatedBy = 1, TableId = 1, TimeCreated = DateTime.Now },

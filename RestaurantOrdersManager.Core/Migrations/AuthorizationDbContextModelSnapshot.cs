@@ -7,10 +7,10 @@ using RestaurantOrdersManager.Core.DatabaseDbContext;
 
 #nullable disable
 
-namespace RestaurantOrdersManager.Core.Migrations.RolesAndUsersDb
+namespace RestaurantOrdersManager.Core.Migrations
 {
     [DbContext(typeof(AuthorizationDbContext))]
-    partial class RolesAndUsersDbContextModelSnapshot : ModelSnapshot
+    partial class AuthorizationDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {

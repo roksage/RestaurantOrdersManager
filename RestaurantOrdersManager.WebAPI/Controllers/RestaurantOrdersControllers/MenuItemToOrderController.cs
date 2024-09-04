@@ -21,10 +21,11 @@ namespace RestaurantOrdersManager.WebAPI.Controllers.RestaurantOrdersControllers
     public class MenuItemToOrderController : ControllerBase
     {
         private readonly IMenuItemToOrderService _menuItemToOrderServiceService;
-
-        public MenuItemToOrderController(IMenuItemToOrderService MenuItemToOrderService)
+        private readonly IHubContext<CookingStationsHub> _cookingStationsHubSignalR;
+        public MenuItemToOrderController(IMenuItemToOrderService MenuItemToOrderService, IHubContext<CookingStationsHub> cookingStationsHubSignalR)
         {
             _menuItemToOrderServiceService = MenuItemToOrderService;
+            _cookingStationsHubSignalR = cookingStationsHubSignalR;
         }
 
         [HttpPost("addMenuItemToOrder")]
@@ -33,6 +34,7 @@ namespace RestaurantOrdersManager.WebAPI.Controllers.RestaurantOrdersControllers
             try
             {
                 MenuItemToOrderResponse createOrder = await _menuItemToOrderServiceService.MenuItemToOrderServiceAddRequest(MenuItemAddRequestRequest);
+                await _cookingStationsHubSignalR.Clients.All.SendAsync("NotifyWorkStations");
                 return Ok(new MenuItemToOrderResponse { CookingStationId = createOrder.CookingStationId });
             }
             catch (ValidationException ex)

@@ -9,6 +9,7 @@ namespace RestaurantOrdersManager.Core.ServiceContracts.DTO.MenuItemDTO
     {
         public int MenuItemId { get; set; }
         public string? ItemName { get; set; }
+        public int CookingStationId { get; set; }
 
         public ICollection<IngredientInMenuItemResponse>? IngredientsInMenuItem { get; set; }
 
@@ -19,6 +20,7 @@ namespace RestaurantOrdersManager.Core.ServiceContracts.DTO.MenuItemDTO
         {
             return new MenuItemResponse { MenuItemId = menuItem.MenuItemId, 
                                             ItemName = menuItem.ItemName,
+                                            CookingStationId = menuItem.CookingStationId,
                                             IngredientsInMenuItem = menuItem.IngredientsInMenuItem.Select(i => i.ToIngredientInMenuItemResponse()).ToList(),
             };
         }
