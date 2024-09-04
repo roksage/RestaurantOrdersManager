@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.Identity.Client;
 using NuGet.Common;
 using RestaurantOrdersManager.Core.ServiceContracts.DTO.EmployeeDTO;
 using RestaurantOrdersManager.Core.ServiceContracts.DTO.MenuItemDTO;
@@ -8,6 +10,7 @@ using RestaurantOrdersManager.Core.ServiceContracts.DTO.OrderedMenuItem;
 using RestaurantOrdersManager.Core.ServiceContracts.DTO.OrderedMenuItemDTO;
 using RestaurantOrdersManager.Core.ServiceContracts.RestaurantOrdersServices;
 using RestaurantOrdersManager.Core.Services;
+using RestaurantOrdersManager.WebAPI.Helpers;
 using System.ComponentModel.DataAnnotations;
 
 
@@ -30,7 +33,7 @@ namespace RestaurantOrdersManager.WebAPI.Controllers.RestaurantOrdersControllers
             try
             {
                 MenuItemToOrderResponse createOrder = await _menuItemToOrderServiceService.MenuItemToOrderServiceAddRequest(MenuItemAddRequestRequest);
-                return Ok(new MenuItemToOrderResponse { });
+                return Ok(new MenuItemToOrderResponse { CookingStationId = createOrder.CookingStationId });
             }
             catch (ValidationException ex)
             {
