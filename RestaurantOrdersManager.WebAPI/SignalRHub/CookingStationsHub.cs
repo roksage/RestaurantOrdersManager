@@ -14,10 +14,5 @@ namespace RestaurantOrdersManager.WebAPI.Helpers
         {
             await Clients.All.SendAsync("Successfully connected", await _cookingStationService.GetAllCookingStations());
         }
-
-        public async Task NotifyWorkStations()
-        {
-            await Clients.All.SendAsync("SendToWorkStations", await _cookingStationService.GetAllCookingStations());
-        }
     }
 }

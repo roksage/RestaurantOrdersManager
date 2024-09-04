@@ -10,6 +10,7 @@ using RestaurantOrdersManager.Core.ServiceContracts.DTO.OrderedMenuItem;
 using RestaurantOrdersManager.Core.ServiceContracts.DTO.OrderedMenuItemDTO;
 using RestaurantOrdersManager.Core.ServiceContracts.RestaurantOrdersServices;
 using RestaurantOrdersManager.Core.Services;
+using RestaurantOrdersManager.Core.Services.RestaurantOrdersServices;
 using RestaurantOrdersManager.WebAPI.Helpers;
 using System.ComponentModel.DataAnnotations;
 
@@ -20,16 +21,21 @@ namespace RestaurantOrdersManager.WebAPI.Controllers.RestaurantOrdersControllers
     [ApiController]
     public class MenuItemToOrderController : ControllerBase
     {
-        private readonly IMenuItemToOrderService _menuItemToOrderServiceService;
+        private readonly IMenuItemToOrderService _menuItemToOrderService;
         private readonly IHubContext<CookingStationsHub> _cookingStationsHubSignalR;
         private readonly ICookingStationService _cookingStationService;
 
 
-        public MenuItemToOrderController(IMenuItemToOrderService MenuItemToOrderService, IHubContext<CookingStationsHub> cookingStationsHubSignalR, ICookingStationService cookingStationService)
+        public MenuItemToOrderController(IMenuItemToOrderService MenuItemToOrderService, IHubContext<CookingStationsHub> CookingStationsHubSignalR, ICookingStationService CookingStationService)
         {
-            _menuItemToOrderServiceService = MenuItemToOrderService;
-            _cookingStationsHubSignalR = cookingStationsHubSignalR;
-            _cookingStationService = cookingStationService;
+            _menuItemToOrderService = MenuItemToOrderService;
+            _cookingStationsHubSignalR = CookingStationsHubSignalR;
+            _cookingStationService =CookingStationService;
+        }
+
+        private async Task NotifyWorkStations()
+        {
+            await _cookingStationsHubSignalR.Clients.All.SendAsync("SendToWorkStations", await _cookingStationService.GetItemsInCookingStation(1));
         }
 
         [HttpPost("addMenuItemToOrder")]
@@ -37,8 +43,8 @@ namespace RestaurantOrdersManager.WebAPI.Controllers.RestaurantOrdersControllers
         {
             try
             {
-                MenuItemToOrderResponse createOrder = await _menuItemToOrderServiceService.MenuItemToOrderServiceAddRequest(MenuItemAddRequestRequest);
-                await _cookingStationsHubSignalR.Clients.All.SendAsync("SendToWorkStations", await _cookingStationService.GetItemsInCookingStation(1));
+                MenuItemToOrderResponse createOrder = await _menuItemToOrderService.MenuItemToOrderServiceAddRequest(MenuItemAddRequestRequest);
+                await NotifyWorkStations();
                 return Ok(new MenuItemToOrderResponse { CookingStationId = createOrder.CookingStationId });
             }
             catch (ValidationException ex)
@@ -57,7 +63,7 @@ namespace RestaurantOrdersManager.WebAPI.Controllers.RestaurantOrdersControllers
 
             try
             {
-                IEnumerable<MenuItemToOrderResponse> allOrderedMenuItems = await _menuItemToOrderServiceService.GetAllMenuItemToOrderService();
+                IEnumerable<MenuItemToOrderResponse> allOrderedMenuItems = await _menuItemToOrderService.GetAllMenuItemToOrderService();
                 return Ok(allOrderedMenuItems);
             }
             catch (ValidationException ex)
@@ -75,8 +81,8 @@ namespace RestaurantOrdersManager.WebAPI.Controllers.RestaurantOrdersControllers
         {
             try
             {
-                MenuItemToOrderResponse completeMenuItemInOrder = await _menuItemToOrderServiceService.CompleteMenuItemInOrder(OrderedMenuItemId);
-                await _cookingStationsHubSignalR.Clients.All.SendAsync("SendToWorkStations", await _cookingStationService.GetItemsInCookingStation(1));
+                MenuItemToOrderResponse completeMenuItemInOrder = await _menuItemToOrderService.CompleteMenuItemInOrder(OrderedMenuItemId);
+                await NotifyWorkStations();
                 return Ok(completeMenuItemInOrder);
             }
             catch (ArgumentNullException ex)
