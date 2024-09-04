@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using RestaurantOrdersManager.Core.ServiceContracts.DTO.MenuItemToOrderDTO;
 using RestaurantOrdersManager.Core.Entities.RestaurantOrders;
 using RestaurantOrdersManager.Core.ServiceContracts.RestaurantOrdersServices;
+using Microsoft.AspNetCore.SignalR;
 
 namespace RestaurantOrdersManager.Core.Services.RestaurantOrdersServices
 {
@@ -13,12 +14,16 @@ namespace RestaurantOrdersManager.Core.Services.RestaurantOrdersServices
     {
         private readonly RestaurantOrdersDbContext _dbContext;
         private readonly IOrderService _orderService;
+        private readonly ICookingStationService _cookingStationService;
 
-        public MenuItemToOrderService(RestaurantOrdersDbContext dbContext, IOrderService orderService)
+
+        public MenuItemToOrderService(RestaurantOrdersDbContext dbContext, IOrderService orderService, ICookingStationService cookingStationService)
         {
             _dbContext = dbContext;
             _orderService = orderService;
+            _cookingStationService = cookingStationService;
         }
+
 
         public async Task<MenuItemToOrderResponse> CompleteMenuItemInOrder(MenuItemToOrderCompleteMenuItemById OrderedMenuItemId)
         {
@@ -54,7 +59,7 @@ namespace RestaurantOrdersManager.Core.Services.RestaurantOrdersServices
                 //remove order from table
             }
 
-
+            //send SignalR message
 
             return orderedMenuItem.ToOrderedMenuItemResponse();
 
@@ -72,9 +77,9 @@ namespace RestaurantOrdersManager.Core.Services.RestaurantOrdersServices
                 throw new ArgumentNullException(nameof(addRequest));
             }
 
-            var menuItemExists = await _dbContext.MenuItems.AnyAsync(mi => mi.MenuItemId == addRequest.MenuItemId);
+            MenuItem menuItem = await _dbContext.MenuItems.FirstOrDefaultAsync(mi => mi.MenuItemId == addRequest.MenuItemId);
 
-            if (!menuItemExists)
+            if (menuItem == null)
             {
                 throw new ArgumentException("Invalid MenuItemId: MenuItem does not exist.");
             }
@@ -93,7 +98,7 @@ namespace RestaurantOrdersManager.Core.Services.RestaurantOrdersServices
 
 
             //find menu item cooking station
-            orderedMenuItem.CookingStationId = 1;
+            orderedMenuItem.CookingStationId = menuItem.CookingStationId;
 
             // Add and save the entity
             _dbContext.Add(orderedMenuItem);

@@ -22,10 +22,14 @@ namespace RestaurantOrdersManager.WebAPI.Controllers.RestaurantOrdersControllers
     {
         private readonly IMenuItemToOrderService _menuItemToOrderServiceService;
         private readonly IHubContext<CookingStationsHub> _cookingStationsHubSignalR;
-        public MenuItemToOrderController(IMenuItemToOrderService MenuItemToOrderService, IHubContext<CookingStationsHub> cookingStationsHubSignalR)
+        private readonly ICookingStationService _cookingStationService;
+
+
+        public MenuItemToOrderController(IMenuItemToOrderService MenuItemToOrderService, IHubContext<CookingStationsHub> cookingStationsHubSignalR, ICookingStationService cookingStationService)
         {
             _menuItemToOrderServiceService = MenuItemToOrderService;
             _cookingStationsHubSignalR = cookingStationsHubSignalR;
+            _cookingStationService = cookingStationService;
         }
 
         [HttpPost("addMenuItemToOrder")]
@@ -34,7 +38,7 @@ namespace RestaurantOrdersManager.WebAPI.Controllers.RestaurantOrdersControllers
             try
             {
                 MenuItemToOrderResponse createOrder = await _menuItemToOrderServiceService.MenuItemToOrderServiceAddRequest(MenuItemAddRequestRequest);
-                await _cookingStationsHubSignalR.Clients.All.SendAsync("NotifyWorkStations");
+                await _cookingStationsHubSignalR.Clients.All.SendAsync("SendToWorkStations", await _cookingStationService.GetItemsInCookingStation(1));
                 return Ok(new MenuItemToOrderResponse { CookingStationId = createOrder.CookingStationId });
             }
             catch (ValidationException ex)
@@ -72,6 +76,7 @@ namespace RestaurantOrdersManager.WebAPI.Controllers.RestaurantOrdersControllers
             try
             {
                 MenuItemToOrderResponse completeMenuItemInOrder = await _menuItemToOrderServiceService.CompleteMenuItemInOrder(OrderedMenuItemId);
+                await _cookingStationsHubSignalR.Clients.All.SendAsync("SendToWorkStations", await _cookingStationService.GetItemsInCookingStation(1));
                 return Ok(completeMenuItemInOrder);
             }
             catch (ArgumentNullException ex)
