@@ -14,14 +14,12 @@ namespace RestaurantOrdersManager.Core.Services.RestaurantOrdersServices
     {
         private readonly RestaurantOrdersDbContext _dbContext;
         private readonly IOrderService _orderService;
-        private readonly ICookingStationService _cookingStationService;
 
 
-        public MenuItemToOrderService(RestaurantOrdersDbContext dbContext, IOrderService orderService, ICookingStationService cookingStationService)
+        public MenuItemToOrderService(RestaurantOrdersDbContext dbContext, IOrderService orderService)
         {
             _dbContext = dbContext;
             _orderService = orderService;
-            _cookingStationService = cookingStationService;
         }
 
 

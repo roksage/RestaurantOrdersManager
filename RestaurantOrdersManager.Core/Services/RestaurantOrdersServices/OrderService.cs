@@ -123,6 +123,31 @@ namespace RestaurantOrdersManager.Core.Services.RestaurantOrdersServices
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<OrderProgress>> GetAllActiveOrdersWithCompletionStatus()
+        {
+            var ordersWithCompletionPercentage = new List<OrderProgress>();
+
+            var allNotFinishedOrders =  await _dbContext.Orders
+                .Include(o => o.OrderMenuItems)
+                .ThenInclude(omi => omi.MenuItem)
+                .Where(of => of.TimeFinished == null)
+                .Select(order => order.ToOrderResponse())
+                .ToListAsync();
+
+
+            foreach (var order in allNotFinishedOrders)
+            {
+                int countFinishedItems = order.OrderMenuItems.Where(o => o.ProcessCompleted != null).Count();
+
+                int countNotFinishedItems = order.OrderMenuItems.Where(o => o.ProcessCompleted == null).Count();
+                ordersWithCompletionPercentage.Add(new OrderProgress { OrderId = order.OrderId, ProgressPercentage = (countNotFinishedItems / countFinishedItems * 100) });
+            };
+
+            return ordersWithCompletionPercentage;
+        }
+
+
+
         public async Task<OrderResponse> GetOrderByOrderId(int OrderId)
         {
             Order? order = await _dbContext.Orders.FindAsync(OrderId);
