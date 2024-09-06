@@ -12,7 +12,7 @@ namespace RestaurantOrdersManager.WebAPI.Helpers
         }
         public override async Task OnConnectedAsync()
         {
-            await Clients.All.SendAsync("Successfully connected", await _cookingStationService.GetAllCookingStations());
+            await Clients.All.SendAsync("Successfully connected", await _cookingStationService.GetAllCookingStationsWithPendingItems());
         }
     }
 }

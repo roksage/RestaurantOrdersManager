@@ -9,6 +9,6 @@ namespace RestaurantOrdersManager.Core.Entities.RestaurantOrders
     public class OrderProgress
     {
         public int OrderId { get; set; }
-        public double ProgressPercentage { get; set; }
+        public decimal ProgressPercentage { get; set; }
     }
 }

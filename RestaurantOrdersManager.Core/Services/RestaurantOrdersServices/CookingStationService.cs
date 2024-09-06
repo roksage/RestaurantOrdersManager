@@ -26,15 +26,15 @@ namespace RestaurantOrdersManager.Core.Services.RestaurantOrdersServices
             return allCookingStations;
         }
 
-        public async Task<IEnumerable<MenuItemResponse>> GetItemsInCookingStation(int cookingStationId)
+        public async Task<IEnumerable<MenuItemResponse>> GetAllCookingStationsWithPendingItems()
         {
             var result = await _dbContext.CookingStations
-                                         .Where(cs => cs.cookingStationId == cookingStationId)
                                          .SelectMany(cs => cs.cookingStationOrders)
                                          .Select(order => new MenuItemResponse
                                          {
                                              ItemName = order.MenuItem.ItemName,
                                              MenuItemId = order.MenuItem.MenuItemId,    
+                                             CookingStationId = order.MenuItem.CookingStationId,
                                              IngredientsInMenuItem = order.MenuItem.IngredientsInMenuItem
                                                                        .Select(ingredientInMenuItem => new IngredientInMenuItemResponse
                                                                        {

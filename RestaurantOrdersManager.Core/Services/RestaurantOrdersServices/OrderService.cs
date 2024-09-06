@@ -139,7 +139,8 @@ namespace RestaurantOrdersManager.Core.Services.RestaurantOrdersServices
 
                 if (countFinishedItems != 0)
                 {
-                    ordersWithCompletionPercentage.Add(new OrderProgress { OrderId = order.OrderId, ProgressPercentage = (countNotFinishedItems / countFinishedItems * 100) });
+                    ordersWithCompletionPercentage.Add(new OrderProgress { OrderId = order.OrderId, ProgressPercentage = Math.Round(((decimal)countFinishedItems / (decimal)countNotFinishedItems) * 100, 0) });
+                    await Console.Out.WriteLineAsync($"{countFinishedItems} / {countNotFinishedItems} = {Math.Round(((decimal)countFinishedItems / (decimal)countNotFinishedItems) * 100, 0)} ");
                 }
                 else
                 {

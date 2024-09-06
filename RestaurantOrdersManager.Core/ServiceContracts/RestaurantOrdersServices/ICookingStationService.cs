@@ -11,7 +11,6 @@ namespace RestaurantOrdersManager.Core.ServiceContracts.RestaurantOrdersServices
 {
     public interface ICookingStationService
     {
-        Task<IEnumerable<CookingStationResponse>> GetAllCookingStations();
-        Task<IEnumerable<MenuItemResponse>> GetItemsInCookingStation(int cookingStationId);   
+        Task<IEnumerable<MenuItemResponse>> GetAllCookingStationsWithPendingItems();
     }
 }

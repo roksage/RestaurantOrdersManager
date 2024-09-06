@@ -16,26 +16,12 @@ namespace RestaurantOrdersManager.API.Controllers.RestaurantOrdersControllers
             _cookingStationService = cookingStationService;
         }
 
-        [HttpGet("cookingStations")]
-        public async Task<IActionResult> cookingStations()
+        [HttpGet("GetAllCookingStationsWithPendingItems")]
+        public async Task<IActionResult> GetAllCookingStationsWithPendingItems()
         {
             try
             {
-                var result = await _cookingStationService.GetAllCookingStations();
-                return Ok(result);
-            }
-
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
-        }
-        [HttpGet("ordersInCookingStation")]
-        public async Task<IActionResult> cookingStations(int idcookingStationId)
-        {
-            try
-            {
-                var result = await _cookingStationService.GetItemsInCookingStation(idcookingStationId);
+                var result = await _cookingStationService.GetAllCookingStationsWithPendingItems();
                 return Ok(result);
             }
 

@@ -52,13 +52,6 @@ namespace RestaurantOrdersManager.Core.Services.RestaurantOrdersServices
 
             bool isOrderCompleted = await _orderService.CheckIfOrderIsCompleted(orderedMenuItem.OrderId);
 
-            if (isOrderCompleted)
-            {
-                //remove order from table
-            }
-
-            //send SignalR message
-
             return orderedMenuItem.ToOrderedMenuItemResponse();
 
         }

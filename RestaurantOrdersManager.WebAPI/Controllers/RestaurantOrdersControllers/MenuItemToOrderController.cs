@@ -23,19 +23,24 @@ namespace RestaurantOrdersManager.WebAPI.Controllers.RestaurantOrdersControllers
     {
         private readonly IMenuItemToOrderService _menuItemToOrderService;
         private readonly IHubContext<CookingStationsHub> _cookingStationsHubSignalR;
+        private readonly IHubContext<OrdersHub> _ordersHubSignalR;
         private readonly ICookingStationService _cookingStationService;
+        private readonly IOrderService _orderService;
 
 
-        public MenuItemToOrderController(IMenuItemToOrderService MenuItemToOrderService, IHubContext<CookingStationsHub> CookingStationsHubSignalR, ICookingStationService CookingStationService)
+        public MenuItemToOrderController(IMenuItemToOrderService MenuItemToOrderService, IHubContext<CookingStationsHub> CookingStationsHubSignalR, ICookingStationService CookingStationService, IOrderService orderService)
         {
             _menuItemToOrderService = MenuItemToOrderService;
             _cookingStationsHubSignalR = CookingStationsHubSignalR;
-            _cookingStationService =CookingStationService;
+            _cookingStationService = CookingStationService;
+            _orderService = orderService;
         }
 
+        //Send 
         private async Task NotifyWorkStations()
         {
-            await _cookingStationsHubSignalR.Clients.All.SendAsync("SendToWorkStations", await _cookingStationService.GetItemsInCookingStation(1));
+            await _cookingStationsHubSignalR.Clients.All.SendAsync("SendToWorkStations", await _cookingStationService.GetAllCookingStationsWithPendingItems());
+            await _cookingStationsHubSignalR.Clients.All.SendAsync("OrdersProgressesWithPercentage", await _orderService.GetAllActiveOrdersWithCompletionStatus());
         }
 
         [HttpPost("addMenuItemToOrder")]
