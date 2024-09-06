@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using RestaurantOrdersManager.Core.Entities;
+using RestaurantOrdersManager.Core.Entities.RestaurantOrders;
 using RestaurantOrdersManager.Core.ServiceContracts.DTO.EmployeeDTO;
 using RestaurantOrdersManager.Core.ServiceContracts.DTO.MenuItemDTO;
 using RestaurantOrdersManager.Core.ServiceContracts.DTO.OrderDTO;
@@ -94,6 +95,23 @@ namespace RestaurantOrdersManager.WebAPI.Controllers.RestaurantOrdersControllers
             {
                 IEnumerable<OrderResponse> activeOrders = await _orderService.GetAllActiveOrders();
                 return Ok(activeOrders);
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(new { ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { ex.Message });
+            }
+        }
+        [HttpGet("GetAllActiveOrdersWithCompletionStatus")]
+        public async Task<IActionResult> GetAllActiveOrdersWithCompletionStatus()
+        {
+            try
+            {
+                IEnumerable<OrderProgress> activeOrdersWithProgress = await _orderService.GetAllActiveOrdersWithCompletionStatus();
+                return Ok(activeOrdersWithProgress);
             }
             catch (ValidationException ex)
             {

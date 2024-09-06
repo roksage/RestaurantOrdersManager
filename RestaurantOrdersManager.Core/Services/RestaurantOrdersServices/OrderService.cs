@@ -1,13 +1,9 @@
-﻿using RestaurantOrdersManager.Core.ServiceContracts.DTO.EmployeeDTO;
-
-
-using RestaurantOrdersManager.Infrastructure;
-using RestaurantOrdersManager.Core.ServiceContracts.DTO.MenuItemDTO;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using RestaurantOrdersManager.Core.Entities.RestaurantOrders;
 using RestaurantOrdersManager.Core.ServiceContracts.DTO.OrderDTO;
 using RestaurantOrdersManager.Core.ServiceContracts.DTO.OrderedMenuItemDTO;
-using RestaurantOrdersManager.Core.Entities.RestaurantOrders;
 using RestaurantOrdersManager.Core.ServiceContracts.RestaurantOrdersServices;
+using RestaurantOrdersManager.Infrastructure;
 
 namespace RestaurantOrdersManager.Core.Services.RestaurantOrdersServices
 {
@@ -127,7 +123,7 @@ namespace RestaurantOrdersManager.Core.Services.RestaurantOrdersServices
         {
             var ordersWithCompletionPercentage = new List<OrderProgress>();
 
-            var allNotFinishedOrders =  await _dbContext.Orders
+            var allNotFinishedOrders = await _dbContext.Orders
                 .Include(o => o.OrderMenuItems)
                 .ThenInclude(omi => omi.MenuItem)
                 .Where(of => of.TimeFinished == null)
@@ -140,7 +136,15 @@ namespace RestaurantOrdersManager.Core.Services.RestaurantOrdersServices
                 int countFinishedItems = order.OrderMenuItems.Where(o => o.ProcessCompleted != null).Count();
 
                 int countNotFinishedItems = order.OrderMenuItems.Where(o => o.ProcessCompleted == null).Count();
-                ordersWithCompletionPercentage.Add(new OrderProgress { OrderId = order.OrderId, ProgressPercentage = (countNotFinishedItems / countFinishedItems * 100) });
+
+                if (countFinishedItems != 0)
+                {
+                    ordersWithCompletionPercentage.Add(new OrderProgress { OrderId = order.OrderId, ProgressPercentage = (countNotFinishedItems / countFinishedItems * 100) });
+                }
+                else
+                {
+                    ordersWithCompletionPercentage.Add(new OrderProgress { OrderId = order.OrderId, ProgressPercentage = 0 });
+                }
             };
 
             return ordersWithCompletionPercentage;

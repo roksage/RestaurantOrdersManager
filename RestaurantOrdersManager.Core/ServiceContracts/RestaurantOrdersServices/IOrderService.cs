@@ -1,4 +1,5 @@
 ﻿using RestaurantOrdersManager.Core.Entities;
+using RestaurantOrdersManager.Core.Entities.RestaurantOrders;
 using RestaurantOrdersManager.Core.ServiceContracts.DTO.OrderDTO;
 using RestaurantOrdersManager.Core.ServiceContracts.DTO.OrderedMenuItemDTO;
 
@@ -18,5 +19,7 @@ namespace RestaurantOrdersManager.Core.ServiceContracts.RestaurantOrdersServices
         Task<bool> CheckIfOrderIsCompleted(int MenuItemId);
 
         Task<OrderResponse> GetOrderByOrderId(int OrderId);
+
+        Task<IEnumerable<OrderProgress>> GetAllActiveOrdersWithCompletionStatus();
     }
 }
