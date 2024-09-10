@@ -396,3 +396,4 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+RestaurantOrdersManager.Core/RestaurantOrdersManager.Core.csproj
