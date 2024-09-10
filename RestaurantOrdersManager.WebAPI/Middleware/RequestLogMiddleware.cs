@@ -35,10 +35,10 @@ namespace RestaurantOrdersManager.API.Middleware
         {
             try
             {
-                var jwtToken = context.Request.Headers.Authorization.FirstOrDefault()?.Split(" ").Last();
-                if (jwtToken == null)
+                string jwtToken = context.Request.Headers.Authorization.FirstOrDefault()?.Split(" ").Last();
+                if (string.IsNullOrEmpty(jwtToken))
                 {
-                    _logger.LogInformation("Missing JWT token       method: " + context.Request.Method + "        endpoint: " + context.Request.Path);
+                    _logger.LogInformation($"Missing JWT token - Method: {context.Request.Method}, Endpoint: {context.Request.Path}, IPaddress: {context.Connection.RemoteIpAddress}");
                 }
                 else
                 {
@@ -46,7 +46,7 @@ namespace RestaurantOrdersManager.API.Middleware
                     if (userInfo.ErrorMessage == null)
                     {
 
-                        _logger.LogInformation(userInfo.id + " " + userInfo.role + " method: " + context.Request.Method + " endpoint: " + context.Request.Path);
+                        _logger.LogInformation($"User ID: {userInfo.id}, Role: {userInfo.role} - Method: {context.Request.Method}, Endpoint: {context.Request.Path}, , IPaddress: {context.Connection.RemoteIpAddress}");
                     }
                     else
                     {
@@ -58,6 +58,7 @@ namespace RestaurantOrdersManager.API.Middleware
             }
             catch (Exception ex)
             {
+                _logger.LogCritical($"exception in middlaware: {ex.Message}");
                 throw new Exception(ex.Message);
             }
         }
