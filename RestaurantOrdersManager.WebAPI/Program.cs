@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
+using RestaurantOrdersManager.API.Middleware;
 using RestaurantOrdersManager.Core.DatabaseDbContext;
 using RestaurantOrdersManager.Core.Entities.RolesAndUsers;
 using RestaurantOrdersManager.Core.ServiceContracts.ReservationSystemServices;
@@ -117,6 +118,7 @@ builder.Services.AddAuthentication(options =>
 });
 
 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -126,8 +128,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<RequestLogMiddleware>();
 app.UseHttpsRedirection();
-
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
