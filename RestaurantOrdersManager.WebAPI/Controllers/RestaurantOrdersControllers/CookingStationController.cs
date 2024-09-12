@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using RestaurantOrdersManager.Core.ServiceContracts.RestaurantOrdersDTO.CookingStationDTO;
+﻿using Microsoft.AspNetCore.Mvc;
 using RestaurantOrdersManager.Core.ServiceContracts.RestaurantOrdersServices;
 
 namespace RestaurantOrdersManager.API.Controllers.RestaurantOrdersControllers
@@ -30,6 +28,5 @@ namespace RestaurantOrdersManager.API.Controllers.RestaurantOrdersControllers
                 return StatusCode(500, ex.Message);
             }
         }
-
     }
 }

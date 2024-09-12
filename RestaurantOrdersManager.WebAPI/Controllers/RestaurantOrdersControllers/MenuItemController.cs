@@ -9,6 +9,7 @@ namespace RestaurantOrdersManager.WebAPI.Controllers.RestaurantOrdersControllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ResponseCache(CacheProfileName = "Default30")]
     public class MenuItemController : ControllerBase
     {
         private readonly IMenuItemService _menuItemService;

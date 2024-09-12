@@ -2,6 +2,7 @@
 using FluentAssertions.Common;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -119,6 +120,17 @@ builder.Services.AddAuthentication(options =>
 });
 
 
+//endpoint cache
+builder.Services.AddResponseCaching();
+builder.Services.AddControllers(options =>
+{
+    options.CacheProfiles.Add("Default30",
+        new CacheProfile()
+        {
+            Duration = 30
+        });
+});
+
 
 var app = builder.Build();
 
@@ -133,13 +145,16 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
 {
     ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
 });
+app.UseResponseCaching();
 
-app.UseMiddleware<RequestLogMiddleware>();
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
+//endpoint cache
+
+app.UseMiddleware<RequestLogMiddleware>();
 app.MapHub<OrdersHub>("/orders");
 app.MapHub<CookingStationsHub>("/cookingStations");
 
