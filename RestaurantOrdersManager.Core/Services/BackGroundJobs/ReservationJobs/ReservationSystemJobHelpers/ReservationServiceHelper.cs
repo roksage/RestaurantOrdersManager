@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RestaurantOrdersManager.Core.Services.ReservationSystemService
+namespace RestaurantOrdersManager.Core.Services.BackGroundJobs.ReservationJobs.ReservationSystemJobHelpers
 {
     public class ReservationServiceHelper
     {

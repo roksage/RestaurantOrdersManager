@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RestaurantOrdersManager.Infrastructure;
 
@@ -11,9 +12,11 @@ using RestaurantOrdersManager.Infrastructure;
 namespace RestaurantOrdersManager.Core.Migrations.RestaurantOrdersDb
 {
     [DbContext(typeof(RestaurantOrdersDbContext))]
-    partial class RestaurantOrdersDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240913064909_ReservationsEntityUpdateReservationNotificationFIeld")]
+    partial class ReservationsEntityUpdateReservationNotificationFIeld
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

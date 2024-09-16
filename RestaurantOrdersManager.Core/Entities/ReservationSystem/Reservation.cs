@@ -17,6 +17,7 @@ namespace RestaurantOrdersManager.Core.Entities.ReservationSystem
         public string Email {  get; set; } 
         public DateTime TimeCreated { get; set; }
         public string VerificationCode { get; set; }
+        public bool IsReservationNotificationSent { get; set; } 
 
         public Reservation()
         {

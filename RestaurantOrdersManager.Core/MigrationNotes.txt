@@ -4,3 +4,7 @@ dotnet ef migrations add InitialCreate --context AuthorizationDbContext --projec
 
 Update-Database -Context RestaurantOrdersDbContext
 Update-Database -Context AuthorizationDbContext
+
+
+
+

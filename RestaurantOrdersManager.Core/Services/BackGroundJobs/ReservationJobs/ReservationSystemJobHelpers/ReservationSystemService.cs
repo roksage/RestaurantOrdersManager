@@ -6,7 +6,7 @@ using RestaurantOrdersManager.Core.ServiceContracts.ReservationSystemServices;
 using RestaurantOrdersManager.Core.ServiceContracts.RestaurantOrdersServices;
 using RestaurantOrdersManager.Infrastructure;
 
-namespace RestaurantOrdersManager.Core.Services.ReservationSystemService
+namespace RestaurantOrdersManager.Core.Services.BackGroundJobs.ReservationJobs.ReservationSystemJobHelpers
 {
     public class ReservationSystemService : IReservationSystem
     {
@@ -89,7 +89,7 @@ namespace RestaurantOrdersManager.Core.Services.ReservationSystemService
 
                     return reservation.ToReservationResponse();
                 }
-            }   
+            }
 
             return null;
             //set table as reserved

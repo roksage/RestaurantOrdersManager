@@ -7,13 +7,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
+using Quartz;
 using RestaurantOrdersManager.API.Middleware;
 using RestaurantOrdersManager.Core.DatabaseDbContext;
 using RestaurantOrdersManager.Core.Entities.RolesAndUsers;
 using RestaurantOrdersManager.Core.ServiceContracts.ReservationSystemServices;
 using RestaurantOrdersManager.Core.ServiceContracts.RestaurantOrdersServices;
 using RestaurantOrdersManager.Core.ServiceContracts.RolesAndUsersServices;
-using RestaurantOrdersManager.Core.Services.ReservationSystemService;
+using RestaurantOrdersManager.Core.Services.BackGroundJobs.ReservationJobs;
+using RestaurantOrdersManager.Core.Services.BackGroundJobs.ReservationJobs.ReservationSystemJobHelpers;
 using RestaurantOrdersManager.Core.Services.RestaurantOrdersServices;
 using RestaurantOrdersManager.Core.Services.RolesAndUsersServies;
 using RestaurantOrdersManager.Infrastructure;
@@ -37,7 +39,6 @@ builder.Services.AddScoped<ICookingStationService, CookingStationService>();
 builder.Services.AddTransient<IAuthorizationService, AuthorizationService>();
 builder.Services.AddScoped<IReservationSystem, ReservationSystemService>();
 builder.Services.AddScoped<ReservationServiceHelper>();
-builder.Services.AddHostedService<ReservationTimedHostedService>();
 
 
 
@@ -61,6 +62,8 @@ builder.Services.AddControllers()
 
 
 builder.Services.AddSignalR();
+
+
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -120,8 +123,22 @@ builder.Services.AddAuthentication(options =>
 });
 
 
-//endpoint cache
-builder.Services.AddResponseCaching();
+#region Quartz tasks
+builder.Services.AddQuartz(options =>
+{
+    options.UseMicrosoftDependencyInjectionJobFactory();
+});
+
+builder.Services.AddQuartzHostedService(options =>
+{
+    options.WaitForJobsToComplete = true;
+});
+
+builder.Services.ConfigureOptions<ReservationSystemJobSetup>();
+
+#endregion
+
+builder.Services.AddResponseCaching();//endpoint cache
 builder.Services.AddControllers(options =>
 {
     options.CacheProfiles.Add("Default30",
