@@ -10,7 +10,7 @@ namespace RestaurantOrdersManager.Core.Services.BackGroundJobs.ReservationJobs;
 public class ReservationSystemJob : IJob
 {
     private readonly ILogger<ReservationSystemJob> _logger;
-    private int _executionCount;
+    private static int _executionCount;
     private readonly IServiceScopeFactory _serviceScopeFactory;
     public ReservationSystemJob(ILogger<ReservationSystemJob> logger, IServiceScopeFactory serviceScopeFactory)
     {
@@ -22,7 +22,7 @@ public class ReservationSystemJob : IJob
     {
         int count = Interlocked.Increment(ref _executionCount);
 
-        _logger.LogInformation("Timed Hosted Service is working. Count: {Count}", count);
+        _logger.LogInformation("Timed Hosted Service is working. Count: {Count}", _executionCount);
 
         using (var scope = _serviceScopeFactory.CreateScope())
         {

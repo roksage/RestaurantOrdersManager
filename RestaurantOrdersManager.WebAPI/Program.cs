@@ -20,6 +20,8 @@ using RestaurantOrdersManager.Core.Services.RestaurantOrdersServices;
 using RestaurantOrdersManager.Core.Services.RolesAndUsersServies;
 using RestaurantOrdersManager.Infrastructure;
 using RestaurantOrdersManager.WebAPI.Helpers;
+using Serilog;
+using Serilog.Sinks.SystemConsole.Themes;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -138,6 +140,7 @@ builder.Services.ConfigureOptions<ReservationSystemJobSetup>();
 
 #endregion
 
+
 builder.Services.AddResponseCaching();//endpoint cache
 builder.Services.AddControllers(options =>
 {
@@ -147,6 +150,17 @@ builder.Services.AddControllers(options =>
             Duration = 30
         });
 });
+
+
+var logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .Enrich.FromLogContext()
+    .WriteTo.Console(theme: AnsiConsoleTheme.Sixteen) // Ensure you have at least one sink
+    .CreateLogger();
+builder.Host.UseSerilog(logger);
+
+
+
 
 
 var app = builder.Build();
@@ -170,7 +184,7 @@ app.UseAuthorization();
 app.MapControllers();
 
 //endpoint cache
-
+app.UseSerilogRequestLogging();
 app.UseMiddleware<RequestLogMiddleware>();
 app.MapHub<OrdersHub>("/orders");
 app.MapHub<CookingStationsHub>("/cookingStations");
