@@ -11,12 +11,15 @@ using Quartz;
 using RestaurantOrdersManager.API.Middleware;
 using RestaurantOrdersManager.Core.DatabaseDbContext;
 using RestaurantOrdersManager.Core.Entities.RolesAndUsers;
+using RestaurantOrdersManager.Core.ServiceContracts.EmailServices;
 using RestaurantOrdersManager.Core.ServiceContracts.ReservationSystemServices;
 using RestaurantOrdersManager.Core.ServiceContracts.RestaurantOrdersServices;
 using RestaurantOrdersManager.Core.ServiceContracts.RolesAndUsersServices;
+using RestaurantOrdersManager.Core.Services.BackGroundJobs.NotificationJobs;
 using RestaurantOrdersManager.Core.Services.BackGroundJobs.ReservationJobs;
-using RestaurantOrdersManager.Core.Services.BackGroundJobs.ReservationJobs.ReservationSystemJobHelpers;
+using RestaurantOrdersManager.Core.Services.EmailServices;
 using RestaurantOrdersManager.Core.Services.RestaurantOrdersServices;
+using RestaurantOrdersManager.Core.Services.RestaurantOrdersServices.Helpers.ReservationSystemServiceHelpers;
 using RestaurantOrdersManager.Core.Services.RolesAndUsersServies;
 using RestaurantOrdersManager.Infrastructure;
 using RestaurantOrdersManager.WebAPI.Helpers;
@@ -40,6 +43,7 @@ builder.Services.AddScoped<IIngredientInMenuItemService, IngredientInMenuItemSer
 builder.Services.AddScoped<ICookingStationService, CookingStationService>();    
 builder.Services.AddTransient<IAuthorizationService, AuthorizationService>();
 builder.Services.AddScoped<IReservationSystem, ReservationSystemService>();
+builder.Services.AddScoped<ISendEmailService, SendEmailService>();
 builder.Services.AddScoped<ReservationServiceHelper>();
 
 
@@ -137,6 +141,7 @@ builder.Services.AddQuartzHostedService(options =>
 });
 
 builder.Services.ConfigureOptions<ReservationSystemJobSetup>();
+builder.Services.ConfigureOptions<NotificationJobSetup>();
 
 #endregion
 

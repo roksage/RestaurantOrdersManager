@@ -28,7 +28,7 @@ public class ReservationSystemJob : IJob
         {
             var _dbContext = scope.ServiceProvider.GetRequiredService<RestaurantOrdersDbContext>();
 
-            List<Reservation> reservation = await _dbContext.Reservations.Where(r => r.TimeCreated < DateTime.UtcNow.AddMinutes(-1) && r.ReservationStatus == Enums.ReservationEnums.Pending).ToListAsync();
+            List<Reservation> reservation = await _dbContext.Reservations.Where(r => r.TimeCreated < DateTime.UtcNow.AddMinutes(-15) && r.ReservationStatus == Enums.ReservationEnums.Pending).ToListAsync();
 
             foreach (Reservation obj in reservation)
             {

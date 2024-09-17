@@ -1,28 +1,35 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RestaurantOrdersManager.Core.Entities.ReservationSystem;
 using RestaurantOrdersManager.Core.ServiceContracts.DTO.TableDTO;
+using RestaurantOrdersManager.Core.ServiceContracts.EmailDTO;
+using RestaurantOrdersManager.Core.ServiceContracts.EmailServices;
 using RestaurantOrdersManager.Core.ServiceContracts.ReservationSystemDTO;
 using RestaurantOrdersManager.Core.ServiceContracts.ReservationSystemServices;
 using RestaurantOrdersManager.Core.ServiceContracts.RestaurantOrdersServices;
+using RestaurantOrdersManager.Core.Services.EmailServices;
+using RestaurantOrdersManager.Core.Services.RestaurantOrdersServices.Helpers.ReservationSystemServiceHelpers;
 using RestaurantOrdersManager.Infrastructure;
 
-namespace RestaurantOrdersManager.Core.Services.BackGroundJobs.ReservationJobs.ReservationSystemJobHelpers
+namespace RestaurantOrdersManager.Core.Services.RestaurantOrdersServices
 {
-    public class ReservationSystemService : IReservationSystem
+    public class ReservationSystemService : SendEmailService, IReservationSystem
     {
         private readonly RestaurantOrdersDbContext _dbContext;
         private readonly ITableService _tableService;
+        private readonly SendEmailService _sendEmailService;
         private readonly ReservationServiceHelper _reservationServiceHelper;
 
         //working hours, update would allow to update working hours from api
         private const int openingHours = 9;
         private const int closingHours = 17;
 
-        public ReservationSystemService(RestaurantOrdersDbContext dbContext, ITableService tableService, ReservationServiceHelper reservationHelper)
+        public ReservationSystemService(RestaurantOrdersDbContext dbContext, ITableService tableService, ReservationServiceHelper reservationHelper, ISendEmailService emailService)
+            : base(emailService) // Pass the email service to the base class constructor
         {
             _dbContext = dbContext;
             _tableService = tableService;
             _reservationServiceHelper = reservationHelper;
+            _sendEmailService = new SendEmailService(emailService); // Adjust if SendEmailService requires an argument
         }
 
 
@@ -80,12 +87,18 @@ namespace RestaurantOrdersManager.Core.Services.BackGroundJobs.ReservationJobs.R
                     reservation.TableId = table.TableId;
                     //generate and attach varification code
                     reservation.VerificationCode = _reservationServiceHelper.GenerateVerificationCode();
-
-                    //TODO implement email service to send verification to user
-
-
+        
                     await _dbContext.AddAsync(reservation);
                     await _dbContext.SaveChangesAsync();
+
+                    //TODO implement email service to send verification to user
+                    await _sendEmailService.SendEmailAsync(new EmailSendRequest
+                    {
+                        EmailToName = reservation.Email,
+                        EmailSubject = "Your reservation code",
+                        EmailBody = $"Reservation code: {reservation.VerificationCode}, this code is valid for 15 minutes",
+
+                    });
 
                     return reservation.ToReservationResponse();
                 }
