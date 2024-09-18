@@ -14,6 +14,6 @@ public class ReservationSystemJobSetup : IConfigureOptions<QuartzOptions>
                 trigger
                     .ForJob(jobKey)
                     .WithSimpleSchedule(schedule =>
-                        schedule.WithIntervalInSeconds(60).RepeatForever()));
+                        schedule.WithIntervalInSeconds(5).RepeatForever()));
     }
 }
