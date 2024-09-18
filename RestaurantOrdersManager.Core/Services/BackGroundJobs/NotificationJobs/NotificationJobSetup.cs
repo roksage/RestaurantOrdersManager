@@ -21,14 +21,14 @@ namespace RestaurantOrdersManager.Core.Services.BackGroundJobs.NotificationJobs
                 .AddTrigger(trigger =>
                     trigger
                         .ForJob(jobKey)
-                        .WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(15,14))
+                        .WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(08,00))
                         .Build());
 
             options
                 .AddTrigger(trigger =>
                     trigger
                         .ForJob(jobKey)
-                        .WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(15, 15))
+                        .WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(20, 00))
                         .Build());
         }
     }
