@@ -54,19 +54,8 @@ namespace RestaurantOrdersManager.API.Middleware
                         _logger.LogWarning(userInfo.ErrorMessage);
                     }
                 }
-                //count time request took
-                var stopwatch = new Stopwatch();
-                stopwatch.Start();
 
                 await _next.Invoke(context);
-
-                stopwatch.Stop();
-
-                var timeTaken = stopwatch.ElapsedMilliseconds;
-
-
-                _logger.LogInformation(timeTaken.ToString());
-
             }
             catch (Exception ex)
             {

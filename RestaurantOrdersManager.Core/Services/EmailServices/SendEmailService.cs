@@ -1,20 +1,25 @@
-﻿using RestaurantOrdersManager.Core.ServiceContracts.EmailDTO;
+﻿using Microsoft.Extensions.Logging;
+using RestaurantOrdersManager.Core.ServiceContracts.EmailDTO;
 using RestaurantOrdersManager.Core.ServiceContracts.EmailServices;
+using RestaurantOrdersManager.Core.Services.BackGroundJobs.ReservationJobs;
 
 namespace RestaurantOrdersManager.Core.Services.EmailServices
 {
     public class SendEmailService : ISendEmailService
     {
+        private readonly ILogger<SendEmailService> _logger;
 
-        private readonly ISendEmailService _emailService;
-
-        public SendEmailService(ISendEmailService emailService)
+        public SendEmailService(ILogger<SendEmailService> logger)
         {
-            _emailService = emailService;
+            _logger = logger;
         }
-        public Task<bool> SendEmailAsync(EmailSendRequest request)
+        public async Task<bool> SendEmailAsync(EmailSendRequest request)
         {
-            throw new NotImplementedException();
+            _logger.LogCritical($"email with body - {request.EmailBody}, subject - {request.EmailSubject}, email - {request.EmailToName}");
+
+            _logger.LogCritical("Need to implement email sending itself");
+
+            return true;
         }
     }
 }

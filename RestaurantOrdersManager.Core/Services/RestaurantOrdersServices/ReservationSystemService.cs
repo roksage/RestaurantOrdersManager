@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using RestaurantOrdersManager.Core.Entities.ReservationSystem;
 using RestaurantOrdersManager.Core.ServiceContracts.DTO.TableDTO;
 using RestaurantOrdersManager.Core.ServiceContracts.EmailDTO;
@@ -12,24 +13,23 @@ using RestaurantOrdersManager.Infrastructure;
 
 namespace RestaurantOrdersManager.Core.Services.RestaurantOrdersServices
 {
-    public class ReservationSystemService : SendEmailService, IReservationSystem
+    public class ReservationSystemService : IReservationSystem
     {
         private readonly RestaurantOrdersDbContext _dbContext;
         private readonly ITableService _tableService;
-        private readonly SendEmailService _sendEmailService;
         private readonly ReservationServiceHelper _reservationServiceHelper;
+        private readonly ISendEmailService _sendEmailService; 
 
         //working hours, update would allow to update working hours from api
         private const int openingHours = 9;
         private const int closingHours = 17;
 
-        public ReservationSystemService(RestaurantOrdersDbContext dbContext, ITableService tableService, ReservationServiceHelper reservationHelper, ISendEmailService emailService)
-            : base(emailService) // Pass the email service to the base class constructor
+        public ReservationSystemService(RestaurantOrdersDbContext dbContext, ITableService tableService, ReservationServiceHelper reservationHelper, ISendEmailService sendEmailService)
         {
             _dbContext = dbContext;
             _tableService = tableService;
             _reservationServiceHelper = reservationHelper;
-            _sendEmailService = new SendEmailService(emailService); // Adjust if SendEmailService requires an argument
+            _sendEmailService = sendEmailService;
         }
 
 
@@ -92,6 +92,7 @@ namespace RestaurantOrdersManager.Core.Services.RestaurantOrdersServices
                     await _dbContext.SaveChangesAsync();
 
                     //TODO implement email service to send verification to user
+
                     await _sendEmailService.SendEmailAsync(new EmailSendRequest
                     {
                         EmailToName = reservation.Email,
@@ -209,5 +210,6 @@ namespace RestaurantOrdersManager.Core.Services.RestaurantOrdersServices
 
             return reservation.ToReservationResponse();
         }
+
     }
 }
