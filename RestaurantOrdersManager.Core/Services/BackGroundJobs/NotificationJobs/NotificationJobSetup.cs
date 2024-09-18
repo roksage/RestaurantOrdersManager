@@ -17,13 +17,14 @@ namespace RestaurantOrdersManager.Core.Services.BackGroundJobs.NotificationJobs
             options
                 .AddJob<NotificationJob>(jobBuilder => jobBuilder.WithIdentity(jobKey));
 
+            //send notification at 08:00
             options
                 .AddTrigger(trigger =>
                     trigger
                         .ForJob(jobKey)
                         .WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(08,00))
                         .Build());
-
+            //send notification at 20:00
             options
                 .AddTrigger(trigger =>
                     trigger
