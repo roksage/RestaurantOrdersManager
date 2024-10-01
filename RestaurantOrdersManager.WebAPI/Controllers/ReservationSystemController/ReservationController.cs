@@ -89,6 +89,11 @@ namespace RestaurantOrdersManager.API.Controllers
         {
             try
             {
+                //check if date is older than today
+                if(date < DateTime.UtcNow.AddDays(-1))
+                {
+                    return BadRequest(new { Message = "Please provide date" });
+                }
                 var timeSlots = await _reservationSystem.GetFreeTimeSlotsAllTables(date, seats);
 
                 return Ok(timeSlots);
