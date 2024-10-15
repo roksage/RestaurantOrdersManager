@@ -86,11 +86,12 @@ namespace RestaurantOrdersManager.Core.Services.RestaurantOrdersServices
             }
 
             //check if that name doesn't exist already
-            bool findIngredientByName = await _dbContext.Ingredients.AnyAsync(i => i.IngredientName == request.IngredientName);
+            Ingredient? findIngredientByName = await _dbContext.Ingredients.FirstOrDefaultAsync(i => i.IngredientName == request.IngredientName);
 
-            if (findIngredientByName)
+
+            if (findIngredientByName.IngredientId != request.IngredientId)
             {
-                throw new ArgumentException($"Ingredient with this name already exist {request.IngredientName}");
+                throw new ArgumentException($"Ingredient with this name '{request.IngredientName}' already exist - with id '{findIngredientByName.IngredientId}'");
             }
 
             if (request.IngredientName != null)
